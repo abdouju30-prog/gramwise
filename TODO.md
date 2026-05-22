@@ -2,7 +2,7 @@
 
 ## P0 — Foundation
 
-- [ ] `docs/TEST_CASES.md` — 10 pastry reference cases (Excel-validated)
+- [x] `docs/TEST_CASES.md` — 10 pastry reference cases (Excel-validated)
 - [ ] `docs/FORMULAS.md` — margin vs markup, units, edge cases
 - [ ] Choose stack + init app skeleton
 - [ ] `engine/` module + tests (all cases green)
