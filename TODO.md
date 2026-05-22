@@ -14,6 +14,13 @@
 - [x] Results + breakdown screen
 - [x] Basic professional UI (no generic AI aesthetic)
 
+## P0 — Beta Maroc (before company / Stripe live)
+
+- [x] Deploy Vercel prod + `NEXT_PUBLIC_APP_URL=https://fixload.vercel.app` — [docs/DEPLOY_VERCEL.md](docs/DEPLOY_VERCEL.md)
+- [ ] Beta: 5 pâtissiers valident chiffres — [docs/BETA_CHECKLIST.md](docs/BETA_CHECKLIST.md)
+- [x] Stripe Checkout stub (test keys only; live blocked without `STRIPE_ALLOW_LIVE=1`)
+- [ ] Stripe **live** — only after legal entity + beta sign-off (not before)
+
 ## P2 — Launch
 
 - [x] Landing page

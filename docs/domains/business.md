@@ -24,4 +24,6 @@ Decision deferred until MVP works and is **accurate**.
 - Web app: Next.js App Router + tested `engine/`
 - Stripe Checkout: `POST /api/checkout` (lifetime €99 / monthly €29) — env in `.env.example`
 - Webhook: `POST /api/webhooks/stripe` — logs completion; user access TBD with auth
-- Deploy: Vercel + `NEXT_PUBLIC_APP_URL`
+- Deploy: Vercel + `NEXT_PUBLIC_APP_URL` — [DEPLOY_VERCEL.md](../DEPLOY_VERCEL.md)
+- Beta Maroc: [BETA_CHECKLIST.md](../BETA_CHECKLIST.md) — 5 pâtissiers, calculator free, **Stripe test only**
+- Stripe live: only after legal entity + beta sign-off; requires `STRIPE_ALLOW_LIVE=1` (code blocks `sk_live_` otherwise)

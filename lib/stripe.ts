@@ -18,14 +18,33 @@ const PLAN_CONFIG: Record<
   },
 };
 
+function stripeSecretKey(): string | undefined {
+  return process.env.STRIPE_SECRET_KEY?.trim();
+}
+
+/** Live keys blocked until STRIPE_ALLOW_LIVE=1 (legal entity required). */
+export function isLiveStripeKey(key: string): boolean {
+  return key.startsWith("sk_live_") || key.startsWith("rk_live_");
+}
+
 export function isStripeConfigured(): boolean {
-  return Boolean(process.env.STRIPE_SECRET_KEY?.trim());
+  const key = stripeSecretKey();
+  if (!key) return false;
+  if (isLiveStripeKey(key) && process.env.STRIPE_ALLOW_LIVE !== "1") {
+    return false;
+  }
+  return true;
 }
 
 export function getStripe(): Stripe {
-  const key = process.env.STRIPE_SECRET_KEY?.trim();
+  const key = stripeSecretKey();
   if (!key) {
     throw new Error("STRIPE_SECRET_KEY is not set");
+  }
+  if (isLiveStripeKey(key) && process.env.STRIPE_ALLOW_LIVE !== "1") {
+    throw new Error(
+      "Live Stripe keys require STRIPE_ALLOW_LIVE=1 and a registered legal entity",
+    );
   }
   return new Stripe(key);
 }
