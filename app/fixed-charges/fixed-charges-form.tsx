@@ -191,7 +191,10 @@ export function FixedChargesForm() {
 
         <fieldset className="field-group">
           <legend className="field-group-legend">{m.fixed.capacityLegend}</legend>
-          <p className="field-hint field-hint-block">{m.fixed.capacityHint}</p>
+          <p className="explain-short capacity-explain">
+            {m.fixed.capacityExplainShort}
+          </p>
+          <p className="field-hint field-hint-block">{m.fixed.capacityChooseMode}</p>
 
           <div
             className="mode-toggle"
@@ -207,7 +210,10 @@ export function FixedChargesForm() {
                   update("capacityMode", "batches_per_month")
                 }
               />
-              <span>{m.fixed.batchesPerMonth}</span>
+              <span className="mode-option-text">
+                <span className="mode-option-title">{m.fixed.batchesPerMonth}</span>
+                <span className="mode-option-desc">{m.fixed.batchesPerMonthDesc}</span>
+              </span>
             </label>
             <label className="mode-option">
               <input
@@ -216,24 +222,44 @@ export function FixedChargesForm() {
                 checked={form.capacityMode === "hours_per_month"}
                 onChange={() => update("capacityMode", "hours_per_month")}
               />
-              <span>{m.fixed.hoursPerMonth}</span>
+              <span className="mode-option-text">
+                <span className="mode-option-title">{m.fixed.hoursPerMonth}</span>
+                <span className="mode-option-desc">{m.fixed.hoursPerMonthDesc}</span>
+              </span>
             </label>
           </div>
 
           {form.capacityMode === "batches_per_month" ? (
-            <label className="field">
-              <span className="field-label">{m.fixed.batchesLabel}</span>
-              <input
-                type="number"
-                inputMode="numeric"
-                min="1"
-                step="1"
-                value={form.batchesPerMonth}
-                onChange={(e) => update("batchesPerMonth", e.target.value)}
-              />
-              <span className="field-hint">{m.fixed.batchesHint}</span>
-            </label>
+            <>
+              <p className="field-hint field-hint-block">
+                {m.fixed.capacityBatchesExplain}
+              </p>
+              <label className="field">
+                <span className="field-label">{m.fixed.batchesLabel}</span>
+                <input
+                  type="number"
+                  inputMode="numeric"
+                  min="1"
+                  step="1"
+                  value={form.batchesPerMonth}
+                  onChange={(e) => update("batchesPerMonth", e.target.value)}
+                />
+                <span className="field-hint">{m.fixed.batchesHint}</span>
+              </label>
+              {previewFormula ? (
+                <div className="capacity-example" aria-live="polite">
+                  <span className="capacity-example-label">
+                    {m.fixed.capacityExampleLabel}
+                  </span>
+                  <p className="capacity-example-formula">{previewFormula}</p>
+                </div>
+              ) : null}
+            </>
           ) : (
+            <>
+              <p className="field-hint field-hint-block">
+                {m.fixed.capacityHoursExplain}
+              </p>
             <div className="field-row">
               <label className="field">
                 <span className="field-label">{m.fixed.shopHours}</span>
@@ -261,6 +287,15 @@ export function FixedChargesForm() {
                 <span className="field-hint">{m.fixed.recipeHoursHint}</span>
               </label>
             </div>
+              {previewFormula ? (
+                <div className="capacity-example" aria-live="polite">
+                  <span className="capacity-example-label">
+                    {m.fixed.capacityExampleLabel}
+                  </span>
+                  <p className="capacity-example-formula">{previewFormula}</p>
+                </div>
+              ) : null}
+            </>
           )}
         </fieldset>
       </form>

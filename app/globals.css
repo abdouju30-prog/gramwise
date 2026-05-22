@@ -435,7 +435,7 @@ h1 {
 
 .mode-option {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   gap: 0.4rem;
   padding: 0.5rem 0.9rem;
   background: var(--surface);
@@ -449,6 +449,53 @@ h1 {
 .mode-option:has(input:checked) {
   border-color: var(--caramel);
   background: rgba(212, 148, 58, 0.1);
+}
+
+.mode-option-text {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+.mode-option-title {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.mode-option-desc {
+  font-size: 0.68rem;
+  line-height: 1.35;
+  color: var(--brown-light);
+}
+
+.capacity-explain {
+  margin-bottom: 1rem;
+}
+
+.capacity-example {
+  margin-top: 0.75rem;
+  padding: 0.65rem 0.85rem;
+  background: color-mix(in srgb, var(--accent) 5%, var(--surface));
+  border: 1px dashed color-mix(in srgb, var(--accent) 25%, var(--border));
+  border-radius: var(--radius);
+}
+
+.capacity-example-label {
+  display: block;
+  font-size: 0.6rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--brown-light);
+  margin-bottom: 0.25rem;
+}
+
+.capacity-example-formula {
+  margin: 0;
+  font-size: 0.82rem;
+  font-weight: 500;
+  color: var(--brown-mid);
 }
 
 .preview-card {
