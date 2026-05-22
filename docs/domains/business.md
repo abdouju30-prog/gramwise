@@ -19,9 +19,9 @@ Decision deferred until MVP works and is **accurate**.
 | GTM | CPA < 40% of first payment on Meta ads |
 | Year 1 | €6k–40k gross (solo, realistic band) |
 
-## Tech direction (not implemented yet)
+## Tech direction
 
-- Web app (SPA or Next.js) — **calculation module isolated and unit-tested**
-- No “magic” LLM in the pricing path
-- Deploy: Vercel or similar
-- Auth/payments: phase 2 (Stripe after accuracy proven)
+- Web app: Next.js App Router + tested `engine/`
+- Stripe Checkout: `POST /api/checkout` (lifetime €99 / monthly €29) — env in `.env.example`
+- Webhook: `POST /api/webhooks/stripe` — logs completion; user access TBD with auth
+- Deploy: Vercel + `NEXT_PUBLIC_APP_URL`

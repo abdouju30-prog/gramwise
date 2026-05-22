@@ -17,7 +17,7 @@
 ## P2 — Launch
 
 - [x] Landing page
-- [ ] Stripe or lifetime payment
+- [x] Stripe or lifetime payment (Checkout API + webhook stub)
 - [ ] Link from Instagram pastry page
 - [ ] Meta ads creatives (founder)
 
