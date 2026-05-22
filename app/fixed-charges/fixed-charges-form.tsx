@@ -1,16 +1,24 @@
 "use client";
 
 import Link from "next/link";
-import { useMemo, useState } from "react";
+import { useRouter } from "next/navigation";
+import { useEffect, useMemo, useState } from "react";
 import {
   DEFAULT_FIXED_CHARGES,
   previewFixedLoad,
   type FixedChargesForm,
 } from "@/lib/fixed-charges";
 import { formatMoney } from "@/lib/format";
+import { loadWizardSession, saveFixedCharges } from "@/lib/session";
 
 export function FixedChargesForm() {
+  const router = useRouter();
   const [form, setForm] = useState<FixedChargesForm>(DEFAULT_FIXED_CHARGES);
+
+  useEffect(() => {
+    const saved = loadWizardSession()?.fixedCharges;
+    if (saved) setForm(saved);
+  }, []);
 
   const preview = useMemo(() => previewFixedLoad(form), [form]);
 
@@ -152,13 +160,17 @@ export function FixedChargesForm() {
         <Link href="/" className="btn btn-ghost">
           Back
         </Link>
-        <span
-          className="btn btn-primary btn-disabled"
-          aria-disabled="true"
-          title="Recipe screen — next"
+        <button
+          type="button"
+          className="btn btn-primary"
+          disabled={!preview}
+          onClick={() => {
+            saveFixedCharges(form);
+            router.push("/recipe");
+          }}
         >
           Continue to recipe
-        </span>
+        </button>
       </nav>
     </>
   );

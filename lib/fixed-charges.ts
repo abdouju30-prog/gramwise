@@ -1,5 +1,6 @@
 import { calculateCosting } from "@/engine";
 import type { Capacity, CostingInput } from "@/engine/types";
+import { parsePositive } from "@/lib/parse";
 
 export type CapacityMode = "batches_per_month" | "hours_per_month";
 
@@ -18,12 +19,6 @@ export const DEFAULT_FIXED_CHARGES: FixedChargesForm = {
   hoursPerMonth: "120",
   recipeTotalHours: "2.25",
 };
-
-export function parsePositive(value: string): number | null {
-  const n = Number.parseFloat(value);
-  if (!Number.isFinite(n) || n <= 0) return null;
-  return n;
-}
 
 export function buildCapacity(form: FixedChargesForm): Capacity | null {
   if (form.capacityMode === "batches_per_month") {

@@ -10,8 +10,8 @@
 ## P1 — MVP UI
 
 - [x] Fixed charges + capacity screen
-- [ ] Recipe screen (pastry preset)
-- [ ] Results + breakdown screen
+- [x] Recipe screen (pastry preset)
+- [x] Results + breakdown screen
 - [ ] Basic professional UI (no generic AI aesthetic)
 
 ## P2 — Launch

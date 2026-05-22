@@ -14,16 +14,16 @@ export default function Home() {
           <span className="card-title">Fixed charges &amp; capacity</span>
           <span className="card-desc">Monthly overhead and batch or hourly spread</span>
         </Link>
-        <div className="card card-muted" aria-disabled="true">
+        <Link href="/recipe" className="card card-link">
           <span className="card-step">2</span>
           <span className="card-title">Recipe</span>
-          <span className="card-desc">Coming next</span>
-        </div>
-        <div className="card card-muted" aria-disabled="true">
+          <span className="card-desc">Ingredients, labor, waste, margin</span>
+        </Link>
+        <Link href="/results" className="card card-link">
           <span className="card-step">3</span>
           <span className="card-title">Results</span>
-          <span className="card-desc">Coming next</span>
-        </div>
+          <span className="card-desc">Breakdown and recommended price</span>
+        </Link>
       </nav>
     </main>
   );
