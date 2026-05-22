@@ -9,6 +9,7 @@ Web app for artisans to price products with direct materials, labor, and **alloc
 - **Tasks:** [`TODO.md`](./TODO.md)
 - **Session end (`fin`):** compress only — [`.cursor/rules/`](./.cursor/rules/) + [`docs/HANDOFF_TEMPLATE.md`](./docs/HANDOFF_TEMPLATE.md) (3-row handoff, no chat archive).
 - **Legacy UI:** [`legacy/index.html`](./legacy/index.html) — earlier PâtisCoût prototype (superseded by engine-first GramWise).
+- **Costing engine:** [`engine/`](./engine/) — run `npm test` for the 10 reference cases in [`docs/TEST_CASES.md`](./docs/TEST_CASES.md).
 
 First vertical: **pastry / custom cakes**. Engine designed for more presets later.
 
