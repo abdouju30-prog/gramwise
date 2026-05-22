@@ -895,6 +895,69 @@ h1 {
   width: 100%;
 }
 
+.beta-banner {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem 1.25rem;
+  padding: 0.65rem 1rem;
+  background: var(--cream-dark, #f5efe6);
+  border-bottom: 1px solid var(--border);
+  font-size: 0.82rem;
+}
+
+.beta-banner p {
+  margin: 0;
+}
+
+.beta-banner-link {
+  font-weight: 600;
+  color: var(--terracotta, #c45c3e);
+  text-decoration: none;
+}
+
+.beta-banner-link:hover {
+  text-decoration: underline;
+}
+
+.beta-page .beta-block {
+  margin-top: 1.25rem;
+}
+
+.beta-steps {
+  margin: 0.5rem 0 0;
+  padding-left: 1.25rem;
+}
+
+.beta-steps li {
+  margin-bottom: 0.35rem;
+}
+
+.beta-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-top: 1rem;
+}
+
+.beta-foot {
+  margin-top: 2rem;
+  font-size: 0.8rem;
+  color: var(--brown-light);
+}
+
+.beta-feedback-card {
+  margin-top: 1.25rem;
+}
+
+.landing-pricing-cta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  justify-content: center;
+}
+
 .checkout-error {
   font-size: 0.7rem;
   color: #c0392b;

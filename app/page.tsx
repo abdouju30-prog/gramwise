@@ -39,8 +39,8 @@ export default function LandingPage() {
           <Link href="/start" className="btn btn-primary btn-lg">
             Open the calculator
           </Link>
-          <Link href="/fixed-charges" className="btn btn-ghost btn-lg">
-            Jump to step 1
+          <Link href="/beta" className="btn btn-ghost btn-lg">
+            Beta testeurs (FR)
           </Link>
         </div>
       </section>

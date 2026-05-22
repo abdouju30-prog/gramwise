@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { DM_Mono, Playfair_Display } from "next/font/google";
+import { BetaBanner } from "./components/beta-banner";
 import { SiteChrome } from "./components/site-chrome";
 import "./globals.css";
 
@@ -28,6 +29,7 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${playfair.variable} ${dmMono.variable}`}>
       <body>
+        <BetaBanner />
         <SiteChrome>{children}</SiteChrome>
       </body>
     </html>

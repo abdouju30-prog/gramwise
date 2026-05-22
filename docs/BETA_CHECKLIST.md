@@ -4,7 +4,7 @@
 
 **Périmètre beta :** calculateur gratuit · Stripe **test** (`sk_test_`) uniquement · pas de clés live tant qu’il n’y a pas d’entité légale.
 
-**URL prod :** https://fixload.vercel.app (`NEXT_PUBLIC_APP_URL` configuré — [DEPLOY_VERCEL.md](./DEPLOY_VERCEL.md)).
+**URL prod :** https://fixload.vercel.app/start · guide https://fixload.vercel.app/beta — [BETA_LAUNCH.md](./BETA_LAUNCH.md)
 
 ---
 

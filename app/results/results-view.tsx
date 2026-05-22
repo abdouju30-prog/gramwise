@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useMemo } from "react";
+import { BetaFeedbackCard } from "@/app/components/beta-feedback-card";
 import { runCosting } from "@/lib/costing";
 import { formatMoney } from "@/lib/format";
 import { useWizardGuard } from "@/lib/use-wizard-guard";
@@ -81,6 +82,8 @@ export function ResultsView() {
           </section>
         )}
       </div>
+
+      <BetaFeedbackCard />
 
       <nav className="step-nav">
         <Link href="/recipe" className="btn btn-ghost">

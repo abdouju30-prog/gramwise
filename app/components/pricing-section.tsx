@@ -1,17 +1,39 @@
 import Link from "next/link";
+import { isPublicBeta } from "@/lib/beta";
 import { CheckoutButton } from "./checkout-button";
 import { isStripeConfigured } from "@/lib/stripe";
 
 export function PricingSection() {
-  const paymentsReady = isStripeConfigured();
+  const publicBeta = isPublicBeta();
+  const paymentsReady = isStripeConfigured() && !publicBeta;
+
+  if (publicBeta) {
+    return (
+      <section className="landing-section" id="pricing">
+        <h2 className="landing-heading">Beta — gratuit</h2>
+        <p className="landing-pricing-note">
+          Le calculateur est ouvert sans paiement. Nous validons les chiffres
+          avec 5 pâtissiers avant toute offre payante.
+        </p>
+        <p className="landing-pricing-cta">
+          <Link href="/beta" className="btn btn-primary">
+            Guide testeur (15 min)
+          </Link>
+          <Link href="/start" className="btn btn-ghost">
+            Ouvrir le calculateur
+          </Link>
+        </p>
+      </section>
+    );
+  }
 
   return (
     <section className="landing-section" id="pricing">
       <h2 className="landing-heading">Pricing</h2>
       <p className="landing-pricing-note">
         {paymentsReady
-          ? "Secure checkout via Stripe. Calculator stays usable during beta."
-          : "Beta: calculator is free. Add STRIPE_SECRET_KEY to enable checkout buttons."}
+          ? "Secure checkout via Stripe."
+          : "Calculator is free until checkout is configured."}
       </p>
       <div className="pricing-grid">
         <article className="card pricing-card pricing-card--featured">
