@@ -1,6 +1,6 @@
 # GramWise — Formula spec (v1)
 
-Authoritative formulas for the costing engine. Regression targets: `docs/TEST_CASES.md`.
+Authoritative formulas for the costing engine. Regression targets: `docs/TEST_CASES.md`. Domain manifest: `docs/DOMAINS.md` (`formulas`).
 
 ---
 

@@ -1,0 +1,33 @@
+---
+description: One documentation domain per task — detect, read, edit, close (token discipline)
+alwaysApply: true
+---
+
+# Domain docs — slice workflow
+
+## 1. Detect domain (before reading docs)
+
+1. Read **`docs/DOMAINS.md`** only (~manifest, not domain bodies).
+2. Pick **one** domain from: user words, `@path`, P0 in last message, or open file glob.
+3. If user `@`-mentions a file → that file **is** the domain; skip broad discovery.
+4. Code tasks: prefer **grep → Read 1 domain + 3–5 code files**; never load the whole brief.
+
+## 2. Open — single slice
+
+| Do | Don't |
+|----|--------|
+| Read **one** domain file from the manifest | Read `PROJECT_BRIEF.md` in full (index only) |
+| Read linked code (`engine/`, `src/`) as needed | Read 2+ domain docs "for context" |
+| Use `docs/FORMULAS.md` for math, not brief §15 | Read `NEXT_SESSION_HANDOFF.md` unless `fin` or `@` |
+
+## 3. Work — edit in place
+
+- Change **only** the active domain doc + code/tests for the task.
+- Update `docs/DOMAINS.md` if paths or keywords change.
+- Keep replies short; no large doc pastebacks.
+
+## 4. Close — set aside
+
+- After the task: **do not** re-read other domains or re-open the slice to "verify".
+- Next domain = new detection pass from `DOMAINS.md`.
+- Bootstrap new repos: `.cursor/templates/domain-docs/README.md`.

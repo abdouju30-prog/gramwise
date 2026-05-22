@@ -1,0 +1,56 @@
+# Domain-docs skeleton (any project)
+
+Split project knowledge into **small files by domain**. Cursor reads `docs/DOMAINS.md` first, then **one** slice — not the whole brief.
+
+## Bootstrap a new repo
+
+From project root (PowerShell):
+
+```powershell
+$tpl = ".cursor/templates/domain-docs"
+New-Item -ItemType Directory -Force -Path docs/domains | Out-Null
+Copy-Item "$tpl/docs/DOMAINS.md" docs/DOMAINS.md
+Copy-Item "$tpl/docs/domains/*" docs/domains/
+Copy-Item "$tpl/.cursor/rules/domain-docs-slice.mdc" .cursor/rules/domain-docs-slice.mdc -Force
+Copy-Item "$tpl/PROJECT_BRIEF.index.md" PROJECT_BRIEF.md
+```
+
+Then:
+
+1. Fill each `docs/domains/*.md` (replace `<!-- TODO -->`).
+2. Adjust rows in `docs/DOMAINS.md` (paths + keywords).
+3. Point `PROJECT_BRIEF.md` to the manifest only.
+
+## Optional: user-wide rule
+
+Copy `domain-docs-slice.mdc` to `%USERPROFILE%\.cursor\rules\` so **every** workspace gets slice discipline (or rely on per-repo copy above).
+
+## File layout
+
+```
+docs/
+  DOMAINS.md              # manifest only — agent reads this first
+  domains/
+    01-context.md         # problem, identity, why
+    02-scope.md           # IN/OUT, version scope
+    03-product.md         # spec (or link ../PRODUCT_SPEC.md)
+    04-architecture.md    # stack, modules
+    05-formulas.md        # business rules / math
+    06-test-cases.md      # regression references
+    07-tasks.md           # or link ../TODO.md
+    08-workflow.md        # session commands, handoff
+    09-diagrams.md        # Mermaid
+    10-business.md        # pricing, GTM, metrics
+PROJECT_BRIEF.md          # index only — no body
+.cursor/rules/
+  domain-docs-slice.mdc   # alwaysApply
+```
+
+## Agent workflow (token discipline)
+
+1. **Detect** — `docs/DOMAINS.md` + user message / `@` file
+2. **Open** — one domain file (+ code if implementing)
+3. **Edit** — that slice + code only
+4. **Close** — do not re-read other domains
+
+Ship with `project-end-compress.mdc` + `session-fin-handoff-block.mdc` from GramWise for session end.
