@@ -27,7 +27,15 @@ export function RecipeForm() {
 
   useEffect(() => {
     const data = loadWizardSession();
-    if (data?.recipe) setForm(data.recipe);
+    if (data?.recipe) {
+      setForm({
+        ...data.recipe,
+        ingredients: data.recipe.ingredients.map((row) => ({
+          ...row,
+          name: row.name ?? "",
+        })),
+      });
+    }
     setHydrated(true);
   }, []);
 
@@ -108,58 +116,63 @@ export function RecipeForm() {
         <fieldset className="field-group">
           <legend className="field-group-legend">{m.recipe.ingredientsLegend}</legend>
           <p className="field-hint field-hint-block">{m.recipe.ingredientsHint}</p>
-          <div className="table-scroll">
-          <table className="data-table data-table--recipe">
-            <thead>
-              <tr>
-                <th>{m.recipe.qty}</th>
-                <th>{m.recipe.costPerUnit}</th>
-                <th aria-label="Actions" />
-              </tr>
-            </thead>
-            <tbody>
-              {form.ingredients.map((row) => (
-                <tr key={row.id}>
-                  <td>
-                    <input
-                      type="number"
-                      inputMode="decimal"
-                      min="0"
-                      step="any"
-                      value={row.quantity}
-                      onChange={(e) =>
-                        updateIngredient(row.id, { quantity: e.target.value })
-                      }
-                    />
-                  </td>
-                  <td>
-                    <input
-                      type="number"
-                      inputMode="decimal"
-                      min="0"
-                      step="0.01"
-                      value={row.costPerUnit}
-                      onChange={(e) =>
-                        updateIngredient(row.id, {
-                          costPerUnit: e.target.value,
-                        })
-                      }
-                    />
-                  </td>
-                  <td>
-                    <button
-                      type="button"
-                      className="btn-icon"
-                      onClick={() => removeIngredient(row.id)}
-                      aria-label={m.recipe.removeIngredient}
-                    >
-                      ×
-                    </button>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+          <div className="ingredient-grid" role="table">
+            <div className="ingredient-grid-head" role="row">
+              <span role="columnheader">{m.recipe.ingredientName}</span>
+              <span role="columnheader">{m.recipe.qty}</span>
+              <span role="columnheader">{m.recipe.costPerUnit}</span>
+              <span className="ingredient-grid-actions-head" aria-hidden />
+            </div>
+            {form.ingredients.map((row) => (
+              <div key={row.id} className="ingredient-grid-row" role="row">
+                <input
+                  type="text"
+                  role="cell"
+                  aria-label={m.recipe.ingredientName}
+                  value={row.name ?? ""}
+                  onChange={(e) =>
+                    updateIngredient(row.id, { name: e.target.value })
+                  }
+                  placeholder={m.recipe.ingredientNamePlaceholder}
+                />
+                <input
+                  type="number"
+                  inputMode="decimal"
+                  min="0"
+                  step="any"
+                  role="cell"
+                  aria-label={m.recipe.qty}
+                  value={row.quantity}
+                  onChange={(e) =>
+                    updateIngredient(row.id, { quantity: e.target.value })
+                  }
+                  placeholder="0"
+                />
+                <input
+                  type="number"
+                  inputMode="decimal"
+                  min="0"
+                  step="0.01"
+                  role="cell"
+                  aria-label={m.recipe.costPerUnit}
+                  value={row.costPerUnit}
+                  onChange={(e) =>
+                    updateIngredient(row.id, {
+                      costPerUnit: e.target.value,
+                    })
+                  }
+                  placeholder="0"
+                />
+                <button
+                  type="button"
+                  className="btn-icon"
+                  onClick={() => removeIngredient(row.id)}
+                  aria-label={m.recipe.removeIngredient}
+                >
+                  ×
+                </button>
+              </div>
+            ))}
           </div>
           <button
             type="button"

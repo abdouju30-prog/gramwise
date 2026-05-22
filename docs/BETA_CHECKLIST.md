@@ -8,6 +8,14 @@
 
 ---
 
+## Diffusion beta (canal actif)
+
+- Guide a partager : https://fixload.vercel.app/beta
+- Canal principal : WhatsApp (deja configure)
+- Rappel perimetre : pas de Stripe live pendant cette phase
+
+---
+
 ## Recrutement (5 profils)
 
 | # | Profil cible | Contact / IG | Statut |

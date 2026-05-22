@@ -121,6 +121,8 @@ export type Messages = {
     namePlaceholder: string;
     ingredientsLegend: string;
     ingredientsHint: string;
+    ingredientName: string;
+    ingredientNamePlaceholder: string;
     qty: string;
     costPerUnit: string;
     removeIngredient: string;
@@ -153,12 +155,17 @@ export type Messages = {
     breakEvenSub: string;
     breakdownTitle: string;
     directMaterials: string;
+    ingredientNamesTitle: string;
+    ingredientUnnamed: string;
     directLabor: string;
     fixedLoad: string;
     fullCostBreakEven: string;
     marginWaste: string;
     marginTipTitle: string;
     marginTipBody: string;
+    exportTitle: string;
+    exportCsv: string;
+    exportPdf: string;
     calcError: string;
     editRecipe: string;
     editFixed: string;

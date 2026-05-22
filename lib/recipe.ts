@@ -2,6 +2,7 @@ import type { IngredientLine, LaborPhase } from "@/engine/types";
 
 export type IngredientRow = {
   id: string;
+  name: string;
   quantity: string;
   costPerUnit: string;
 };
@@ -28,12 +29,12 @@ function rowId(): string {
 export const CUPCAKES_PRESET: RecipeForm = {
   name: "Cupcakes",
   ingredients: [
-    { id: "1", quantity: "0.8", costPerUnit: "0.45" },
-    { id: "2", quantity: "0.6", costPerUnit: "0.65" },
-    { id: "3", quantity: "0.5", costPerUnit: "6.2" },
-    { id: "4", quantity: "6", costPerUnit: "0.28" },
-    { id: "5", quantity: "0.4", costPerUnit: "0.9" },
-    { id: "6", quantity: "0.05", costPerUnit: "3.0" },
+    { id: "1", name: "Flour", quantity: "0.8", costPerUnit: "0.45" },
+    { id: "2", name: "Sugar", quantity: "0.6", costPerUnit: "0.65" },
+    { id: "3", name: "Butter", quantity: "0.5", costPerUnit: "6.2" },
+    { id: "4", name: "Eggs", quantity: "6", costPerUnit: "0.28" },
+    { id: "5", name: "Milk", quantity: "0.4", costPerUnit: "0.9" },
+    { id: "6", name: "Vanilla", quantity: "0.05", costPerUnit: "3.0" },
   ],
   laborPhases: [
     { id: "l1", label: "Mix & bake", hours: "1", hourlyRate: "18" },
@@ -46,14 +47,14 @@ export const CUPCAKES_PRESET: RecipeForm = {
 
 export const DEFAULT_RECIPE: RecipeForm = {
   name: "",
-  ingredients: [{ id: rowId(), quantity: "", costPerUnit: "" }],
+  ingredients: [{ id: rowId(), name: "", quantity: "", costPerUnit: "" }],
   laborPhases: [{ id: rowId(), label: "", hours: "", hourlyRate: "" }],
   wastePercent: "3",
   marginPercent: "40",
 };
 
 export function emptyIngredientRow(): IngredientRow {
-  return { id: rowId(), quantity: "", costPerUnit: "" };
+  return { id: rowId(), name: "", quantity: "", costPerUnit: "" };
 }
 
 export function emptyLaborRow(): LaborRow {
