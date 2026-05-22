@@ -10,14 +10,18 @@ import {
   DEFAULT_RECIPE,
   emptyIngredientRow,
   ingredientRowsFromNames,
-  isBlankStarterIngredients,
+  mergeRecipeIngredientDefaults,
   emptyLaborRow,
   type IngredientRow,
   type LaborRow,
   type RecipeForm,
 } from "@/lib/recipe";
 import { useMessages } from "@/lib/i18n/locale-provider";
-import { loadWizardSession, saveRecipe } from "@/lib/session";
+import {
+  loadWizardSession,
+  RECIPE_DEFAULTS_GENERATION,
+  saveRecipe,
+} from "@/lib/session";
 import { useWizardGuard } from "@/lib/use-wizard-guard";
 
 export function RecipeForm() {
@@ -29,30 +33,29 @@ export function RecipeForm() {
 
   useEffect(() => {
     const data = loadWizardSession();
-    const defaultIngredients = ingredientRowsFromNames(
-      m.recipe.defaultIngredientNames,
+    const names = m.recipe.defaultIngredientNames;
+    const base: RecipeForm = data?.recipe ?? DEFAULT_RECIPE;
+    const staleGeneration =
+      (data?.recipeDefaultsGeneration ?? 0) < RECIPE_DEFAULTS_GENERATION;
+    const next = mergeRecipeIngredientDefaults(
+      {
+        ...base,
+        ingredients: base.ingredients.map((row) => ({
+          ...row,
+          name: row.name ?? "",
+        })),
+      },
+      names,
     );
+    const ingredientsChanged =
+      next.ingredients.length !== base.ingredients.length ||
+      next.ingredients.some((row, i) => row.name !== base.ingredients[i]?.name);
 
-    if (data?.recipe) {
-      const needsDefaults = isBlankStarterIngredients(data.recipe.ingredients);
-      const next: RecipeForm = {
-        ...data.recipe,
-        ingredients: needsDefaults
-          ? defaultIngredients
-          : data.recipe.ingredients.map((row) => ({
-              ...row,
-              name: row.name ?? "",
-            })),
-      };
-      setForm(next);
-      if (needsDefaults && data.fixedCharges) {
-        saveRecipe(next);
-      }
-    } else {
-      setForm((prev) => ({
-        ...prev,
-        ingredients: defaultIngredients,
-      }));
+    setForm(next);
+    if (data?.fixedCharges && (staleGeneration || ingredientsChanged)) {
+      saveRecipe(next, {
+        recipeDefaultsGeneration: RECIPE_DEFAULTS_GENERATION,
+      });
     }
     setHydrated(true);
   }, [m.recipe.defaultIngredientNames]);

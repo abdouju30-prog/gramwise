@@ -54,14 +54,26 @@ export function ingredientRowsFromNames(names: readonly string[]): IngredientRow
   }));
 }
 
-/** Single empty starter row saved before default ingredient list shipped. */
-export function isBlankStarterIngredients(rows: IngredientRow[]): boolean {
-  if (rows.length !== 1) return false;
-  const row = rows[0];
-  const nameBlank = !row.name?.trim();
-  const qtyBlank = !row.quantity?.trim() || row.quantity === "0";
-  const costBlank = !row.costPerUnit?.trim() || row.costPerUnit === "0";
-  return nameBlank && qtyBlank && costBlank;
+/** True when the user has not entered real ingredient costing data yet. */
+export function needsDefaultIngredientRows(rows: IngredientRow[]): boolean {
+  if (!rows.length) return true;
+  return !rows.some((row) => {
+    if (row.name?.trim()) return true;
+    const q = Number.parseFloat(row.quantity);
+    const c = Number.parseFloat(row.costPerUnit);
+    return (
+      (Number.isFinite(q) && q > 0) ||
+      (Number.isFinite(c) && c > 0)
+    );
+  });
+}
+
+export function mergeRecipeIngredientDefaults(
+  recipe: RecipeForm,
+  names: readonly string[],
+): RecipeForm {
+  if (!needsDefaultIngredientRows(recipe.ingredients)) return recipe;
+  return { ...recipe, ingredients: ingredientRowsFromNames(names) };
 }
 
 export const DEFAULT_RECIPE: RecipeForm = {
