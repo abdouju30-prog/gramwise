@@ -14,10 +14,12 @@ import {
   type LaborRow,
   type RecipeForm,
 } from "@/lib/recipe";
+import { useMessages } from "@/lib/i18n/locale-provider";
 import { loadWizardSession, saveRecipe } from "@/lib/session";
 import { useWizardGuard } from "@/lib/use-wizard-guard";
 
 export function RecipeForm() {
+  const m = useMessages();
   const router = useRouter();
   const session = useWizardGuard("fixed");
   const [form, setForm] = useState<RecipeForm>(DEFAULT_RECIPE);
@@ -88,32 +90,30 @@ export function RecipeForm() {
           className="btn btn-ghost"
           onClick={() => updateForm(CUPCAKES_PRESET)}
         >
-          Load cupcakes preset
+          {m.recipe.loadPreset}
         </button>
       </div>
 
       <form className="form" onSubmit={(e) => e.preventDefault()}>
         <label className="field">
-          <span className="field-label">Recipe name</span>
+          <span className="field-label">{m.recipe.nameLabel}</span>
           <input
             type="text"
             value={form.name}
             onChange={(e) => updateForm({ ...form, name: e.target.value })}
-            placeholder="e.g. Cupcakes"
+            placeholder={m.recipe.namePlaceholder}
           />
         </label>
 
         <fieldset className="field-group">
-          <legend className="field-group-legend">Ingredients</legend>
-          <p className="field-hint field-hint-block">
-            Quantity × cost per unit (same units as your spreadsheet).
-          </p>
+          <legend className="field-group-legend">{m.recipe.ingredientsLegend}</legend>
+          <p className="field-hint field-hint-block">{m.recipe.ingredientsHint}</p>
           <div className="table-scroll">
           <table className="data-table data-table--recipe">
             <thead>
               <tr>
-                <th>Qty</th>
-                <th>Cost / unit</th>
+                <th>{m.recipe.qty}</th>
+                <th>{m.recipe.costPerUnit}</th>
                 <th aria-label="Actions" />
               </tr>
             </thead>
@@ -151,7 +151,7 @@ export function RecipeForm() {
                       type="button"
                       className="btn-icon"
                       onClick={() => removeIngredient(row.id)}
-                      aria-label="Remove ingredient"
+                      aria-label={m.recipe.removeIngredient}
                     >
                       ×
                     </button>
@@ -171,19 +171,19 @@ export function RecipeForm() {
               })
             }
           >
-            + Ingredient
+            {m.recipe.addIngredient}
           </button>
         </fieldset>
 
         <fieldset className="field-group">
-          <legend className="field-group-legend">Labor phases</legend>
+          <legend className="field-group-legend">{m.recipe.laborLegend}</legend>
           <div className="table-scroll">
           <table className="data-table data-table--recipe">
             <thead>
               <tr>
-                <th>Phase</th>
-                <th>Hours</th>
-                <th>Rate / h</th>
+                <th>{m.recipe.phase}</th>
+                <th>{m.recipe.hours}</th>
+                <th>{m.recipe.ratePerHour}</th>
                 <th aria-label="Actions" />
               </tr>
             </thead>
@@ -197,7 +197,7 @@ export function RecipeForm() {
                       onChange={(e) =>
                         updateLabor(row.id, { label: e.target.value })
                       }
-                      placeholder="Mix, decorate…"
+                      placeholder={m.recipe.phasePlaceholder}
                     />
                   </td>
                   <td>
@@ -229,7 +229,7 @@ export function RecipeForm() {
                       type="button"
                       className="btn-icon"
                       onClick={() => removeLabor(row.id)}
-                      aria-label="Remove phase"
+                      aria-label={m.recipe.removePhase}
                     >
                       ×
                     </button>
@@ -249,13 +249,13 @@ export function RecipeForm() {
               })
             }
           >
-            + Labor phase
+            {m.recipe.addLabor}
           </button>
         </fieldset>
 
         <div className="field-row">
           <label className="field">
-            <span className="field-label">Waste %</span>
+            <span className="field-label">{m.recipe.wasteLabel}</span>
             <input
               type="number"
               inputMode="decimal"
@@ -269,8 +269,8 @@ export function RecipeForm() {
             />
           </label>
           <label className="field">
-            <span className="field-label">Target margin %</span>
-            <span className="field-hint">On selling price, not markup on cost</span>
+            <span className="field-label">{m.recipe.marginLabel}</span>
+            <span className="field-hint">{m.recipe.marginHint}</span>
             <input
               type="number"
               inputMode="decimal"
@@ -287,28 +287,26 @@ export function RecipeForm() {
       </form>
 
       <section className="card preview-card" aria-live="polite">
-        <h2>Batch preview</h2>
+        <h2>{m.recipe.previewTitle}</h2>
         {preview ? (
           <dl className="preview-dl">
-            <dt>Materials</dt>
+            <dt>{m.recipe.materials}</dt>
             <dd>{formatMoney(preview.result.directMaterials)}</dd>
-            <dt>Labor</dt>
+            <dt>{m.recipe.labor}</dt>
             <dd>{formatMoney(preview.result.directLabor)}</dd>
-            <dt>Fixed load</dt>
+            <dt>{m.recipe.fixedLoad}</dt>
             <dd>{formatMoney(preview.result.fixedLoadAllocated)}</dd>
-            <dt className="preview-dl-total">Full cost</dt>
+            <dt className="preview-dl-total">{m.recipe.fullCost}</dt>
             <dd className="preview-dl-total">{formatMoney(preview.result.fullCost)}</dd>
           </dl>
         ) : (
-          <p className="preview-caption preview-error">
-            Fill ingredients, labor, waste and margin to preview.
-          </p>
+          <p className="preview-caption preview-error">{m.recipe.previewError}</p>
         )}
       </section>
 
       <nav className="step-nav">
         <Link href="/fixed-charges" className="btn btn-ghost">
-          Back
+          {m.recipe.back}
         </Link>
         <button
           type="button"
@@ -316,7 +314,7 @@ export function RecipeForm() {
           disabled={!preview}
           onClick={handleContinue}
         >
-          View results
+          {m.recipe.viewResults}
         </button>
       </nav>
     </>

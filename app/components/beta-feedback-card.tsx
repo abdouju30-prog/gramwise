@@ -1,3 +1,5 @@
+"use client";
+
 import Link from "next/link";
 import {
   betaFeedbackUrl,
@@ -6,21 +8,23 @@ import {
   getPublicAppUrl,
   isPublicBeta,
 } from "@/lib/beta";
+import { useLocale, useMessages } from "@/lib/i18n/locale-provider";
 
 export function BetaFeedbackCard() {
+  const m = useMessages();
+  const { locale } = useLocale();
   if (!isPublicBeta()) return null;
 
   const appUrl = getPublicAppUrl();
-  const whatsappUrl = betaWhatsAppLink(defaultBetaFeedbackMessage(appUrl));
+  const whatsappUrl = betaWhatsAppLink(
+    defaultBetaFeedbackMessage(appUrl, locale),
+  );
   const formUrl = betaFeedbackUrl();
 
   return (
     <section className="card beta-feedback-card">
-      <h2>Beta — vos chiffres collent ?</h2>
-      <p className="preview-caption">
-        Comparez ce résultat à votre Excel ou carnet. Un retour de 2 minutes
-        aide à valider l’outil avant ouverture payante.
-      </p>
+      <h2>{m.beta.feedbackTitle}</h2>
+      <p className="preview-caption">{m.beta.feedbackBody}</p>
       <div className="beta-actions">
         {whatsappUrl ? (
           <a
@@ -29,11 +33,11 @@ export function BetaFeedbackCard() {
             target="_blank"
             rel="noopener noreferrer"
           >
-            Envoyer mon retour (WhatsApp)
+            {m.beta.whatsappSend}
           </a>
         ) : (
           <Link href="/beta" className="btn btn-primary">
-            Voir le guide beta
+            {m.beta.guideLink}
           </Link>
         )}
         {formUrl ? (
@@ -43,7 +47,7 @@ export function BetaFeedbackCard() {
             target="_blank"
             rel="noopener noreferrer"
           >
-            Formulaire
+            {m.beta.form}
           </a>
         ) : null}
       </div>

@@ -1,35 +1,38 @@
+"use client";
+
 import Link from "next/link";
+import { useMessages } from "@/lib/i18n/locale-provider";
 
 export default function StartPage() {
+  const m = useMessages();
+
   return (
     <main>
-      <p className="eyebrow">Calculator</p>
-      <h1>Your costing workflow</h1>
-      <p className="lead">
-        Three steps — fixed charges, recipe, then results with a full breakdown.
-      </p>
+      <p className="eyebrow">{m.start.eyebrow}</p>
+      <h1>{m.start.title}</h1>
+      <p className="lead">{m.start.lead}</p>
 
       <nav className="home-steps">
         <Link href="/fixed-charges" className="card card-link">
           <span className="card-step">1</span>
-          <span className="card-title">Fixed charges &amp; capacity</span>
-          <span className="card-desc">Monthly overhead and batch or hourly spread</span>
+          <span className="card-title">{m.start.step1Title}</span>
+          <span className="card-desc">{m.start.step1Desc}</span>
         </Link>
         <Link href="/recipe" className="card card-link">
           <span className="card-step">2</span>
-          <span className="card-title">Recipe</span>
-          <span className="card-desc">Ingredients, labor, waste, margin</span>
+          <span className="card-title">{m.start.step2Title}</span>
+          <span className="card-desc">{m.start.step2Desc}</span>
         </Link>
         <Link href="/results" className="card card-link">
           <span className="card-step">3</span>
-          <span className="card-title">Results</span>
-          <span className="card-desc">Breakdown and recommended price</span>
+          <span className="card-title">{m.start.step3Title}</span>
+          <span className="card-desc">{m.start.step3Desc}</span>
         </Link>
       </nav>
 
       <p className="start-cta">
         <Link href="/fixed-charges" className="btn btn-primary">
-          Begin step 1
+          {m.start.cta}
         </Link>
       </p>
     </main>

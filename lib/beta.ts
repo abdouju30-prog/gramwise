@@ -1,3 +1,4 @@
+import { DEFAULT_LOCALE, getMessages, type Locale } from "@/lib/i18n";
 import { isStripeConfigured } from "@/lib/stripe";
 
 /** Public beta: free calculator, no live Stripe, collect tester feedback. */
@@ -37,12 +38,9 @@ export function betaWhatsAppLink(message: string): string | undefined {
   return `https://wa.me/${digits}?text=${encodeURIComponent(message)}`;
 }
 
-export function defaultBetaFeedbackMessage(appUrl: string): string {
-  return [
-    "Salut — test GramWise (beta pâtisserie).",
-    `Lien: ${appUrl}/start`,
-    "Après mon test: les chiffres collent ☐ Oui ☐ Non",
-    "Écart (1 phrase): ",
-    "Recette testée: ",
-  ].join("\n");
+export function defaultBetaFeedbackMessage(
+  appUrl: string,
+  locale: Locale = DEFAULT_LOCALE,
+): string {
+  return getMessages(locale).beta.whatsappMessage(appUrl);
 }

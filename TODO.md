@@ -30,7 +30,7 @@
 
 ## P3 — Expand
 
-- [ ] FR locale
+- [x] FR + AR locale (header switcher FR · ع · EN, RTL for Arabic)
 - [ ] Second preset (soap or farm)
 - [ ] Export PDF quote
 

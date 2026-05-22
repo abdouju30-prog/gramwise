@@ -54,10 +54,44 @@ body {
   flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
-  gap: 1rem 1.5rem;
+  gap: 0.75rem 1rem;
   padding: 1.15rem 1.5rem;
   background: var(--surface);
   border-bottom: 1px solid var(--border);
+}
+
+.lang-switcher {
+  display: inline-flex;
+  gap: 0.2rem;
+  padding: 0.2rem;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+}
+
+.lang-switcher-btn {
+  min-width: 2.25rem;
+  min-height: 2rem;
+  padding: 0.2rem 0.55rem;
+  font: inherit;
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  color: var(--brown-light);
+  background: transparent;
+  border: none;
+  border-radius: 999px;
+  cursor: pointer;
+}
+
+.lang-switcher-btn--active {
+  color: var(--cream);
+  background: var(--brown-dark);
+}
+
+.lang-switcher-btn:hover:not(.lang-switcher-btn--active) {
+  color: var(--brown-mid);
+  background: rgba(212, 148, 58, 0.12);
 }
 
 .brand {
@@ -992,6 +1026,10 @@ h1 {
     gap: 0.75rem;
   }
 
+  .lang-switcher {
+    align-self: flex-start;
+  }
+
   .brand-name {
     font-size: 1.45rem;
   }
@@ -1110,6 +1148,66 @@ h1 {
 
   .btn {
     min-height: 2.75rem;
+  }
+}
+
+/* RTL — Arabic */
+
+[dir="rtl"] .site-header {
+  flex-direction: row-reverse;
+}
+
+[dir="rtl"] .wizard-progress {
+  flex-direction: row-reverse;
+}
+
+[dir="rtl"] .field-input-wrap {
+  flex-direction: row-reverse;
+}
+
+[dir="rtl"] .field-prefix {
+  border: 1px solid var(--border);
+  border-inline-start: none;
+  border-radius: 0 var(--radius) var(--radius) 0;
+}
+
+[dir="rtl"] .field-input-wrap input {
+  border-radius: var(--radius) 0 0 var(--radius);
+}
+
+[dir="rtl"] .card-link {
+  direction: rtl;
+}
+
+[dir="rtl"] .steps-list li,
+[dir="rtl"] .beta-banner {
+  flex-direction: row-reverse;
+}
+
+[dir="rtl"] .breakdown-row,
+[dir="rtl"] .step-nav,
+[dir="rtl"] .preview-dl,
+[dir="rtl"] .landing-actions,
+[dir="rtl"] .beta-actions {
+  direction: rtl;
+}
+
+[dir="rtl"] .field-group-legend::after {
+  order: -1;
+}
+
+[dir="rtl"] .table-scroll {
+  direction: ltr;
+}
+
+[dir="rtl"] .data-table {
+  direction: rtl;
+}
+
+@media (max-width: 639px) {
+  [dir="rtl"] .site-header {
+    flex-direction: column;
+    align-items: stretch;
   }
 }
 

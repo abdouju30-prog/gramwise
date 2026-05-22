@@ -1,26 +1,27 @@
+"use client";
+
 import Link from "next/link";
 import { isPublicBeta } from "@/lib/beta";
+import { useMessages } from "@/lib/i18n/locale-provider";
 import { CheckoutButton } from "./checkout-button";
 import { isStripeConfigured } from "@/lib/stripe";
 
 export function PricingSection() {
+  const m = useMessages();
   const publicBeta = isPublicBeta();
   const paymentsReady = isStripeConfigured() && !publicBeta;
 
   if (publicBeta) {
     return (
       <section className="landing-section" id="pricing">
-        <h2 className="landing-heading">Beta — gratuit</h2>
-        <p className="landing-pricing-note">
-          Le calculateur est ouvert sans paiement. Nous validons les chiffres
-          avec 5 pâtissiers avant toute offre payante.
-        </p>
+        <h2 className="landing-heading">{m.landing.pricingBetaTitle}</h2>
+        <p className="landing-pricing-note">{m.landing.pricingBetaNote}</p>
         <p className="landing-pricing-cta">
           <Link href="/beta" className="btn btn-primary">
-            Guide testeur (15 min)
+            {m.landing.guideTester}
           </Link>
           <Link href="/start" className="btn btn-ghost">
-            Ouvrir le calculateur
+            {m.landing.openCalculator}
           </Link>
         </p>
       </section>
@@ -29,54 +30,59 @@ export function PricingSection() {
 
   return (
     <section className="landing-section" id="pricing">
-      <h2 className="landing-heading">Pricing</h2>
+      <h2 className="landing-heading">{m.landing.pricingTitle}</h2>
       <p className="landing-pricing-note">
         {paymentsReady
-          ? "Secure checkout via Stripe."
-          : "Calculator is free until checkout is configured."}
+          ? m.landing.pricingNoteReady
+          : m.landing.pricingNoteFree}
       </p>
       <div className="pricing-grid">
         <article className="card pricing-card pricing-card--featured">
-          <p className="pricing-label">Best for solo shops</p>
-          <h3>Lifetime</h3>
+          <p className="pricing-label">{m.landing.lifetimeLabel}</p>
+          <h3>{m.landing.lifetimeTitle}</h3>
           <p className="pricing-price">
-            €99 <span className="pricing-period">once</span>
+            €99 <span className="pricing-period">{m.landing.lifetimeOnce}</span>
           </p>
           <ul className="pricing-features">
-            <li>Unlimited recipes</li>
-            <li>Full cost breakdown</li>
-            <li>No subscription</li>
+            {m.landing.lifetimeFeatures.map((f) => (
+              <li key={f}>{f}</li>
+            ))}
           </ul>
           {paymentsReady ? (
             <CheckoutButton plan="lifetime" className="btn btn-primary">
-              Get lifetime access
+              {m.landing.lifetimeCta}
             </CheckoutButton>
           ) : (
-            <span className="btn btn-primary btn-disabled">Checkout soon</span>
+            <span className="btn btn-primary btn-disabled">
+              {m.landing.checkoutSoon}
+            </span>
           )}
         </article>
         <article className="card pricing-card">
-          <p className="pricing-label">Flexible</p>
-          <h3>Monthly</h3>
+          <p className="pricing-label">{m.landing.monthlyLabel}</p>
+          <h3>{m.landing.monthlyTitle}</h3>
           <p className="pricing-price">
-            €29 <span className="pricing-period">/ month</span>
+            €29 <span className="pricing-period">{m.landing.monthlyPeriod}</span>
           </p>
           <ul className="pricing-features">
-            <li>Same features</li>
-            <li>Cancel anytime</li>
+            {m.landing.monthlyFeatures.map((f) => (
+              <li key={f}>{f}</li>
+            ))}
           </ul>
           {paymentsReady ? (
             <CheckoutButton plan="monthly" className="btn btn-ghost">
-              Subscribe monthly
+              {m.landing.monthlyCta}
             </CheckoutButton>
           ) : (
-            <span className="btn btn-ghost btn-disabled">Checkout soon</span>
+            <span className="btn btn-ghost btn-disabled">
+              {m.landing.checkoutSoon}
+            </span>
           )}
         </article>
       </div>
       <p className="landing-pricing-cta">
         <Link href="/start" className="btn btn-primary">
-          Use the free calculator now
+          {m.landing.freeCalculator}
         </Link>
       </p>
     </section>

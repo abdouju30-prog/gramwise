@@ -1,20 +1,22 @@
+"use client";
+
 import Link from "next/link";
+import { useMessages } from "@/lib/i18n/locale-provider";
 
 export default function CheckoutSuccessPage() {
+  const m = useMessages();
+
   return (
     <main>
-      <p className="eyebrow">Payment</p>
-      <h1>Thank you</h1>
-      <p className="lead">
-        Your payment was received. You can use the calculator right away — account
-        linking will follow in a later update.
-      </p>
+      <p className="eyebrow">{m.checkout.eyebrow}</p>
+      <h1>{m.checkout.successTitle}</h1>
+      <p className="lead">{m.checkout.successBody}</p>
       <p className="start-cta">
         <Link href="/start" className="btn btn-primary">
-          Open calculator
+          {m.checkout.openCalculator}
         </Link>
         <Link href="/" className="btn btn-ghost">
-          Home
+          {m.checkout.home}
         </Link>
       </p>
     </main>

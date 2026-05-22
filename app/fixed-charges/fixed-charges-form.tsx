@@ -9,9 +9,11 @@ import {
   type FixedChargesForm,
 } from "@/lib/fixed-charges";
 import { formatMoney } from "@/lib/format";
+import { useMessages } from "@/lib/i18n/locale-provider";
 import { loadWizardSession, saveFixedCharges } from "@/lib/session";
 
 export function FixedChargesForm() {
+  const m = useMessages();
   const router = useRouter();
   const [form, setForm] = useState<FixedChargesForm>(DEFAULT_FIXED_CHARGES);
 
@@ -31,16 +33,16 @@ export function FixedChargesForm() {
 
   const capacityHint =
     form.capacityMode === "batches_per_month"
-      ? "Monthly fixed ÷ batches per month"
-      : "Monthly fixed ÷ shop hours × recipe hours";
+      ? m.fixed.hintBatches
+      : m.fixed.hintHours;
 
   return (
     <>
       <form className="form" onSubmit={(e) => e.preventDefault()}>
         <fieldset className="field-group">
-          <legend className="field-group-legend">Monthly overhead</legend>
+          <legend className="field-group-legend">{m.fixed.monthlyLegend}</legend>
           <label className="field">
-            <span className="field-label">Total fixed charges / month</span>
+            <span className="field-label">{m.fixed.monthlyLabel}</span>
             <div className="field-input-wrap">
               <span className="field-prefix" aria-hidden>
                 $
@@ -56,19 +58,19 @@ export function FixedChargesForm() {
                 }
               />
             </div>
-            <span className="field-hint">
-              Rent, utilities, insurance, subscriptions — one monthly total.
-            </span>
+            <span className="field-hint">{m.fixed.monthlyHint}</span>
           </label>
         </fieldset>
 
         <fieldset className="field-group">
-          <legend className="field-group-legend">Capacity</legend>
-          <p className="field-hint field-hint-block">
-            How you spread fixed costs across production.
-          </p>
+          <legend className="field-group-legend">{m.fixed.capacityLegend}</legend>
+          <p className="field-hint field-hint-block">{m.fixed.capacityHint}</p>
 
-          <div className="mode-toggle" role="radiogroup" aria-label="Capacity mode">
+          <div
+            className="mode-toggle"
+            role="radiogroup"
+            aria-label={m.fixed.capacityMode}
+          >
             <label className="mode-option">
               <input
                 type="radio"
@@ -78,7 +80,7 @@ export function FixedChargesForm() {
                   update("capacityMode", "batches_per_month")
                 }
               />
-              <span>Batches per month</span>
+              <span>{m.fixed.batchesPerMonth}</span>
             </label>
             <label className="mode-option">
               <input
@@ -87,13 +89,13 @@ export function FixedChargesForm() {
                 checked={form.capacityMode === "hours_per_month"}
                 onChange={() => update("capacityMode", "hours_per_month")}
               />
-              <span>Hours per month</span>
+              <span>{m.fixed.hoursPerMonth}</span>
             </label>
           </div>
 
           {form.capacityMode === "batches_per_month" ? (
             <label className="field">
-              <span className="field-label">Batches per month</span>
+              <span className="field-label">{m.fixed.batchesLabel}</span>
               <input
                 type="number"
                 inputMode="numeric"
@@ -102,14 +104,12 @@ export function FixedChargesForm() {
                 value={form.batchesPerMonth}
                 onChange={(e) => update("batchesPerMonth", e.target.value)}
               />
-              <span className="field-hint">
-                How many full recipe runs you produce in a typical month.
-              </span>
+              <span className="field-hint">{m.fixed.batchesHint}</span>
             </label>
           ) : (
             <div className="field-row">
               <label className="field">
-                <span className="field-label">Shop hours / month</span>
+                <span className="field-label">{m.fixed.shopHours}</span>
                 <input
                   type="number"
                   inputMode="decimal"
@@ -120,7 +120,7 @@ export function FixedChargesForm() {
                 />
               </label>
               <label className="field">
-                <span className="field-label">Recipe labor hours</span>
+                <span className="field-label">{m.fixed.recipeHours}</span>
                 <input
                   type="number"
                   inputMode="decimal"
@@ -131,9 +131,7 @@ export function FixedChargesForm() {
                     update("recipeTotalHours", e.target.value)
                   }
                 />
-                <span className="field-hint">
-                  Total hours for this recipe (all phases).
-                </span>
+                <span className="field-hint">{m.fixed.recipeHoursHint}</span>
               </label>
             </div>
           )}
@@ -141,24 +139,22 @@ export function FixedChargesForm() {
       </form>
 
       <section className="card preview-card" aria-live="polite">
-        <h2>Fixed load preview</h2>
+        <h2>{m.fixed.previewTitle}</h2>
         {preview ? (
           <>
             <p className="preview-value">{formatMoney(preview.fixedLoadAllocated)}</p>
             <p className="preview-caption">
-              Allocated to this recipe run · {capacityHint}
+              {m.fixed.previewAllocated} {capacityHint}
             </p>
           </>
         ) : (
-          <p className="preview-caption preview-error">
-            Enter positive numbers to preview allocation.
-          </p>
+          <p className="preview-caption preview-error">{m.fixed.previewError}</p>
         )}
       </section>
 
       <nav className="step-nav">
         <Link href="/start" className="btn btn-ghost">
-          Back
+          {m.fixed.back}
         </Link>
         <button
           type="button"
@@ -169,7 +165,7 @@ export function FixedChargesForm() {
             router.push("/recipe");
           }}
         >
-          Continue to recipe
+          {m.fixed.continue}
         </button>
       </nav>
     </>

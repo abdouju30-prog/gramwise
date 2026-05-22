@@ -1,19 +1,22 @@
+"use client";
+
 import Link from "next/link";
+import { useMessages } from "@/lib/i18n/locale-provider";
 
 export default function CheckoutCancelPage() {
+  const m = useMessages();
+
   return (
     <main>
-      <p className="eyebrow">Payment</p>
-      <h1>Checkout cancelled</h1>
-      <p className="lead">
-        No charge was made. The calculator stays free during beta.
-      </p>
+      <p className="eyebrow">{m.checkout.eyebrow}</p>
+      <h1>{m.checkout.cancelTitle}</h1>
+      <p className="lead">{m.checkout.cancelBody}</p>
       <p className="start-cta">
         <Link href="/#pricing" className="btn btn-primary">
-          View pricing
+          {m.checkout.viewPricing}
         </Link>
         <Link href="/start" className="btn btn-ghost">
-          Open calculator
+          {m.checkout.openCalculator}
         </Link>
       </p>
     </main>

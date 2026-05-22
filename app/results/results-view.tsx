@@ -5,9 +5,12 @@ import { useMemo } from "react";
 import { BetaFeedbackCard } from "@/app/components/beta-feedback-card";
 import { runCosting } from "@/lib/costing";
 import { formatMoney } from "@/lib/format";
+import { interpolate } from "@/lib/i18n/format";
+import { useMessages } from "@/lib/i18n/locale-provider";
 import { useWizardGuard } from "@/lib/use-wizard-guard";
 
 export function ResultsView() {
+  const m = useMessages();
   const session = useWizardGuard("recipe");
 
   const costing = useMemo(() => {
@@ -17,7 +20,8 @@ export function ResultsView() {
 
   if (!session?.recipe) return null;
 
-  const title = session.recipe.name.trim() || "Your recipe";
+  const title =
+    session.recipe.name.trim() || m.results.defaultRecipeName;
 
   return (
     <>
@@ -25,51 +29,57 @@ export function ResultsView() {
         {costing ? (
           <>
             <section className="card card-dark hero-price">
-              <p className="hero-label">Recommended selling price</p>
+              <p className="hero-label">{m.results.recommendedPrice}</p>
               <p className="hero-value">
                 {formatMoney(costing.result.recommendedPrice)}
               </p>
               <p className="hero-sub">
-                Break-even {formatMoney(costing.result.fullCost)} · {title}
+                {m.results.breakEvenSub}{" "}
+                {formatMoney(costing.result.fullCost)} · {title}
               </p>
             </section>
 
             <section className="card">
-              <h2>Cost breakdown</h2>
+              <h2>{m.results.breakdownTitle}</h2>
               <div className="breakdown-dl">
                 <div className="breakdown-row">
-                  <span className="breakdown-name">Direct materials</span>
+                  <span className="breakdown-name">
+                    {m.results.directMaterials}
+                  </span>
                   <span className="breakdown-val">
                     {formatMoney(costing.result.directMaterials)}
                   </span>
                 </div>
                 <div className="breakdown-row">
-                  <span className="breakdown-name">Direct labor</span>
+                  <span className="breakdown-name">{m.results.directLabor}</span>
                   <span className="breakdown-val">
                     {formatMoney(costing.result.directLabor)}
                   </span>
                 </div>
                 <div className="breakdown-row">
-                  <span className="breakdown-name">Fixed load allocated</span>
+                  <span className="breakdown-name">{m.results.fixedLoad}</span>
                   <span className="breakdown-val">
                     {formatMoney(costing.result.fixedLoadAllocated)}
                   </span>
                 </div>
                 <div className="breakdown-row breakdown-row--sep">
-                  <span className="breakdown-name">Full cost (break-even)</span>
+                  <span className="breakdown-name">
+                    {m.results.fullCostBreakEven}
+                  </span>
                   <span className="breakdown-val">
                     {formatMoney(costing.result.fullCost)}
                   </span>
                 </div>
               </div>
               <p className="preview-caption">
-                Margin {session.recipe.marginPercent}% on selling price · waste{" "}
-                {session.recipe.wastePercent}%
+                {interpolate(m.results.marginWaste, {
+                  margin: session.recipe.marginPercent,
+                  waste: session.recipe.wastePercent,
+                })}
               </p>
               <div className="tip-box">
-                <strong>How margin works</strong>
-                Recommended price = full cost ÷ (1 − margin%). This is not
-                markup-on-cost at the same percentage.
+                <strong>{m.results.marginTipTitle}</strong>
+                {m.results.marginTipBody}
               </div>
             </section>
           </>
@@ -77,7 +87,7 @@ export function ResultsView() {
           <section className="card">
             <h2>{title}</h2>
             <p className="preview-caption preview-error">
-              Could not calculate — check your inputs on previous steps.
+              {m.results.calcError}
             </p>
           </section>
         )}
@@ -87,10 +97,10 @@ export function ResultsView() {
 
       <nav className="step-nav">
         <Link href="/recipe" className="btn btn-ghost">
-          Edit recipe
+          {m.results.editRecipe}
         </Link>
         <Link href="/fixed-charges" className="btn btn-ghost">
-          Edit fixed charges
+          {m.results.editFixed}
         </Link>
       </nav>
     </>
