@@ -1,6 +1,10 @@
 import { calculateCosting } from "@/engine";
 import type { Capacity, CostingInput, CostingResult } from "@/engine/types";
-import { buildCapacity, type FixedChargesForm } from "@/lib/fixed-charges";
+import {
+  buildCapacity,
+  monthlyFixedTotal,
+  type FixedChargesForm,
+} from "@/lib/fixed-charges";
 import { parsePercentToFraction, parsePositive } from "@/lib/parse";
 import {
   parseIngredients,
@@ -13,7 +17,7 @@ export function buildCostingInput(
   fixed: FixedChargesForm,
   recipe: RecipeForm,
 ): CostingInput | null {
-  const monthlyFixed = parsePositive(fixed.monthlyFixedCharges);
+  const monthlyFixed = monthlyFixedTotal(fixed.chargeLines);
   let capacity = buildCapacity(fixed);
   const ingredients = parseIngredients(recipe.ingredients);
   const laborPhases = parseLaborPhases(recipe.laborPhases);

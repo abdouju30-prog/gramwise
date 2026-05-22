@@ -211,6 +211,17 @@ h1 {
   color: var(--brown-mid);
 }
 
+.explain-short {
+  margin: 0 0 1.5rem;
+  padding: 0.85rem 1rem;
+  font-size: 0.95rem;
+  line-height: 1.5;
+  color: var(--ink-muted);
+  background: color-mix(in srgb, var(--accent) 8%, var(--surface));
+  border-radius: 10px;
+  border: 1px solid color-mix(in srgb, var(--accent) 18%, transparent);
+}
+
 .lead {
   color: var(--brown-light);
   margin: 0 0 2rem;
@@ -466,6 +477,13 @@ h1 {
   margin: 0;
   font-size: 0.72rem;
   color: var(--brown-light);
+}
+
+.preview-formula {
+  margin: 0.35rem 0 0;
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: var(--brown-mid);
 }
 
 .preview-error {
@@ -1023,6 +1041,108 @@ h1 {
 .data-table--recipe th:first-child,
 .data-table--recipe td:first-child {
   min-width: 4.5rem;
+}
+
+.charge-lines {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  margin-bottom: 0.75rem;
+}
+
+.charge-lines-head,
+.charge-lines-row {
+  display: grid;
+  grid-template-columns: minmax(7rem, 1.4fr) minmax(5.5rem, 1fr) 2rem;
+  gap: 0.35rem 0.5rem;
+  align-items: center;
+}
+
+.charge-lines-head span {
+  font-size: 0.6rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--brown-light);
+}
+
+.charge-lines-actions-head {
+  width: 2rem;
+}
+
+.charge-lines-row {
+  padding: 0.25rem 0;
+  border-bottom: 1px solid rgba(214, 201, 176, 0.45);
+}
+
+.charge-lines-row:last-child {
+  border-bottom: none;
+}
+
+.charge-line-label {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--text);
+}
+
+.charge-line-name-input,
+.charge-line-amount input {
+  width: 100%;
+  min-width: 0;
+  padding: 0.45rem 0.5rem;
+  font: inherit;
+  font-variant-numeric: tabular-nums;
+  color: var(--text);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+}
+
+.charge-line-name-input:focus,
+.charge-line-amount input:focus {
+  outline: none;
+  border-color: var(--caramel);
+  box-shadow: 0 0 0 2px rgba(212, 148, 58, 0.2);
+}
+
+.charge-line-amount {
+  margin: 0;
+}
+
+.charge-total {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+  margin: 0.5rem 0 0.85rem;
+  padding: 0.75rem 1rem;
+  background: color-mix(in srgb, var(--accent) 6%, var(--surface));
+  border: 1px solid color-mix(in srgb, var(--accent) 22%, var(--border));
+  border-radius: var(--radius);
+}
+
+.charge-total-label {
+  font-size: 0.65rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--brown-mid);
+}
+
+.charge-total-value {
+  font-size: 1.15rem;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  color: var(--text);
+}
+
+.charge-total-invalid {
+  color: var(--brown-light);
+}
+
+[dir="rtl"] .charge-lines-head,
+[dir="rtl"] .charge-lines-row {
+  direction: rtl;
 }
 
 .ingredient-grid {

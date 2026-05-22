@@ -11,6 +11,7 @@ export default function FixedChargesPage() {
       <p className="eyebrow">{m.fixed.eyebrow}</p>
       <h1>{m.fixed.title}</h1>
       <p className="lead">{m.fixed.lead}</p>
+      <p className="explain-short">{m.fixed.explainShort}</p>
       <FixedChargesForm />
     </main>
   );
