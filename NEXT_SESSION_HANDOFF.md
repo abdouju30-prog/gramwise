@@ -2,8 +2,8 @@
 
 | | |
 |---|---|
-| **fait** | GramWise · remote `gramwise` · TEST_CASES · règles compress `fin` |
-| **commit** | `5441dad` |
-| **P0** | `docs/FORMULAS.md` puis `engine/` |
+| **fait** | engine 10/10 · FORMULAS · domain slices · hooks mots + auto `intent-map` |
+| **commit** | `e84aeb1` |
+| **P0** | stack Next.js + squelette app |
 
 *2026-05-22*
