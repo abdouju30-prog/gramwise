@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PâtisCoût — Calculateur de recettes</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --cream: #f5f0e8;
+    --warm-white: #faf8f3;
+    --brown-dark: #2c1a0e;
+    --brown-mid: #6b3f1f;
+    --brown-light: #c8956a;
+    --caramel: #d4943a;
+    --gold: #e8b84b;
+    --sage: #7a9e7e;
+    --danger: #c0392b;
+    --border: #d6c9b0;
+  }
+
+  body {
+    background: var(--cream);
+    color: var(--brown-dark);
+    font-family: 'DM Mono', monospace;
+    min-height: 100vh;
+    background-image:
+      radial-gradient(ellipse at 10% 20%, rgba(212,148,58,0.08) 0%, transparent 50%),
+      radial-gradient(ellipse at 90% 80%, rgba(200,149,106,0.1) 0%, transparent 50%);
+  }
+
+  header {
+    border-bottom: 1px solid var(--border);
+    padding: 24px 40px;
+    display: flex;
+    align-items: baseline;
+    gap: 16px;
+    background: var(--warm-white);
+  }
+
+  header h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 2rem;
+    color: var(--brown-dark);
+    letter-spacing: -0.5px;
+  }
+
+  header h1 span { color: var(--caramel); font-style: italic; }
+
+  header p {
+    font-size: 0.7rem;
+    color: var(--brown-light);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .layout {
+    display: grid;
+    grid-template-columns: 1fr 380px;
+    min-height: calc(100vh - 81px);
+  }
+
+  .left { padding: 36px 40px; border-right: 1px solid var(--border); }
+
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.1rem;
+    color: var(--brown-mid);
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .section-title::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+
+  .recipe-meta { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 32px; }
+
+  label { display: block; font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--brown-light); margin-bottom: 6px; }
+
+  input, select {
+    width: 100%;
+    background: var(--warm-white);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 10px 12px;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.85rem;
+    color: var(--brown-dark);
+    outline: none;
+    transition: border-color 0.2s;
+  }
+
+  input:focus, select:focus { border-color: var(--caramel); }
+
+  .ingredients-table { width: 100%; border-collapse: collapse; margin-bottom: 16px; }
+
+  .ingredients-table thead th {
+    font-size: 0.6rem; text-transform: uppercase; letter-spacing: 0.1em;
+    color: var(--brown-light); padding: 8px 10px; text-align: left;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .ingredients-table tbody tr { border-bottom: 1px solid rgba(214,201,176,0.4); transition: background 0.15s; }
+  .ingredients-table tbody tr:hover { background: rgba(212,148,58,0.04); }
+  .ingredients-table tbody td { padding: 6px 4px; }
+  .ingredients-table input { border: none; background: transparent; padding: 6px 8px; border-radius: 3px; }
+  .ingredients-table input:focus { background: var(--warm-white); border: 1px solid var(--caramel); }
+
+  .col-name { width: 34%; }
+  .col-qty  { width: 17%; }
+  .col-unit { width: 15%; }
+  .col-price { width: 20%; }
+  .col-total { width: 11%; text-align: right; font-size: 0.8rem; color: var(--brown-mid); }
+  .col-del  { width: 3%; }
+
+  .btn-del { background: none; border: none; color: var(--border); cursor: pointer; font-size: 1rem; padding: 4px; transition: color 0.2s; }
+  .btn-del:hover { color: var(--danger); }
+
+  .btn-add {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: none; border: 1px dashed var(--border); border-radius: 4px;
+    padding: 8px 16px; font-family: 'DM Mono', monospace; font-size: 0.75rem;
+    color: var(--brown-light); cursor: pointer; transition: all 0.2s; letter-spacing: 0.05em;
+  }
+  .btn-add:hover { border-color: var(--caramel); color: var(--caramel); background: rgba(212,148,58,0.05); }
+
+  .right { padding: 36px 32px; background: var(--warm-white); display: flex; flex-direction: column; gap: 20px; }
+
+  .result-card { background: var(--cream); border: 1px solid var(--border); border-radius: 8px; padding: 20px; }
+  .result-card.highlight { background: var(--brown-dark); border-color: var(--brown-dark); color: var(--cream); }
+
+  .result-label { font-size: 0.62rem; text-transform: uppercase; letter-spacing: 0.12em; opacity: 0.6; margin-bottom: 8px; }
+
+  .result-value { font-family: 'Playfair Display', serif; font-size: 2.2rem; font-weight: 700; line-height: 1; }
+  .result-value.green { color: var(--sage); }
+  .result-value.gold  { color: var(--gold); }
+  .result-value.red   { color: #e74c3c; }
+
+  .result-sub { font-size: 0.7rem; opacity: 0.5; margin-top: 6px; }
+
+  .margin-bar-wrap { margin-top: 12px; }
+  .margin-bar-track { height: 6px; background: rgba(255,255,255,0.15); border-radius: 99px; overflow: hidden; }
+  .margin-bar-fill { height: 100%; border-radius: 99px; transition: width 0.4s ease; background: linear-gradient(90deg, var(--sage), var(--gold)); }
+
+  .pricing-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .price-input-wrap label { color: var(--brown-mid); }
+
+  .tip-box {
+    border-left: 3px solid var(--caramel); padding: 12px 16px;
+    background: rgba(212,148,58,0.06); border-radius: 0 6px 6px 0;
+    font-size: 0.72rem; line-height: 1.6; color: var(--brown-mid);
+  }
+  .tip-box strong { display: block; margin-bottom: 4px; color: var(--caramel); font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.08em; }
+
+  .breakdown { font-size: 0.72rem; display: flex; flex-direction: column; gap: 6px; }
+  .breakdown-row { display: flex; justify-content: space-between; align-items: center; padding: 5px 0; border-bottom: 1px solid rgba(214,201,176,0.4); }
+  .breakdown-row:last-child { border-bottom: none; }
+  .breakdown-name { color: var(--brown-mid); }
+  .breakdown-val  { font-weight: 500; color: var(--brown-dark); }
+
+  @media (max-width: 768px) {
+    .layout { grid-template-columns: 1fr; }
+    .left { padding: 24px 20px; }
+    .right { padding: 24px 20px; border-top: 1px solid var(--border); }
+    header { padding: 20px; }
+    .recipe-meta { grid-template-columns: 1fr; }
+    .pricing-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Pâtis<span>Coût</span></h1>
+  <p>Calculateur de recettes & marges</p>
+</header>
+
+<div class="layout">
+  <div class="left">
+    <p class="section-title">Informations recette</p>
+    <div class="recipe-meta">
+      <div>
+        <label>Nom de la recette</label>
+        <input type="text" id="recipeName" placeholder="ex: Cinnamon Rolls" oninput="update()">
+      </div>
+      <div>
+        <label>Nombre de pièces</label>
+        <input type="number" id="pieces" value="12" min="1" oninput="update()">
+      </div>
+      <div>
+        <label>Temps de préparation (min)</label>
+        <input type="number" id="prepTime" value="60" min="0" oninput="update()">
+      </div>
+      <div>
+        <label>Coût main-d'œuvre (MAD/h)</label>
+        <input type="number" id="laborRate" value="30" min="0" step="5" oninput="update()">
+      </div>
+    </div>
+
+    <p class="section-title">Ingrédients</p>
+
+    <table class="ingredients-table">
+      <thead>
+        <tr>
+          <th class="col-name">Ingrédient</th>
+          <th class="col-qty">Quantité</th>
+          <th class="col-unit">Unité</th>
+          <th class="col-price">Prix / kg ou L</th>
+          <th class="col-total">Coût</th>
+          <th class="col-del"></th>
+        </tr>
+      </thead>
+      <tbody id="ingredientRows"></tbody>
+    </table>
+
+    <button class="btn-add" onclick="addRow()">+ Ajouter un ingrédient</button>
+  </div>
+
+  <div class="right">
+    <p class="section-title">Analyse</p>
+
+    <div class="result-card">
+      <div class="pricing-grid">
+        <div class="price-input-wrap">
+          <label>Prix de vente / pièce (MAD)</label>
+          <input type="number" id="sellingPrice" value="15" min="0" step="0.5" oninput="update()">
+        </div>
+        <div class="price-input-wrap">
+          <label>Charges fixes / fournée (%)</label>
+          <input type="number" id="overhead" value="15" min="0" max="100" oninput="update()">
+        </div>
+      </div>
+    </div>
+
+    <div class="result-card highlight">
+      <div class="result-label">Coût de revient / pièce</div>
+      <div class="result-value gold" id="costPerPiece">— MAD</div>
+      <div class="result-sub" id="totalCostSub">Coût total fournée : — MAD</div>
+      <div class="margin-bar-wrap">
+        <div class="margin-bar-track">
+          <div class="margin-bar-fill" id="marginBar" style="width:0%"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="result-card">
+      <div class="result-label">Marge nette / pièce</div>
+      <div class="result-value" id="marginValue">— MAD</div>
+      <div class="result-sub" id="marginPct">— %</div>
+    </div>
+
+    <div class="result-card">
+      <div class="result-label" style="margin-bottom:12px">Détail des coûts</div>
+      <div class="breakdown">
+        <div class="breakdown-row"><span class="breakdown-name">Ingrédients</span><span class="breakdown-val" id="bd-ing">—</span></div>
+        <div class="breakdown-row"><span class="breakdown-name">Main-d'œuvre</span><span class="breakdown-val" id="bd-labor">—</span></div>
+        <div class="breakdown-row"><span class="breakdown-name">Charges fixes</span><span class="breakdown-val" id="bd-overhead">—</span></div>
+        <div class="breakdown-row" style="font-weight:600"><span class="breakdown-name">TOTAL fournée</span><span class="breakdown-val" id="bd-total">—</span></div>
+      </div>
+    </div>
+
+    <div class="tip-box" id="tipBox">
+      <strong>Conseil</strong>
+      Ajoute des ingrédients pour voir ton analyse de marge.
+    </div>
+  </div>
+</div>
+
+<script>
+  const UNITS = ['g','kg','ml','L','pièce','sachet','c. à soupe','c. à café'];
+
+  const defaultIngredients = [
+    { name: 'Farine T55',     qty: 500, unit: 'g',      price: 8  },
+    { name: 'Beurre 84%',    qty: 200, unit: 'g',      price: 70 },
+    { name: 'Sucre',         qty: 100, unit: 'g',      price: 12 },
+    { name: 'Oeufs',         qty: 3,   unit: 'pièce',  price: 18 },
+    { name: 'Levure fraîche',qty: 20,  unit: 'g',      price: 25 },
+    { name: 'Lait',          qty: 200, unit: 'ml',     price: 14 },
+  ];
+
+  function unitDivisor(unit) {
+    const map = { 'g':1000,'kg':1,'ml':1000,'L':1,'pièce':1,'sachet':1,'c. à soupe':15,'c. à café':5 };
+    return map[unit] || 1;
+  }
+
+  function addRow(ing = {}) {
+    const tbody = document.getElementById('ingredientRows');
+    const tr = document.createElement('tr');
+    const unitOpts = UNITS.map(u => `<option value="${u}" ${u===(ing.unit||'g')?'selected':''}>${u}</option>`).join('');
+    tr.innerHTML = `
+      <td class="col-name"><input type="text" placeholder="Ingrédient" value="${ing.name||''}" oninput="update()"></td>
+      <td class="col-qty"><input type="number" placeholder="0" value="${ing.qty||''}" min="0" step="any" oninput="update()"></td>
+      <td class="col-unit"><select onchange="update()">${unitOpts}</select></td>
+      <td class="col-price"><input type="number" placeholder="0" value="${ing.price||''}" min="0" step="any" oninput="update()"></td>
+      <td class="col-total">—</td>
+      <td class="col-del"><button class="btn-del" onclick="this.closest('tr').remove();update()">×</button></td>
+    `;
+    tbody.appendChild(tr);
+    update();
+  }
+
+  function fmt(n) { return n.toFixed(2); }
+
+  function update() {
+    const rows = Array.from(document.querySelectorAll('#ingredientRows tr'));
+    const pieces      = parseInt(document.getElementById('pieces').value) || 1;
+    const prepTime    = parseFloat(document.getElementById('prepTime').value) || 0;
+    const laborRate   = parseFloat(document.getElementById('laborRate').value) || 0;
+    const sellPrice   = parseFloat(document.getElementById('sellingPrice').value) || 0;
+    const overheadPct = parseFloat(document.getElementById('overhead').value) || 0;
+
+    let ingTotal = 0;
+    rows.forEach(tr => {
+      const inputs = tr.querySelectorAll('input');
+      const unit   = tr.querySelector('select').value;
+      const qty    = parseFloat(inputs[1].value) || 0;
+      const price  = parseFloat(inputs[2].value) || 0;
+      const cost   = (qty / unitDivisor(unit)) * price;
+      ingTotal += cost;
+      tr.querySelector('.col-total').textContent = cost > 0 ? fmt(cost) + ' MAD' : '—';
+    });
+
+    const laborCost    = (prepTime / 60) * laborRate;
+    const subTotal     = ingTotal + laborCost;
+    const overheadCost = subTotal * (overheadPct / 100);
+    const totalCost    = subTotal + overheadCost;
+    const costPer      = totalCost / pieces;
+    const margin       = sellPrice - costPer;
+    const marginPct    = sellPrice > 0 ? (margin / sellPrice) * 100 : 0;
+
+    document.getElementById('costPerPiece').textContent  = fmt(costPer) + ' MAD';
+    document.getElementById('totalCostSub').textContent  = 'Coût total fournée : ' + fmt(totalCost) + ' MAD';
+    document.getElementById('marginBar').style.width     = Math.max(0, Math.min(100, marginPct)) + '%';
+
+    const mv = document.getElementById('marginValue');
+    mv.textContent = fmt(margin) + ' MAD';
+    mv.className = 'result-value ' + (margin >= 0 ? 'green' : 'red');
+    document.getElementById('marginPct').textContent = fmt(marginPct) + ' % de marge';
+
+    document.getElementById('bd-ing').textContent      = fmt(ingTotal) + ' MAD';
+    document.getElementById('bd-labor').textContent    = fmt(laborCost) + ' MAD';
+    document.getElementById('bd-overhead').textContent = fmt(overheadCost) + ' MAD';
+    document.getElementById('bd-total').textContent    = fmt(totalCost) + ' MAD';
+
+    let tip = '';
+    if (rows.length === 0) {
+      tip = 'Ajoute des ingrédients pour voir ton analyse de marge.';
+    } else if (marginPct < 0) {
+      tip = `⚠️ Tu vends à perte. Prix minimum recommandé : <strong>${fmt(costPer * 1.3)} MAD</strong> pour une marge de 30%.`;
+    } else if (marginPct < 30) {
+      tip = `Marge faible (${fmt(marginPct)}%). Pour atteindre 50%, monte le prix à <strong>${fmt(costPer / 0.5)} MAD</strong>.`;
+    } else if (marginPct < 50) {
+      tip = `Bonne marge ! Tu peux réduire les coûts secondaires ou augmenter légèrement le prix pour optimiser.`;
+    } else {
+      tip = `Excellente marge (${fmt(marginPct)}%). Tu peux investir dans la qualité ou réduire le prix pour attirer plus de clients.`;
+    }
+    document.getElementById('tipBox').innerHTML = `<strong>Conseil</strong>${tip}`;
+  }
+
+  defaultIngredients.forEach(ing => addRow(ing));
+</script>
+</body>
+</html>
