@@ -1,6 +1,6 @@
 # FixLoad — HANDOFF
 
-**New chat:** `@fixload/PROJECT_BRIEF.md` or `@fixload/TODO.md — [task]`
+**New chat:** `@fixload/docs/TEST_CASES.md — 10 scénarios pâtisserie + sorties attendues`
 
 ---
 
@@ -8,27 +8,17 @@
 
 | | |
 |---|---|
-| **Done** | Project bootstrap · `PROJECT_BRIEF.md` + diagrams · `PRODUCT_SPEC.md` |
-| **Commit** | (pending first commit) |
-| **Next P0** | `docs/TEST_CASES.md` — 10 pastry scenarios + formula validation |
+| **Done** | Idée FixLoad validée · repo `Documents/fixload` · brief + 4 diagrammes Mermaid · spec + TODO |
+| **Commit** | `710e01c` |
+| **Remote** | pas encore — `git remote add origin` puis push |
+| **Next P0** | `@fixload/docs/TEST_CASES.md` |
 
 ---
 
 ## State
 
-| | |
-|---|---|
-| **Repo** | `C:\Users\DellVostro\Documents\fixload` |
-| **Phase** | Pre-code — spec & tests first |
-| **Vertical** | Pastry / custom cakes |
-| **Stack** | TBD (Next.js recommended) |
+Pre-code · vertical pâtisserie · moteur charges fixes + MP + MO · stack TBD (Next.js reco)
 
 ---
 
-## Next step (1 task)
-
-`@fixload/docs/TEST_CASES.md` — define 10 reference costing scenarios with expected outputs.
-
----
-
-*2026-05-21 · bootstrap.*
+*2026-05-21 · fin session · `710e01c`.*
