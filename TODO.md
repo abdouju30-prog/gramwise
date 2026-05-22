@@ -9,7 +9,7 @@
 
 ## P1 — MVP UI
 
-- [ ] Fixed charges + capacity screen
+- [x] Fixed charges + capacity screen
 - [ ] Recipe screen (pastry preset)
 - [ ] Results + breakdown screen
 - [ ] Basic professional UI (no generic AI aesthetic)
