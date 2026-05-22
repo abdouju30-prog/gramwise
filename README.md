@@ -12,4 +12,4 @@ Web app for artisans to price products with direct materials, labor, and **alloc
 
 First vertical: **pastry / custom cakes**. Engine designed for more presets later.
 
-**GitHub:** https://github.com/abdouju30-prog/calculateur-rentabilit-p-tisserie
+**GitHub:** https://github.com/abdouju30-prog/gramwise

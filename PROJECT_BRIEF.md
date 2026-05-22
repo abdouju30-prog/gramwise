@@ -14,7 +14,7 @@
 | **First vertical** | Pastry / custom & wedding cakes |
 | **Later verticals** | Soap/cosmetics indie, farm transformation, etc. |
 | **Repo (local)** | `C:\Users\DellVostro\Documents\fixload` |
-| **GitHub** | https://github.com/abdouju30-prog/calculateur-rentabilit-p-tisserie |
+| **GitHub** | https://github.com/abdouju30-prog/gramwise |
 | **Owner context** | Instagram pastry page (distribution); 4 years Meta ads experience; agriculture & pastry domain knowledge |
 
 ---
