@@ -12,7 +12,7 @@
 - [x] Fixed charges + capacity screen
 - [x] Recipe screen (pastry preset)
 - [x] Results + breakdown screen
-- [ ] Basic professional UI (no generic AI aesthetic)
+- [x] Basic professional UI (no generic AI aesthetic)
 
 ## P2 — Launch
 

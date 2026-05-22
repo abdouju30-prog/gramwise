@@ -19,9 +19,19 @@
 | Results | Full cost, break-even, recommended + breakdown |
 | Settings | Margin %, priced unit, yield count |
 
-## Design tokens (TBD when stack chosen)
+## Design tokens (v1 — CSS in `app/globals.css`)
 
-<!-- TODO: colors, typography, spacing once Next.js + Tailwind in repo -->
+| Token | Value | Use |
+|-------|-------|-----|
+| `--cream` / `--warm-white` | `#f5f0e8` / `#faf8f3` | Page bg, cards |
+| `--brown-dark` | `#2c1a0e` | Text, primary buttons, hero card |
+| `--brown-mid` / `--brown-light` | `#6b3f1f` / `#c8956a` | Headings, hints |
+| `--caramel` | `#d4943a` | Accent, focus, step active |
+| `--gold` | `#e8b84b` | Hero price on results |
+| `--sage` | `#7a9e7e` | Completed wizard step |
+| `--border` | `#d6c9b0` | Borders |
+
+**Typography:** Playfair Display (headings, prices) + DM Mono (UI, inputs) via `next/font`.
 
 ## References
 

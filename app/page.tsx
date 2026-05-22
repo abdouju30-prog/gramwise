@@ -3,10 +3,15 @@ import Link from "next/link";
 export default function Home() {
   return (
     <main>
-      <h1>GramWise</h1>
-      <p className="lead">
-        Pastry costing — fixed charges, recipe, margin on selling price.
-      </p>
+      <div className="home-hero">
+        <h1>
+          Price with <span className="brand-accent">confidence</span>
+        </h1>
+        <p className="lead">
+          Spread monthly overhead, build your recipe, and get a recommended
+          selling price — margin on price, not markup on cost.
+        </p>
+      </div>
 
       <nav className="home-steps">
         <Link href="/fixed-charges" className="card card-link">

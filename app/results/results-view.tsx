@@ -20,39 +20,67 @@ export function ResultsView() {
 
   return (
     <>
-      <section className="card">
-        <h2>{title}</h2>
+      <div className="results-layout">
         {costing ? (
           <>
-            <dl className="breakdown-dl">
-              <dt>Direct materials</dt>
-              <dd>{formatMoney(costing.result.directMaterials)}</dd>
-              <dt>Direct labor</dt>
-              <dd>{formatMoney(costing.result.directLabor)}</dd>
-              <dt>Fixed load allocated</dt>
-              <dd>{formatMoney(costing.result.fixedLoadAllocated)}</dd>
-              <dt className="breakdown-sep">Full cost (break-even)</dt>
-              <dd className="breakdown-sep">
-                {formatMoney(costing.result.fullCost)}
-              </dd>
-              <dt className="breakdown-highlight">
-                Recommended price
-              </dt>
-              <dd className="breakdown-highlight">
+            <section className="card card-dark hero-price">
+              <p className="hero-label">Recommended selling price</p>
+              <p className="hero-value">
                 {formatMoney(costing.result.recommendedPrice)}
-              </dd>
-            </dl>
-            <p className="preview-caption">
-              Margin {session.recipe.marginPercent}% on selling price · waste{" "}
-              {session.recipe.wastePercent}%
-            </p>
+              </p>
+              <p className="hero-sub">
+                Break-even {formatMoney(costing.result.fullCost)} · {title}
+              </p>
+            </section>
+
+            <section className="card">
+              <h2>Cost breakdown</h2>
+              <div className="breakdown-dl">
+                <div className="breakdown-row">
+                  <span className="breakdown-name">Direct materials</span>
+                  <span className="breakdown-val">
+                    {formatMoney(costing.result.directMaterials)}
+                  </span>
+                </div>
+                <div className="breakdown-row">
+                  <span className="breakdown-name">Direct labor</span>
+                  <span className="breakdown-val">
+                    {formatMoney(costing.result.directLabor)}
+                  </span>
+                </div>
+                <div className="breakdown-row">
+                  <span className="breakdown-name">Fixed load allocated</span>
+                  <span className="breakdown-val">
+                    {formatMoney(costing.result.fixedLoadAllocated)}
+                  </span>
+                </div>
+                <div className="breakdown-row breakdown-row--sep">
+                  <span className="breakdown-name">Full cost (break-even)</span>
+                  <span className="breakdown-val">
+                    {formatMoney(costing.result.fullCost)}
+                  </span>
+                </div>
+              </div>
+              <p className="preview-caption">
+                Margin {session.recipe.marginPercent}% on selling price · waste{" "}
+                {session.recipe.wastePercent}%
+              </p>
+              <div className="tip-box">
+                <strong>How margin works</strong>
+                Recommended price = full cost ÷ (1 − margin%). This is not
+                markup-on-cost at the same percentage.
+              </div>
+            </section>
           </>
         ) : (
-          <p className="preview-caption preview-error">
-            Could not calculate — check your inputs on previous steps.
-          </p>
+          <section className="card">
+            <h2>{title}</h2>
+            <p className="preview-caption preview-error">
+              Could not calculate — check your inputs on previous steps.
+            </p>
+          </section>
         )}
-      </section>
+      </div>
 
       <nav className="step-nav">
         <Link href="/recipe" className="btn btn-ghost">

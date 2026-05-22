@@ -1,5 +1,18 @@
 import type { Metadata } from "next";
+import { DM_Mono, Playfair_Display } from "next/font/google";
+import { SiteChrome } from "./components/site-chrome";
 import "./globals.css";
+
+const playfair = Playfair_Display({
+  subsets: ["latin"],
+  variable: "--font-display",
+});
+
+const dmMono = DM_Mono({
+  weight: ["400", "500"],
+  subsets: ["latin"],
+  variable: "--font-mono",
+});
 
 export const metadata: Metadata = {
   title: "GramWise",
@@ -12,8 +25,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body>{children}</body>
+    <html lang="en" className={`${playfair.variable} ${dmMono.variable}`}>
+      <body>
+        <SiteChrome>{children}</SiteChrome>
+      </body>
     </html>
   );
 }
