@@ -1,5 +1,5 @@
 | | |
 |---|---|
-| **fait** | Ingrédients nom+qté+prix (grille) · export CSV/PDF résultats · prod déployée |
-| **commit** | `5648be4` · `main` |
-| **P0 suivant** | Recruter 5 testeurs — `docs/BETA_CHECKLIST.md` · https://fixload.vercel.app/beta |
+| **fait** | `docs/BETA_CHECKLIST.md` — 5 lignes recrutement (canal + statut « À contacter ») |
+| **commit** | _(après push session)_ |
+| **P0 suivant** | Remplacer `_nom · WA/IG_` par 5 contacts réels · messages `/beta` · retours WA |

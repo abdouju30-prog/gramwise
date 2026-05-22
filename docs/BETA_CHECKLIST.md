@@ -20,11 +20,13 @@
 
 | # | Profil cible | Contact / IG | Statut |
 |---|--------------|--------------|--------|
-| 1 | Pâtissier·ère maison, petits volumes | | ☐ |
-| 2 | Labo gâteaux personnalisés (mariage) | | ☐ |
-| 3 | Viennoiserie / production régulière | | ☐ |
-| 4 | Pâtisserie salon + commandes | | ☐ |
-| 5 | Micro-entreprise multi-produits | | ☐ |
+| 1 | Pâtissier·ère maison, petits volumes | _nom · WA/IG_ — réseau perso, story page IG pâtisserie | À contacter |
+| 2 | Labo gâteaux personnalisés (mariage) | _nom · WA/IG_ — DM IG (#mariage, labos gâteau perso.) | À contacter |
+| 3 | Viennoiserie / production régulière | _nom · WA/IG_ — boulangeries-pâtisseries, reco locale | À contacter |
+| 4 | Pâtisserie salon + commandes | _nom · WA/IG_ — commerces Casablanca/Rabat (salon + commandes) | À contacter |
+| 5 | Micro-entreprise multi-produits | _nom · WA/IG_ — groupes FB artisans, multi-gamme | À contacter |
+
+**Statuts (mettre à jour la colonne droite) :** À contacter → Message envoyé (`/beta`) → Test en cours → Retour reçu → Validé. Remplacer `_nom · WA/IG_` dès le premier échange.
 
 ---
 
