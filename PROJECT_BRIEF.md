@@ -1,6 +1,6 @@
-# FixLoad — Project Brief
+# GramWise — Project Brief
 
-> **Paste this file** (`@fixload/PROJECT_BRIEF.md`) at the start of a new Cursor chat to restore full context.
+> **Paste this file** (`@PROJECT_BRIEF.md`) at the start of a new Cursor chat to restore full context.
 
 ---
 
@@ -8,12 +8,13 @@
 
 | Field | Value |
 |-------|--------|
-| **Name** | FixLoad |
+| **Name** | GramWise |
 | **Tagline** | True cost pricing — fixed overhead included |
 | **Type** | Web application (costing engine + vertical presets) |
 | **First vertical** | Pastry / custom & wedding cakes |
 | **Later verticals** | Soap/cosmetics indie, farm transformation, etc. |
-| **Repo** | `C:\Users\DellVostro\Documents\fixload` |
+| **Repo (local)** | `C:\Users\DellVostro\Documents\fixload` |
+| **GitHub** | https://github.com/abdouju30-prog/calculateur-rentabilit-p-tisserie |
 | **Owner context** | Instagram pastry page (distribution); 4 years Meta ads experience; agriculture & pastry domain knowledge |
 
 ---
@@ -22,7 +23,7 @@
 
 Artisans and small producers often price products using **ingredients + gut feel**. They omit or mis-allocate **fixed costs** (rent, energy, insurance, subscriptions, equipment). Tools built quickly (e.g. generic ChatGPT apps) look unprofessional and produce **inaccurate** prices (margin vs markup confusion, wrong units, no overhead pool).
 
-**FixLoad** computes **full cost** = direct materials + labor + **allocated fixed load per unit/batch**, then minimum price and target price at a chosen margin.
+**GramWise** computes **full cost** = direct materials + labor + **allocated fixed load per unit/batch**, then minimum price and target price at a chosen margin.
 
 ---
 
@@ -128,7 +129,7 @@ flowchart TB
     Future[Future: soap, farm, etc.]
   end
 
-  subgraph app [FixLoad Web App]
+  subgraph app [GramWise Web App]
     UI[UI Layer]
     Preset[Vertical Preset - Pastry v1]
     Engine[Costing Engine]
@@ -173,7 +174,7 @@ flowchart TB
 ```mermaid
 sequenceDiagram
   participant U as User
-  participant A as FixLoad App
+  participant A as GramWise App
   participant E as Costing Engine
 
   U->>A: Onboarding - enter monthly fixed charges

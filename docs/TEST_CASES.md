@@ -1,4 +1,4 @@
-# FixLoad — Pastry reference test cases (v1)
+# GramWise — Pastry reference test cases (v1)
 
 Ten scenarios for the **pastry vertical**. Each case must match these formulas (see `PROJECT_BRIEF.md` §15):
 
@@ -463,4 +463,4 @@ When all ten match within **€0.01**, mark `TODO.md` P0 item done and implement
 
 ---
 
-*FixLoad v1 · pastry vertical · 2026-05-22*
+*GramWise v1 · pastry vertical · 2026-05-22*

@@ -1,4 +1,4 @@
-# FixLoad — Product Spec v1
+# GramWise — Product Spec v1
 
 ## IN
 
