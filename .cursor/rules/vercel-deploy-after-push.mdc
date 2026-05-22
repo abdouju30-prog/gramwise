@@ -1,0 +1,39 @@
+---
+description: After push to main, deploy Vercel prod — git push alone does not update fixload.vercel.app
+alwaysApply: true
+---
+
+# Vercel prod deploy (GramWise / fixload)
+
+## Fact
+
+**`git push` does not update production** unless the Vercel project is linked to GitHub with auto-deploy. This repo currently uses **manual CLI deploy** to `https://fixload.vercel.app`.
+
+## When to deploy
+
+After any **important** change that must be visible in prod:
+
+- UI (`app/`, `globals.css`)
+- i18n, wizard session, recipe/fixed-charges/results flows
+- API routes (`app/api/`)
+- `NEXT_PUBLIC_*` or Stripe env-dependent behavior
+
+Skip deploy for docs-only / `.cursor/` / engine-only (no app rebuild needed) unless the user asks.
+
+## Agent procedure (mandatory after push)
+
+When implementation is committed and pushed to `main` (or user says deploy / prod / vercel):
+
+1. From repo root: `npx vercel deploy --prod --yes`
+2. Wait until deploy is **READY** and aliased to `fixload.vercel.app`
+3. Tell the user: deployment URL + « hard refresh » (Ctrl+F5) on `/recipe` if UI changed
+
+Do **not** assume GitHub Actions or Pages updated Vercel — they are separate.
+
+## Env changes
+
+If production env vars changed in Vercel dashboard, redeploy even without code changes.
+
+## Optional (user setup, not agent)
+
+Link **Vercel → Git → `gramwise` repo → Production branch `main`** so future pushes auto-deploy and this CLI step can be skipped.

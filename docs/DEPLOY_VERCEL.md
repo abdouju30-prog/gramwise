@@ -56,3 +56,15 @@ vercel env add NEXT_PUBLIC_APP_URL production
 ```
 
 Redeploy after env changes: `vercel deploy --prod --yes`.
+
+## Push GitHub ≠ prod Vercel
+
+`git push` on `main` **does not** refresh `https://fixload.vercel.app` unless the Vercel project is connected to GitHub.
+
+After an important push (UI, API, session, i18n), run:
+
+```bash
+npx vercel deploy --prod --yes
+```
+
+Cursor agents follow `.cursor/rules/vercel-deploy-after-push.mdc` (auto after push when prod must match `main`).
