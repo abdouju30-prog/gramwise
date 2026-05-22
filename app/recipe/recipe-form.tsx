@@ -10,6 +10,7 @@ import {
   DEFAULT_RECIPE,
   emptyIngredientRow,
   ingredientRowsFromNames,
+  isBlankStarterIngredients,
   emptyLaborRow,
   type IngredientRow,
   type LaborRow,
@@ -28,18 +29,29 @@ export function RecipeForm() {
 
   useEffect(() => {
     const data = loadWizardSession();
+    const defaultIngredients = ingredientRowsFromNames(
+      m.recipe.defaultIngredientNames,
+    );
+
     if (data?.recipe) {
-      setForm({
+      const needsDefaults = isBlankStarterIngredients(data.recipe.ingredients);
+      const next: RecipeForm = {
         ...data.recipe,
-        ingredients: data.recipe.ingredients.map((row) => ({
-          ...row,
-          name: row.name ?? "",
-        })),
-      });
+        ingredients: needsDefaults
+          ? defaultIngredients
+          : data.recipe.ingredients.map((row) => ({
+              ...row,
+              name: row.name ?? "",
+            })),
+      };
+      setForm(next);
+      if (needsDefaults && data.fixedCharges) {
+        saveRecipe(next);
+      }
     } else {
       setForm((prev) => ({
         ...prev,
-        ingredients: ingredientRowsFromNames(m.recipe.defaultIngredientNames),
+        ingredients: defaultIngredients,
       }));
     }
     setHydrated(true);

@@ -54,6 +54,16 @@ export function ingredientRowsFromNames(names: readonly string[]): IngredientRow
   }));
 }
 
+/** Single empty starter row saved before default ingredient list shipped. */
+export function isBlankStarterIngredients(rows: IngredientRow[]): boolean {
+  if (rows.length !== 1) return false;
+  const row = rows[0];
+  const nameBlank = !row.name?.trim();
+  const qtyBlank = !row.quantity?.trim() || row.quantity === "0";
+  const costBlank = !row.costPerUnit?.trim() || row.costPerUnit === "0";
+  return nameBlank && qtyBlank && costBlank;
+}
+
 export const DEFAULT_RECIPE: RecipeForm = {
   name: "",
   ingredients: ingredientRowsFromNames([
