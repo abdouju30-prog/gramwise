@@ -1,0 +1,19 @@
+---
+description: One-word session commands (bonjour go fin compresse explique scope)
+alwaysApply: true
+---
+
+# Mots de commande (1 mot = 1 intention)
+
+Si le message utilisateur est **un seul mot** (sans autre texte), appliquer :
+
+| Mot | Action |
+|-----|--------|
+| **bonjour** | Démarrer : `docs/DOMAINS.md` → 1 domaine ; `@` utilisateur ; pas handoff sauf `@` |
+| **go** | 1 P0 dans `TODO.md` ; grep ; commit+push si code |
+| **fin** | Compression handoff 3 lignes + starter block ; commit si changé |
+| **compresse** | Réponse minimale, pas de récit |
+| **explique** | Détail FR, pas de code sauf demande |
+| **scope** | `docs/domains/scope.md` seulement — IN/OUT v1 |
+
+Hooks : `.cursor/hooks/words/<mot>.ps1` · aide : `.cursor/HOOKS.md`

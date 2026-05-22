@@ -13,6 +13,10 @@ Copy-Item "$tpl/docs/DOMAINS.md" docs/DOMAINS.md
 Copy-Item "$tpl/docs/domains/*" docs/domains/
 Copy-Item "$tpl/.cursor/rules/domain-docs-slice.mdc" .cursor/rules/domain-docs-slice.mdc -Force
 Copy-Item "$tpl/PROJECT_BRIEF.index.md" PROJECT_BRIEF.md
+# Optional one-word hooks (bonjour, go, fin, …)
+Copy-Item -Recurse "$tpl/hooks" .cursor/hooks -Force
+Copy-Item "$tpl/hooks.json" .cursor/hooks.json
+Copy-Item "$tpl/workflow-words.mdc" .cursor/rules/workflow-words.mdc
 ```
 
 Then:
