@@ -1,9 +1,7 @@
-# GramWise — HANDOFF
-
 | | |
 |---|---|
-| **fait** | engine 10/10 · FORMULAS · domain slices · hooks mots + auto `intent-map` |
-| **commit** | `e84aeb1` |
-| **P0** | stack Next.js + squelette app |
+| **fait** | MVP wizard 3 étapes · landing `/` · Stripe Checkout (test) · UI artisan |
+| **commit** | `7de586d` · `main` |
+| **P0 suivant** | Beta Maroc : déployer + 5 pâtissiers valident chiffres (sans société ; Stripe `sk_test` seulement) |
 
 *2026-05-22*
