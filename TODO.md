@@ -16,7 +16,7 @@
 
 ## P2 — Launch
 
-- [ ] Landing page
+- [x] Landing page
 - [ ] Stripe or lifetime payment
 - [ ] Link from Instagram pastry page
 - [ ] Meta ads creatives (founder)

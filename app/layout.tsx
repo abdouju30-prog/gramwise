@@ -15,8 +15,9 @@ const dmMono = DM_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "GramWise",
-  description: "Pastry costing — capacity, recipe, margin on price",
+  title: "GramWise — Pastry costing calculator",
+  description:
+    "Spread monthly overhead, cost your recipes, and price with margin on selling price.",
 };
 
 export default function RootLayout({

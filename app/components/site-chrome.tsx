@@ -14,10 +14,15 @@ function stepIndex(pathname: string): number {
   return i >= 0 ? i + 1 : 0;
 }
 
+function isWizardRoute(pathname: string): boolean {
+  return STEPS.some((s) => pathname.startsWith(s.path));
+}
+
 export function SiteChrome({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const current = stepIndex(pathname);
-  const onWizard = current > 0;
+  const onWizard = isWizardRoute(pathname);
+  const onLanding = pathname === "/";
 
   return (
     <>
@@ -47,6 +52,14 @@ export function SiteChrome({ children }: { children: React.ReactNode }) {
               );
             })}
           </nav>
+        )}
+        {!onWizard && (
+          <Link
+            href={onLanding ? "/start" : "/"}
+            className="btn btn-primary header-cta"
+          >
+            {onLanding ? "Open calculator" : "Home"}
+          </Link>
         )}
       </header>
       <div className="page-wrap">{children}</div>

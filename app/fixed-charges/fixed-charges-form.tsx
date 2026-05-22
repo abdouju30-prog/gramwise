@@ -157,7 +157,7 @@ export function FixedChargesForm() {
       </section>
 
       <nav className="step-nav">
-        <Link href="/" className="btn btn-ghost">
+        <Link href="/start" className="btn btn-ghost">
           Back
         </Link>
         <button
