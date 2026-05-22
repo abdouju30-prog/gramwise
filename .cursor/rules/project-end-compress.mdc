@@ -1,0 +1,41 @@
+---
+description: On any project end, compress — save only inevitable project facts, never full discussion
+alwaysApply: true
+---
+
+# Project end — mandatory compression
+
+Whenever the user **ends a project or session** (`fin`, « fin de session », « close project », explicit wrap-up, or equivalent):
+
+## Principle
+
+**Compress.** Persist only what is **necessary and inevitable** for the project to continue. **Do not** archive the conversation, reasoning, or narrative.
+
+## What to save (minimal)
+
+| Keep | Example |
+|------|---------|
+| Next P0 | One task, one outcome, target file(s) |
+| Commit | Short hash + branch if code changed |
+| Irreversible decisions | Only if not already in committed docs |
+| Blockers | Only if they block the next task and are not in the repo |
+
+## What NOT to save
+
+- Recap of the chat, agent steps, or tool output
+- Lists of files read/edited
+- Duplicates of spec, brief, test cases, or committed code
+- Explored alternatives, « we discussed… »
+- Handoff prose beyond the 3-row table
+
+## Where it applies
+
+| Artifact | Rule |
+|----------|------|
+| `NEXT_SESSION_HANDOFF.md` / `PROJECT_STATE.md` | **fait · commit · P0 suivant** only (+ optional date). |
+| Reply on `fin` | ≤5 lines + starter block (`session-fin-handoff-block.mdc`) |
+| Memories | No session narrative |
+
+## Test
+
+*If the next agent has committed files + this 3-line state, can they act?* If yes, delete the rest.

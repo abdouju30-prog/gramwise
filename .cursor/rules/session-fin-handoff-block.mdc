@@ -1,0 +1,38 @@
+---
+description: On "fin", compress to inevitable facts only; minimal handoff + starter block
+alwaysApply: true
+---
+
+# Session end — message `fin`
+
+When the user writes **`fin`** (alone or to close the session):
+
+**Mandatory compression** (`project-end-compress.mdc`): handoff and reply = **inevitable facts only**. Never discussion, recaps, or duplicate committed docs.
+
+## Before replying
+
+1. Overwrite `NEXT_SESSION_HANDOFF.md` with **3-row table only**: fait · commit · P0 suivant (+ optional date). No « State », no « New chat », no narrative.
+2. Commit + push if handoff or session files changed.
+
+## Reply (mandatory shape)
+
+- **≤5 lines** : fait · commit · P0 suivant.
+- **Then** fenced block under **Prochaine session — copier-coller**.
+
+## Starter block (4–6 lines max)
+
+No `@…/NEXT_SESSION_HANDOFF.md`, no handoff replay.
+
+```
+@path/to/file — [verbe + un seul résultat]. [contrainte optionnelle, 1 ligne]
+Ne pas: handoff · [1 exclusion si utile]
+```
+
+Optional: `Commit: abc1234`.
+
+## Next chat
+
+- Do not read handoff unless user `@`-mentions it.
+- Start from `@` file(s) in the user message; grep first, read 3–5 files max.
+
+No long recap after the starter block.

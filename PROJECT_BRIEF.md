@@ -98,14 +98,18 @@ Decision deferred until MVP works and is **accurate**.
 
 ## 9. Session workflow (AgriGuide-style)
 
+Rules: `.cursor/rules/project-end-compress.mdc`, `session-fin-handoff-block.mdc`. Template: `docs/HANDOFF_TEMPLATE.md`.
+
 | Command | Meaning |
 |---------|---------|
-| **bonjour** | Read `NEXT_SESSION_HANDOFF.md` + current P0 task |
-| **go** | Implement one handoff task |
-| **fin** | Update handoff + commit if code changed |
-| **compresse** | Short reply |
-| **explique** | Detailed reply |
+| **bonjour** | User `@` files or P0 from last message; handoff optional (3-row archive only) |
+| **go** | Implement one P0 task |
+| **fin** | **Compress:** handoff = fait · commit · P0 only; ≤5-line reply + starter block; commit if changed |
+| **compresse** | Short reply; no narrative dump |
+| **explique** | Detailed reply (not for handoff) |
 | **scope** | Recall v1 IN/OUT only |
+
+**End of any session:** save only inevitable project facts — never the discussion (see `project-end-compress.mdc`).
 
 ---
 

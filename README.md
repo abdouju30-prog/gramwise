@@ -7,5 +7,6 @@ Web app for artisans to price products with direct materials, labor, and **alloc
 - **Context for AI sessions:** open [`PROJECT_BRIEF.md`](./PROJECT_BRIEF.md) (includes Mermaid diagrams).
 - **Spec:** [`PRODUCT_SPEC.md`](./PRODUCT_SPEC.md)
 - **Tasks:** [`TODO.md`](./TODO.md)
+- **Session end (`fin`):** compress only — [`.cursor/rules/`](./.cursor/rules/) + [`docs/HANDOFF_TEMPLATE.md`](./docs/HANDOFF_TEMPLATE.md) (3-row handoff, no chat archive).
 
 First vertical: **pastry / custom cakes**. Engine designed for more presets later.
