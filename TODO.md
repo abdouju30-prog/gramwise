@@ -4,7 +4,7 @@
 
 - [x] `docs/TEST_CASES.md` — 10 pastry reference cases (Excel-validated)
 - [x] `docs/FORMULAS.md` — margin vs markup, units, edge cases
-- [ ] Choose stack + init app skeleton
+- [x] Choose stack + init app skeleton (Next.js App Router + `engine/`)
 - [x] `engine/` module + tests (all cases green)
 
 ## P1 — MVP UI

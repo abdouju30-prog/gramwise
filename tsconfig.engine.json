@@ -1,0 +1,10 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "types": ["vitest/globals"],
+    "plugins": []
+  },
+  "include": ["engine/**/*.ts"]
+}

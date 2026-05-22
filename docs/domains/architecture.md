@@ -6,7 +6,7 @@
 
 - **Engine:** TypeScript `engine/` + Vitest (`npm test`)
 - **Docs:** sliced under `docs/domains/` + `docs/DOMAINS.md` manifest
-- **App UI:** not scaffolded yet (P0: choose stack)
+- **App UI:** Next.js App Router (`app/`) — shell page imports `engine/`
 
 ## Target (draft)
 
