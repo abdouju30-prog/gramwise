@@ -9,6 +9,7 @@ import {
   CUPCAKES_PRESET,
   DEFAULT_RECIPE,
   emptyIngredientRow,
+  ingredientRowsFromNames,
   emptyLaborRow,
   type IngredientRow,
   type LaborRow,
@@ -35,9 +36,14 @@ export function RecipeForm() {
           name: row.name ?? "",
         })),
       });
+    } else {
+      setForm((prev) => ({
+        ...prev,
+        ingredients: ingredientRowsFromNames(m.recipe.defaultIngredientNames),
+      }));
     }
     setHydrated(true);
-  }, []);
+  }, [m.recipe.defaultIngredientNames]);
 
   const preview = useMemo(() => {
     if (!session?.fixedCharges || !hydrated) return null;

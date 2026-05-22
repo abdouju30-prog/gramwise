@@ -45,9 +45,29 @@ export const CUPCAKES_PRESET: RecipeForm = {
   marginPercent: "40",
 };
 
+export function ingredientRowsFromNames(names: readonly string[]): IngredientRow[] {
+  return names.map((name) => ({
+    id: rowId(),
+    name,
+    quantity: "",
+    costPerUnit: "",
+  }));
+}
+
 export const DEFAULT_RECIPE: RecipeForm = {
   name: "",
-  ingredients: [{ id: rowId(), name: "", quantity: "", costPerUnit: "" }],
+  ingredients: ingredientRowsFromNames([
+    "Farine",
+    "Sucre",
+    "Beurre",
+    "Œufs",
+    "Lait",
+    "Poudre à lever",
+    "Crème",
+    "Chocolat",
+    "Sel",
+    "Vanille",
+  ]),
   laborPhases: [{ id: rowId(), label: "", hours: "", hourlyRate: "" }],
   wastePercent: "3",
   marginPercent: "40",

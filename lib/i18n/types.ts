@@ -141,6 +141,8 @@ export type Messages = {
     ingredientsHint: string;
     ingredientName: string;
     ingredientNamePlaceholder: string;
+    /** Pre-filled ingredient names (qty/cost left empty for user). */
+    defaultIngredientNames: string[];
     qty: string;
     costPerUnit: string;
     removeIngredient: string;
