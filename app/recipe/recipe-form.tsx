@@ -108,7 +108,8 @@ export function RecipeForm() {
           <p className="field-hint field-hint-block">
             Quantity × cost per unit (same units as your spreadsheet).
           </p>
-          <table className="data-table">
+          <div className="table-scroll">
+          <table className="data-table data-table--recipe">
             <thead>
               <tr>
                 <th>Qty</th>
@@ -159,6 +160,7 @@ export function RecipeForm() {
               ))}
             </tbody>
           </table>
+          </div>
           <button
             type="button"
             className="btn btn-ghost btn-sm"
@@ -175,7 +177,8 @@ export function RecipeForm() {
 
         <fieldset className="field-group">
           <legend className="field-group-legend">Labor phases</legend>
-          <table className="data-table">
+          <div className="table-scroll">
+          <table className="data-table data-table--recipe">
             <thead>
               <tr>
                 <th>Phase</th>
@@ -235,6 +238,7 @@ export function RecipeForm() {
               ))}
             </tbody>
           </table>
+          </div>
           <button
             type="button"
             className="btn btn-ghost btn-sm"

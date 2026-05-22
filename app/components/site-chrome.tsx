@@ -44,6 +44,7 @@ export function SiteChrome({ children }: { children: React.ReactNode }) {
                   key={step.path}
                   href={step.path}
                   className={`wizard-step wizard-step--${state}`}
+                  aria-label={step.label}
                   aria-current={state === "active" ? "step" : undefined}
                 >
                   <span className="wizard-step-num">{n}</span>
