@@ -1,0 +1,29 @@
+{
+  "version": 1,
+  "domains": [
+    {
+      "id": "design",
+      "file": "docs/domains/03-design.md",
+      "code_roots": ["src/", "app/", "components/"],
+      "keywords": ["design", "ui", "ux", "layout", "page", "screen", "figma", "button", "style", "écran", "ecran", "maquette"]
+    },
+    {
+      "id": "product",
+      "file": "docs/domains/02-product.md",
+      "code_roots": [],
+      "keywords": ["spec", "product", "mvp", "feature"]
+    },
+    {
+      "id": "architecture",
+      "file": "docs/domains/04-architecture.md",
+      "code_roots": ["src/", "app/"],
+      "keywords": ["architecture", "stack", "deploy", "next.js", "folder"]
+    },
+    {
+      "id": "tasks",
+      "file": "docs/domains/07-tasks.md",
+      "code_roots": [],
+      "keywords": ["p0", "todo", "backlog", "roadmap"]
+    }
+  ]
+}

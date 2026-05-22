@@ -17,6 +17,11 @@ Copy-Item "$tpl/PROJECT_BRIEF.index.md" PROJECT_BRIEF.md
 Copy-Item -Recurse "$tpl/hooks" .cursor/hooks -Force
 Copy-Item "$tpl/hooks.json" .cursor/hooks.json
 Copy-Item "$tpl/workflow-words.mdc" .cursor/rules/workflow-words.mdc
+Copy-Item "$tpl/hooks/before-prompt.ps1" .cursor/hooks/before-prompt.ps1
+Copy-Item "$tpl/hooks/_domain-detect.ps1" .cursor/hooks/_domain-detect.ps1
+Copy-Item "$tpl/hooks/inject-word-context.ps1" .cursor/hooks/inject-word-context.ps1 -ErrorAction SilentlyContinue
+Copy-Item -Recurse "$tpl/hooks/words" .cursor/hooks/words -Force
+Copy-Item "$tpl/docs/intent-map.json" docs/intent-map.json
 ```
 
 Then:

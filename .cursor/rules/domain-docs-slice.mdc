@@ -1,33 +1,37 @@
 ---
-description: One documentation domain per task — detect, read, edit, close (token discipline)
+description: Auto-detect one doc domain per task — no need to remember file paths
 alwaysApply: true
 ---
 
-# Domain docs — slice workflow
+# Domain docs — automatic slice (no @ required)
 
-## 1. Detect domain (before reading docs)
+## User does NOT pick files
 
-1. Read **`docs/DOMAINS.md`** only (~manifest, not domain bodies).
-2. Pick **one** domain from: user words, `@path`, P0 in last message, or open file glob.
-3. If user `@`-mentions a file → that file **is** the domain; skip broad discovery.
-4. Code tasks: prefer **grep → Read 1 domain + 3–5 code files**; never load the whole brief.
+Infer **one** domain from the task text (FR/EN). Hooks inject `[AUTO-DOMAIN: …]` when matched; otherwise use `docs/DOMAINS.md` + `docs/intent-map.json`.
 
-## 2. Open — single slice
+Examples (no paths needed from user):
+
+| User says | Open only |
+|-----------|-----------|
+| « refaire l’écran résultats » | `docs/domains/design.md` + UI code |
+| « marge vs markup » | `docs/FORMULAS.md` |
+| « cas 07 » | `docs/TEST_CASES.md` |
+| « P0 stack » | `TODO.md` + `docs/domains/architecture.md` if stack |
+
+If two domains seem needed → pick the **primary**; ask one short question only if blocked.
+
+## Workflow
+
+1. **Detect** — hook context or keyword match on `intent-map.json`
+2. **Open** — that slice + related code (`code_roots` in map)
+3. **Edit** — slice + code only
+4. **Close** — do not re-read other domains; no pasteback of whole docs
+
+## Hard limits
 
 | Do | Don't |
 |----|--------|
-| Read **one** domain file from the manifest | Read `PROJECT_BRIEF.md` in full (index only) |
-| Read linked code (`engine/`, `src/`) as needed | Read 2+ domain docs "for context" |
-| Use `docs/FORMULAS.md` for math, not brief §15 | Read `NEXT_SESSION_HANDOFF.md` unless `fin` or `@` |
+| 1 domain doc + grep/code as needed | `PROJECT_BRIEF.md` body, multiple domains |
+| Trust `[AUTO-DOMAIN: id]` prefix | Handoff unless `fin` or `@` |
 
-## 3. Work — edit in place
-
-- Change **only** the active domain doc + code/tests for the task.
-- Update `docs/DOMAINS.md` if paths or keywords change.
-- Keep replies short; no large doc pastebacks.
-
-## 4. Close — set aside
-
-- After the task: **do not** re-read other domains or re-open the slice to "verify".
-- Next domain = new detection pass from `DOMAINS.md`.
-- Bootstrap new repos: `.cursor/templates/domain-docs/README.md`.
+Adding a new area (e.g. `api`): create `docs/domains/api.md` + row in `intent-map.json`.

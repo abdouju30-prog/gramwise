@@ -1,0 +1,114 @@
+{
+  "version": 1,
+  "fallback": null,
+  "domains": [
+    {
+      "id": "design",
+      "file": "docs/domains/design.md",
+      "code_roots": ["src/", "app/", "components/", "legacy/"],
+      "keywords": [
+        "design", "ui", "ux", "interface", "screen", "page", "layout", "modal",
+        "button", "form", "style", "css", "tailwind", "shadcn", "figma", "maquette",
+        "écran", "ecran", "page", "bouton", "formulaire", "couleur", "typographie", "visuel",
+        "résultat", "resultat", "resultats", "layout",
+        "landing", "dashboard", "empty state", "responsive", "accessibility", "a11y"
+      ]
+    },
+    {
+      "id": "formulas",
+      "file": "docs/FORMULAS.md",
+      "code_roots": ["engine/"],
+      "keywords": [
+        "formula", "formulas", "margin", "markup", "marge", "markup", "waste",
+        "rounding", "arrondi", "unit", "unité", "fixed load", "charge fixe",
+        "break-even", "seuil", "recommended price", "prix recommandé", "costing"
+      ]
+    },
+    {
+      "id": "engine",
+      "file": "engine/",
+      "code_roots": ["engine/"],
+      "keywords": [
+        "engine", "calculate", "calculateCosting", "fixture", "vitest", "regression",
+        "moteur", "calcul", "coût", "costing", "npm test"
+      ]
+    },
+    {
+      "id": "tests",
+      "file": "docs/TEST_CASES.md",
+      "code_roots": ["engine/"],
+      "keywords": [
+        "test case", "case 01", "case 02", "case 03", "case 04", "case 05",
+        "case 06", "case 07", "case 08", "case 09", "case 10", "excel",
+        "référence", "regression", "cas 0"
+      ]
+    },
+    {
+      "id": "product",
+      "file": "PRODUCT_SPEC.md",
+      "code_roots": [],
+      "keywords": [
+        "spec", "product", "mvp", "feature", "in/out", "accuracy", "preset",
+        "produit", "fonctionnalité", "exigence"
+      ]
+    },
+    {
+      "id": "scope",
+      "file": "docs/domains/scope.md",
+      "code_roots": [],
+      "keywords": [
+        "scope", "v1", "in scope", "out of scope", "périmètre", "hors scope", "mvp scope"
+      ]
+    },
+    {
+      "id": "tasks",
+      "file": "TODO.md",
+      "code_roots": [],
+      "keywords": [
+        "p0", "p1", "todo", "roadmap", "backlog", "tâche", "priorité", "checklist"
+      ]
+    },
+    {
+      "id": "architecture",
+      "file": "docs/domains/architecture.md",
+      "code_roots": ["src/", "app/", "engine/"],
+      "keywords": [
+        "architecture", "stack", "next.js", "nextjs", "vercel", "deploy", "folder",
+        "module", "api route", "structure", "arborescence", "monorepo"
+      ]
+    },
+    {
+      "id": "diagrams",
+      "file": "docs/domains/diagrams.md",
+      "code_roots": [],
+      "keywords": [
+        "mermaid", "diagram", "flowchart", "sequence", "journey", "schéma"
+      ]
+    },
+    {
+      "id": "business",
+      "file": "docs/domains/business.md",
+      "code_roots": [],
+      "keywords": [
+        "pricing model", "stripe", "subscription", "lifetime", "meta ads", "instagram",
+        "gtm", "metric", "cpa", "business model", "monétisation"
+      ]
+    },
+    {
+      "id": "context",
+      "file": "docs/domains/context.md",
+      "code_roots": [],
+      "keywords": [
+        "identity", "problem", "why", "vision", "gramwise", "problème", "solution"
+      ]
+    },
+    {
+      "id": "workflow",
+      "file": "docs/domains/workflow.md",
+      "code_roots": [".cursor/"],
+      "keywords": [
+        "hook", "handoff", "bonjour", "compresse", "cursor rule", "session"
+      ]
+    }
+  ]
+}
