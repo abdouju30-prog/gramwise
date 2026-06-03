@@ -274,22 +274,6 @@ export function RecipeForm() {
 
   return (
     <>
-      <div className="toolbar toolbar--recipe">
-        <button
-          type="button"
-          className="btn btn-primary"
-          disabled={!canSave}
-          onClick={handleSave}
-        >
-          {editingSaved ? m.recipe.saveChanges : m.recipe.saveAndNew}
-        </button>
-      </div>
-      {saveNotice ? (
-        <p className="tip-box" role="status">
-          {saveNotice}
-        </p>
-      ) : null}
-
       <form className="form" onSubmit={(e) => e.preventDefault()}>
         <fieldset className="field-group recipe-composer">
           <RecipeTitleHeader
@@ -540,6 +524,22 @@ export function RecipeForm() {
               </div>
         </fieldset>
       </form>
+
+      <div className="recipe-save-bar">
+        <button
+          type="button"
+          className="btn btn-primary"
+          disabled={!canSave}
+          onClick={handleSave}
+        >
+          {editingSaved ? m.recipe.saveChanges : m.recipe.saveAndNew}
+        </button>
+        {saveNotice ? (
+          <p className="tip-box" role="status">
+            {saveNotice}
+          </p>
+        ) : null}
+      </div>
 
       <section className="card preview-card" aria-live="polite">
         <h2>{m.recipe.previewTitle}</h2>
