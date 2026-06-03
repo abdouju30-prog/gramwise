@@ -631,6 +631,9 @@ export function RecipeForm() {
         <Link href="/fixed-charges" className="btn btn-ghost">
           {m.recipe.back}
         </Link>
+        <Link href="/monthly-report" className="btn btn-ghost">
+          {m.results.viewMonthlyReport}
+        </Link>
         <button
           type="button"
           className="btn btn-primary"

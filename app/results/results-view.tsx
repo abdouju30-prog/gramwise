@@ -349,6 +349,9 @@ export function ResultsView() {
         <Link href="/fixed-charges" className="btn btn-ghost">
           {m.results.editFixed}
         </Link>
+        <Link href="/monthly-report" className="btn btn-primary">
+          {m.results.viewMonthlyReport}
+        </Link>
       </nav>
     </>
   );

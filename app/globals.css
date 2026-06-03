@@ -955,6 +955,39 @@ h1 {
   font-weight: 500;
 }
 
+.breakdown-row--total {
+  margin-top: 0.75rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid var(--border);
+  font-weight: 600;
+}
+
+.breakdown-val--accent {
+  color: var(--accent-deep);
+  font-size: 1.15rem;
+}
+
+.monthly-report-summary {
+  margin-bottom: 1.25rem;
+}
+
+.monthly-report-row--incomplete td {
+  color: var(--muted);
+  font-style: italic;
+}
+
+.data-table--report th,
+.data-table--report td {
+  white-space: nowrap;
+}
+
+.step-nav-end {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-inline-start: auto;
+}
+
 .breakdown-row--sep {
   padding-top: 0.65rem;
   margin-top: 0.25rem;

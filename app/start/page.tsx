@@ -30,6 +30,11 @@ export default function StartPage() {
           <span className="card-title">{m.start.step3Title}</span>
           <span className="card-desc">{m.start.step3Desc}</span>
         </Link>
+        <Link href="/monthly-report" className="card card-link">
+          <span className="card-step">∑</span>
+          <span className="card-title">{m.start.step4Title}</span>
+          <span className="card-desc">{m.start.step4Desc}</span>
+        </Link>
       </nav>
 
       <p className="start-cta">

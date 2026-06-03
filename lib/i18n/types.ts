@@ -92,7 +92,38 @@ export type Messages = {
     step2Desc: string;
     step3Title: string;
     step3Desc: string;
+    step4Title: string;
+    step4Desc: string;
     cta: string;
+  };
+  monthlyReport: {
+    eyebrow: string;
+    title: string;
+    lead: string;
+    hint: string;
+    summaryTitle: string;
+    fixedCharges: string;
+    sumMaterials: string;
+    sumLabor: string;
+    sumFixedShare: string;
+    grandTotal: string;
+    incompleteWarning: string;
+    tableTitle: string;
+    tableHint: string;
+    colRecipe: string;
+    colVolume: string;
+    colMaterials: string;
+    colLabor: string;
+    colFixedShare: string;
+    colTotal: string;
+    volumeBatches: string;
+    volumePreparations: string;
+    volumeRuns: string;
+    statusIncomplete: string;
+    emptyRecipes: string;
+    goRecipes: string;
+    backStart: string;
+    exportCsv: string;
   };
   fixed: {
     eyebrow: string;
@@ -272,6 +303,7 @@ export type Messages = {
     calcError: string;
     editRecipe: string;
     editFixed: string;
+    viewMonthlyReport: string;
     fxNote: string;
   };
   checkout: {
