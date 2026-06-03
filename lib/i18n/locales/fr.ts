@@ -149,6 +149,8 @@ export const fr: Messages = {
       summaryEmpty: "Ouvrir pour renseigner",
       searchLabel: "Rechercher",
       searchPlaceholder: "ex. farine, beurre…",
+      expandHint: "Cliquez ici pour afficher et modifier la liste",
+      openListAria: "Ouvrir la liste des ingrédients",
       searchEmpty: "Aucun ingrédient ne correspond.",
       name: "Ingrédient",
       namePlaceholder: "ex. Farine",

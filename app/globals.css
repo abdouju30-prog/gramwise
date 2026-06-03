@@ -488,51 +488,95 @@ h1 {
   color: var(--brown-mid);
 }
 
-.catalog-disclosure {
+.catalog-panel {
   border: 1px solid var(--border);
   border-radius: var(--radius);
   padding: 0.65rem 0.85rem;
   background: var(--surface);
 }
 
-.catalog-disclosure-summary {
+.catalog-panel-head {
   display: flex;
   align-items: baseline;
   justify-content: space-between;
   gap: 0.75rem;
-  cursor: pointer;
-  list-style: none;
 }
 
-.catalog-disclosure-summary::-webkit-details-marker {
-  display: none;
-}
-
-.catalog-disclosure-summary::before {
-  content: "▸";
-  margin-inline-end: 0.45rem;
-  color: var(--brown-light);
-  transition: transform 0.15s;
-}
-
-.catalog-disclosure[open] .catalog-disclosure-summary::before {
-  transform: rotate(90deg);
-}
-
-.catalog-disclosure-meta {
+.catalog-panel-meta {
   font-size: 0.72rem;
   color: var(--brown-light);
   font-weight: 500;
 }
 
-.catalog-disclosure .catalog-grid {
-  margin-top: 0.75rem;
-  max-height: min(14rem, 40vh);
-  overflow-y: auto;
+.catalog-search-zone {
+  margin-top: 0.5rem;
+  padding: 0.55rem 0.65rem;
+  border: 1px dashed color-mix(in srgb, var(--caramel) 35%, var(--border));
+  border-radius: var(--radius);
+  background: color-mix(in srgb, var(--caramel) 4%, var(--surface));
+  cursor: pointer;
+  transition: border-color 0.15s, background 0.15s;
 }
 
-.catalog-search {
+.catalog-search-zone:hover,
+.catalog-search-zone:focus-visible {
+  border-color: var(--caramel);
+  background: color-mix(in srgb, var(--caramel) 8%, var(--surface));
+  outline: none;
+}
+
+.catalog-search-zone--open {
+  border-style: solid;
+  border-color: color-mix(in srgb, var(--caramel) 45%, var(--border));
+  cursor: default;
+}
+
+.catalog-search-zone .catalog-search {
+  margin: 0;
+  cursor: text;
+}
+
+.catalog-search-input-wrap {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.catalog-search-chevron {
+  flex-shrink: 0;
+  font-size: 0.75rem;
+  color: var(--caramel);
+  line-height: 1;
+}
+
+.catalog-search-input-wrap input {
+  flex: 1;
+  min-width: 0;
+}
+
+.catalog-expand-hint {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  margin: 0.4rem 0 0;
+  font-size: 0.72rem;
+  color: var(--brown-light);
+  line-height: 1.35;
+}
+
+.catalog-expand-icon {
+  font-size: 0.85rem;
+  color: var(--caramel);
+  letter-spacing: 0.12em;
+}
+
+.catalog-panel-body {
   margin-top: 0.65rem;
+}
+
+.catalog-panel-body .catalog-grid {
+  max-height: min(14rem, 40vh);
+  overflow-y: auto;
 }
 
 .mode-option {

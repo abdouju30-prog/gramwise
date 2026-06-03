@@ -120,6 +120,8 @@ export type Messages = {
       summaryEmpty: string;
       searchLabel: string;
       searchPlaceholder: string;
+      expandHint: string;
+      openListAria: string;
       searchEmpty: string;
       name: string;
       namePlaceholder: string;

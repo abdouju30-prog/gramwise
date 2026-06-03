@@ -147,6 +147,8 @@ export const ar: Messages = {
       summaryEmpty: "افتح للإدخال",
       searchLabel: "بحث",
       searchPlaceholder: "مثال: دقيق، زبدة…",
+      expandHint: "انقر هنا لعرض وتعديل القائمة",
+      openListAria: "فتح قائمة المكونات",
       searchEmpty: "لا يوجد مكون مطابق.",
       name: "مكوّن",
       namePlaceholder: "مثال: دقيق",

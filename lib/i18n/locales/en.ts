@@ -148,6 +148,8 @@ export const en: Messages = {
       summaryEmpty: "Open to add prices",
       searchLabel: "Search",
       searchPlaceholder: "e.g. flour, butter…",
+      expandHint: "Click here to show and edit the list",
+      openListAria: "Open ingredient list",
       searchEmpty: "No matching ingredient.",
       name: "Ingredient",
       namePlaceholder: "e.g. Flour",
