@@ -1,5 +1,3 @@
-import { calculateCosting } from "@/engine";
-import type { Capacity, CostingInput } from "@/engine/types";
 import { parsePositive } from "@/lib/parse";
 
 export type CapacityMode = "batches_per_month" | "hours_per_month";
@@ -20,10 +18,15 @@ export type FixedChargeLine = {
 
 export type FixedChargesForm = {
   chargeLines: FixedChargeLine[];
-  capacityMode: CapacityMode;
-  batchesPerMonth: string;
-  hoursPerMonth: string;
-  recipeTotalHours: string;
+};
+
+/** Legacy session shape — capacity lived here before per-recipe allocation. */
+export type LegacyFixedChargesForm = FixedChargesForm & {
+  capacityMode?: CapacityMode;
+  batchesPerMonth?: string;
+  hoursPerMonth?: string;
+  recipeTotalHours?: string;
+  monthlyFixedCharges?: string;
 };
 
 export const DEFAULT_CHARGE_LINES: FixedChargeLine[] = [
@@ -35,10 +38,6 @@ export const DEFAULT_CHARGE_LINES: FixedChargeLine[] = [
 
 export const DEFAULT_FIXED_CHARGES: FixedChargesForm = {
   chargeLines: DEFAULT_CHARGE_LINES,
-  capacityMode: "batches_per_month",
-  batchesPerMonth: "40",
-  hoursPerMonth: "120",
-  recipeTotalHours: "2.25",
 };
 
 function newChargeLineId(): string {
@@ -64,12 +63,10 @@ export function monthlyFixedTotal(lines: FixedChargeLine[]): number | null {
 
 /** Migrate wizard sessions saved with a single monthly total field. */
 export function normalizeFixedChargesForm(
-  raw: Partial<FixedChargesForm> & { monthlyFixedCharges?: string },
+  raw: LegacyFixedChargesForm,
 ): FixedChargesForm {
   if (raw.chargeLines?.length) {
     return {
-      ...DEFAULT_FIXED_CHARGES,
-      ...raw,
       chargeLines: raw.chargeLines,
     };
   }
@@ -81,61 +78,20 @@ export function normalizeFixedChargesForm(
       : { ...line, amount: line.amount },
   );
 
-  return {
-    ...DEFAULT_FIXED_CHARGES,
-    capacityMode: raw.capacityMode ?? DEFAULT_FIXED_CHARGES.capacityMode,
-    batchesPerMonth:
-      raw.batchesPerMonth ?? DEFAULT_FIXED_CHARGES.batchesPerMonth,
-    hoursPerMonth: raw.hoursPerMonth ?? DEFAULT_FIXED_CHARGES.hoursPerMonth,
-    recipeTotalHours:
-      raw.recipeTotalHours ?? DEFAULT_FIXED_CHARGES.recipeTotalHours,
-    chargeLines,
-  };
+  return { chargeLines };
 }
 
-export function buildCapacity(form: FixedChargesForm): Capacity | null {
-  if (form.capacityMode === "batches_per_month") {
-    const batches = parsePositive(form.batchesPerMonth);
-    if (batches === null) return null;
-    return { mode: "batches_per_month", batchesPerMonth: batches };
-  }
-  const hoursPerMonth = parsePositive(form.hoursPerMonth);
-  const recipeTotalHours = parsePositive(form.recipeTotalHours);
-  if (hoursPerMonth === null || recipeTotalHours === null) return null;
-  return {
-    mode: "hours_per_month",
-    hoursPerMonth,
-    recipeTotalHours,
-  };
-}
-
-/** Preview fixed load only — other costing lines stay zero until recipe screen exists. */
-export function previewFixedLoad(form: FixedChargesForm): {
-  fixedLoadAllocated: number;
-  monthlyTotal: number;
-  input: CostingInput;
+export function extractLegacyCapacity(
+  raw: LegacyFixedChargesForm | undefined,
+): {
+  capacityMode?: CapacityMode;
+  batchesPerMonth?: string;
+  hoursPerMonth?: string;
 } | null {
-  const monthlyFixed = monthlyFixedTotal(form.chargeLines);
-  const capacity = buildCapacity(form);
-  if (monthlyFixed === null || capacity === null) return null;
-
-  const input: CostingInput = {
-    monthlyFixedCharges: monthlyFixed,
-    capacity,
-    ingredients: [],
-    laborPhases: [],
-    wasteFraction: 0,
-    marginFraction: 0,
+  if (!raw?.capacityMode) return null;
+  return {
+    capacityMode: raw.capacityMode,
+    batchesPerMonth: raw.batchesPerMonth,
+    hoursPerMonth: raw.hoursPerMonth,
   };
-
-  try {
-    const result = calculateCosting(input);
-    return {
-      fixedLoadAllocated: result.fixedLoadAllocated,
-      monthlyTotal: monthlyFixed,
-      input,
-    };
-  } catch {
-    return null;
-  }
 }

@@ -8,13 +8,11 @@ import {
   DEFAULT_FIXED_CHARGES,
   monthlyFixedTotal,
   normalizeFixedChargesForm,
-  previewFixedLoad,
   type ChargeLinePreset,
   type FixedChargeLine,
   type FixedChargesForm,
 } from "@/lib/fixed-charges";
 import { formatMoney } from "@/lib/format";
-import { parsePositive } from "@/lib/parse";
 import { useMessages } from "@/lib/i18n/locale-provider";
 import type { Messages } from "@/lib/i18n/types";
 import { loadWizardSession, saveFixedCharges } from "@/lib/session";
@@ -52,15 +50,6 @@ export function FixedChargesForm() {
     [form.chargeLines],
   );
 
-  const preview = useMemo(() => previewFixedLoad(form), [form]);
-
-  function update<K extends keyof FixedChargesForm>(
-    key: K,
-    value: FixedChargesForm[K],
-  ) {
-    setForm((prev) => ({ ...prev, [key]: value }));
-  }
-
   function updateChargeLine(
     id: string,
     patch: Partial<Pick<FixedChargeLine, "amount" | "customLabel">>,
@@ -87,23 +76,10 @@ export function FixedChargesForm() {
     }));
   }
 
-  const previewFormula = useMemo(() => {
-    if (!preview || monthlyTotal === null) return null;
-
-    if (form.capacityMode === "batches_per_month") {
-      const batches = parsePositive(form.batchesPerMonth);
-      if (batches === null) return null;
-      return `${formatMoney(monthlyTotal)} ÷ ${batches} = ${formatMoney(preview.fixedLoadAllocated)} ${m.fixed.previewPerBatch}`;
-    }
-
-    const shopHours = parsePositive(form.hoursPerMonth);
-    const recipeHours = parsePositive(form.recipeTotalHours);
-    if (shopHours === null || recipeHours === null) return null;
-    return `${formatMoney(monthlyTotal)} ÷ ${shopHours} h × ${recipeHours} h = ${formatMoney(preview.fixedLoadAllocated)} ${m.fixed.previewPerRecipe}`;
-  }, [form, preview, monthlyTotal, m.fixed.previewPerBatch, m.fixed.previewPerRecipe]);
-
   const totalDisplay =
     monthlyTotal === null ? "—" : formatMoney(monthlyTotal);
+
+  const canContinue = monthlyTotal !== null && monthlyTotal > 0;
 
   return (
     <>
@@ -188,130 +164,17 @@ export function FixedChargesForm() {
             {m.fixed.addChargeLine}
           </button>
         </fieldset>
-
-        <fieldset className="field-group">
-          <legend className="field-group-legend">{m.fixed.capacityLegend}</legend>
-          <p className="explain-short capacity-explain">
-            {m.fixed.capacityExplainShort}
-          </p>
-          <p className="field-hint field-hint-block">{m.fixed.capacityChooseMode}</p>
-
-          <div
-            className="mode-toggle"
-            role="radiogroup"
-            aria-label={m.fixed.capacityMode}
-          >
-            <label className="mode-option">
-              <input
-                type="radio"
-                name="capacityMode"
-                checked={form.capacityMode === "batches_per_month"}
-                onChange={() =>
-                  update("capacityMode", "batches_per_month")
-                }
-              />
-              <span className="mode-option-text">
-                <span className="mode-option-title">{m.fixed.batchesPerMonth}</span>
-                <span className="mode-option-desc">{m.fixed.batchesPerMonthDesc}</span>
-              </span>
-            </label>
-            <label className="mode-option">
-              <input
-                type="radio"
-                name="capacityMode"
-                checked={form.capacityMode === "hours_per_month"}
-                onChange={() => update("capacityMode", "hours_per_month")}
-              />
-              <span className="mode-option-text">
-                <span className="mode-option-title">{m.fixed.hoursPerMonth}</span>
-                <span className="mode-option-desc">{m.fixed.hoursPerMonthDesc}</span>
-              </span>
-            </label>
-          </div>
-
-          {form.capacityMode === "batches_per_month" ? (
-            <>
-              <p className="field-hint field-hint-block">
-                {m.fixed.capacityBatchesExplain}
-              </p>
-              <label className="field">
-                <span className="field-label">{m.fixed.batchesLabel}</span>
-                <input
-                  type="number"
-                  inputMode="numeric"
-                  min="1"
-                  step="1"
-                  value={form.batchesPerMonth}
-                  onChange={(e) => update("batchesPerMonth", e.target.value)}
-                />
-                <span className="field-hint">{m.fixed.batchesHint}</span>
-              </label>
-              {previewFormula ? (
-                <div className="capacity-example" aria-live="polite">
-                  <span className="capacity-example-label">
-                    {m.fixed.capacityExampleLabel}
-                  </span>
-                  <p className="capacity-example-formula">{previewFormula}</p>
-                </div>
-              ) : null}
-            </>
-          ) : (
-            <>
-              <p className="field-hint field-hint-block">
-                {m.fixed.capacityHoursExplain}
-              </p>
-            <div className="field-row">
-              <label className="field">
-                <span className="field-label">{m.fixed.shopHours}</span>
-                <input
-                  type="number"
-                  inputMode="decimal"
-                  min="0"
-                  step="0.5"
-                  value={form.hoursPerMonth}
-                  onChange={(e) => update("hoursPerMonth", e.target.value)}
-                />
-              </label>
-              <label className="field">
-                <span className="field-label">{m.fixed.recipeHours}</span>
-                <input
-                  type="number"
-                  inputMode="decimal"
-                  min="0"
-                  step="0.25"
-                  value={form.recipeTotalHours}
-                  onChange={(e) =>
-                    update("recipeTotalHours", e.target.value)
-                  }
-                />
-                <span className="field-hint">{m.fixed.recipeHoursHint}</span>
-              </label>
-            </div>
-              {previewFormula ? (
-                <div className="capacity-example" aria-live="polite">
-                  <span className="capacity-example-label">
-                    {m.fixed.capacityExampleLabel}
-                  </span>
-                  <p className="capacity-example-formula">{previewFormula}</p>
-                </div>
-              ) : null}
-            </>
-          )}
-        </fieldset>
       </form>
 
       <section className="card preview-card" aria-live="polite">
-        <h2>{m.fixed.previewTitle}</h2>
-        {preview ? (
+        <h2>{m.fixed.monthlyTotalLabel}</h2>
+        {canContinue ? (
           <>
-            <p className="preview-value">{formatMoney(preview.fixedLoadAllocated)}</p>
-            <p className="preview-caption">{m.fixed.previewAllocated}</p>
-            {previewFormula ? (
-              <p className="preview-formula">{previewFormula}</p>
-            ) : null}
+            <p className="preview-value">{totalDisplay}</p>
+            <p className="preview-caption">{m.fixed.monthlyPreviewCaption}</p>
           </>
         ) : (
-          <p className="preview-caption preview-error">{m.fixed.previewError}</p>
+          <p className="preview-caption preview-error">{m.fixed.monthlyPreviewError}</p>
         )}
       </section>
 
@@ -322,7 +185,7 @@ export function FixedChargesForm() {
         <button
           type="button"
           className="btn btn-primary"
-          disabled={!preview}
+          disabled={!canContinue}
           onClick={() => {
             saveFixedCharges(form);
             router.push("/recipe");

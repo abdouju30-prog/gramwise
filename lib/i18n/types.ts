@@ -129,6 +129,8 @@ export type Messages = {
     previewPerBatch: string;
     previewPerRecipe: string;
     previewError: string;
+    monthlyPreviewCaption: string;
+    monthlyPreviewError: string;
     back: string;
     continue: string;
   };

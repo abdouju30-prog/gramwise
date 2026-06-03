@@ -1,12 +1,9 @@
 import { calculateCosting } from "@/engine";
-import type { Capacity, CostingInput, CostingResult } from "@/engine/types";
+import type { CostingInput, CostingResult } from "@/engine/types";
+import { monthlyFixedTotal, type FixedChargesForm } from "@/lib/fixed-charges";
+import { parsePercentToFraction } from "@/lib/parse";
 import {
-  buildCapacity,
-  monthlyFixedTotal,
-  type FixedChargesForm,
-} from "@/lib/fixed-charges";
-import { parsePercentToFraction, parsePositive } from "@/lib/parse";
-import {
+  buildRecipeCapacity,
   parseIngredients,
   parseLaborPhases,
   recipeLaborHours,
@@ -18,7 +15,6 @@ export function buildCostingInput(
   recipe: RecipeForm,
 ): CostingInput | null {
   const monthlyFixed = monthlyFixedTotal(fixed.chargeLines);
-  let capacity = buildCapacity(fixed);
   const ingredients = parseIngredients(recipe.ingredients);
   const laborPhases = parseLaborPhases(recipe.laborPhases);
   const wasteFraction = parsePercentToFraction(recipe.wastePercent);
@@ -26,7 +22,6 @@ export function buildCostingInput(
 
   if (
     monthlyFixed === null ||
-    capacity === null ||
     ingredients === null ||
     laborPhases === null ||
     wasteFraction === null ||
@@ -35,12 +30,13 @@ export function buildCostingInput(
     return null;
   }
 
-  if (capacity.mode === "hours_per_month") {
-    capacity = {
-      ...capacity,
-      recipeTotalHours: recipeLaborHours(laborPhases),
-    };
-  }
+  const laborHours = recipeLaborHours(laborPhases);
+  const capacity = buildRecipeCapacity(
+    recipe,
+    recipe.capacityMode === "hours_per_month" ? laborHours : undefined,
+  );
+
+  if (capacity === null) return null;
 
   return {
     monthlyFixedCharges: monthlyFixed,

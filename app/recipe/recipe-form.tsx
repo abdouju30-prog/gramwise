@@ -14,6 +14,7 @@ import {
   ingredientRowsFromNames,
   mergeRecipeDefaults,
   normalizeIngredientRow,
+  normalizeRecipeForm,
   parsedLinesToRows,
   emptyLaborRow,
   type IngredientRow,
@@ -21,6 +22,7 @@ import {
   type RecipeForm,
 } from "@/lib/recipe";
 import { IngredientImportPanel } from "./ingredient-import-panel";
+import { RecipeCapacitySection } from "./recipe-capacity-section";
 import {
   RecipeTitleHeader,
   RECIPE_PICKER_CUPCAKES,
@@ -33,6 +35,7 @@ import {
   recipeHasSaveableContent,
   saveRecipeToLibrary,
 } from "@/lib/recipe-library";
+import { extractLegacyCapacity, monthlyFixedTotal } from "@/lib/fixed-charges";
 import { useMessages } from "@/lib/i18n/locale-provider";
 import {
   loadWizardSession,
@@ -57,7 +60,11 @@ export function RecipeForm() {
     const data = loadWizardSession();
     const names = m.recipe.defaultIngredientNames;
     const laborLabels = m.recipe.defaultLaborPhaseLabels;
-    const base: RecipeForm = data?.recipe ?? DEFAULT_RECIPE;
+    const legacyCapacity = extractLegacyCapacity(data?.fixedCharges);
+    let base = normalizeRecipeForm(data?.recipe ?? {});
+    if (!data?.recipe?.capacityMode && legacyCapacity) {
+      base = { ...base, ...legacyCapacity };
+    }
     const staleGeneration =
       (data?.recipeDefaultsGeneration ?? 0) < RECIPE_DEFAULTS_GENERATION;
     const next = mergeRecipeDefaults(
@@ -94,8 +101,23 @@ export function RecipeForm() {
     return runCosting(session.fixedCharges, form);
   }, [session, form, hydrated]);
 
+  const monthlyTotal = useMemo(
+    () =>
+      session?.fixedCharges
+        ? monthlyFixedTotal(session.fixedCharges.chargeLines)
+        : null,
+    [session?.fixedCharges],
+  );
+
   function updateForm(next: RecipeForm) {
     setForm(next);
+  }
+
+  function updateRecipeField<K extends keyof RecipeForm>(
+    key: K,
+    value: RecipeForm[K],
+  ) {
+    updateForm({ ...form, [key]: value });
   }
 
   function updateIngredient(id: string, patch: Partial<IngredientRow>) {
@@ -152,10 +174,10 @@ export function RecipeForm() {
   }
 
   function handlePickRecipe(recipe: RecipeForm) {
-    const loaded = {
+    const loaded = normalizeRecipeForm({
       ...recipe,
       ingredients: recipe.ingredients.map((row) => normalizeIngredientRow(row)),
-    };
+    });
     updateForm(loaded);
     saveRecipe(loaded);
   }
@@ -412,6 +434,13 @@ export function RecipeForm() {
             {m.recipe.addLabor}
           </button>
               </div>
+
+              <RecipeCapacitySection
+                form={form}
+                monthlyTotal={monthlyTotal}
+                fixedLoadAllocated={preview?.result.fixedLoadAllocated ?? null}
+                onUpdate={updateRecipeField}
+              />
 
               <div className="recipe-composer-section">
                 <p className="recipe-section-label">{m.recipe.pricingLegend}</p>

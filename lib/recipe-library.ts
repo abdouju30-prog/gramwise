@@ -31,6 +31,9 @@ export function freshRecipeForm(laborLabels?: readonly string[]): RecipeForm {
       : [emptyLaborRow()],
     wastePercent: "3",
     marginPercent: "40",
+    capacityMode: "batches_per_month",
+    batchesPerMonth: "40",
+    hoursPerMonth: "120",
   };
 }
 

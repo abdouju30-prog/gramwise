@@ -1,8 +1,10 @@
-import type { IngredientLine, LaborPhase } from "@/engine/types";
+import type { IngredientLine, LaborPhase, Capacity } from "@/engine/types";
 import {
   type IngredientQuantityUnit,
   isIngredientQuantityUnit,
 } from "@/lib/ingredient-units";
+import type { CapacityMode } from "@/lib/fixed-charges";
+import { parsePositive } from "@/lib/parse";
 
 export type IngredientRow = {
   id: string;
@@ -25,6 +27,18 @@ export type RecipeForm = {
   laborPhases: LaborRow[];
   wastePercent: string;
   marginPercent: string;
+  capacityMode: CapacityMode;
+  batchesPerMonth: string;
+  hoursPerMonth: string;
+};
+
+export const DEFAULT_RECIPE_CAPACITY: Pick<
+  RecipeForm,
+  "capacityMode" | "batchesPerMonth" | "hoursPerMonth"
+> = {
+  capacityMode: "batches_per_month",
+  batchesPerMonth: "40",
+  hoursPerMonth: "120",
 };
 
 function rowId(): string {
@@ -48,6 +62,7 @@ export const CUPCAKES_PRESET: RecipeForm = {
   ],
   wastePercent: "3",
   marginPercent: "40",
+  ...DEFAULT_RECIPE_CAPACITY,
 };
 
 export function ingredientRowsFromNames(names: readonly string[]): IngredientRow[] {
@@ -147,7 +162,47 @@ export const DEFAULT_RECIPE: RecipeForm = {
   ]),
   wastePercent: "3",
   marginPercent: "40",
+  ...DEFAULT_RECIPE_CAPACITY,
 };
+
+export function normalizeRecipeForm(raw: Partial<RecipeForm>): RecipeForm {
+  return {
+    ...DEFAULT_RECIPE,
+    ...DEFAULT_RECIPE_CAPACITY,
+    ...raw,
+    ingredients: raw.ingredients?.length
+      ? raw.ingredients
+      : DEFAULT_RECIPE.ingredients,
+    laborPhases: raw.laborPhases?.length
+      ? raw.laborPhases
+      : DEFAULT_RECIPE.laborPhases,
+    capacityMode:
+      raw.capacityMode ?? DEFAULT_RECIPE_CAPACITY.capacityMode,
+    batchesPerMonth:
+      raw.batchesPerMonth ?? DEFAULT_RECIPE_CAPACITY.batchesPerMonth,
+    hoursPerMonth:
+      raw.hoursPerMonth ?? DEFAULT_RECIPE_CAPACITY.hoursPerMonth,
+  };
+}
+
+export function buildRecipeCapacity(
+  recipe: RecipeForm,
+  recipeTotalHours?: number,
+): Capacity | null {
+  if (recipe.capacityMode === "batches_per_month") {
+    const batches = parsePositive(recipe.batchesPerMonth);
+    if (batches === null) return null;
+    return { mode: "batches_per_month", batchesPerMonth: batches };
+  }
+  const hoursPerMonth = parsePositive(recipe.hoursPerMonth);
+  if (hoursPerMonth === null || recipeTotalHours === undefined) return null;
+  if (recipeTotalHours <= 0) return null;
+  return {
+    mode: "hours_per_month",
+    hoursPerMonth,
+    recipeTotalHours,
+  };
+}
 
 export function emptyIngredientRow(): IngredientRow {
   return {
