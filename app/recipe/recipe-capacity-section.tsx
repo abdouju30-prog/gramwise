@@ -16,7 +16,7 @@ type Props = {
   form: RecipeForm;
   monthlyTotal: number | null;
   fixedLoadAllocated: number | null;
-  onUpdate: <K extends keyof RecipeForm>(key: K, value: RecipeForm[K]) => void;
+  onUpdate: (patch: Partial<RecipeForm>) => void;
 };
 
 export function RecipeCapacitySection({
@@ -62,12 +62,14 @@ export function RecipeCapacitySection({
   ]);
 
   function setCountUnit(unit: ProductionCountUnit) {
-    onUpdate("productionCountUnit", unit);
-    onUpdate("capacityMode", "batches_per_month");
+    onUpdate({
+      productionCountUnit: unit,
+      capacityMode: "batches_per_month",
+    });
   }
 
   function setCapacityMode(mode: CapacityMode) {
-    onUpdate("capacityMode", mode);
+    onUpdate({ capacityMode: mode });
   }
 
   return (
@@ -83,7 +85,7 @@ export function RecipeCapacitySection({
         <label className="mode-option">
           <input
             type="radio"
-            name="productionCountUnit"
+            name="recipeCapacityMode"
             checked={
               form.capacityMode === "batches_per_month" &&
               form.productionCountUnit === "batches"
@@ -95,7 +97,7 @@ export function RecipeCapacitySection({
         <label className="mode-option">
           <input
             type="radio"
-            name="productionCountUnit"
+            name="recipeCapacityMode"
             checked={
               form.capacityMode === "batches_per_month" &&
               form.productionCountUnit === "preparations"
@@ -107,7 +109,7 @@ export function RecipeCapacitySection({
         <label className="mode-option">
           <input
             type="radio"
-            name="capacityMode"
+            name="recipeCapacityMode"
             checked={form.capacityMode === "hours_per_month"}
             onChange={() => setCapacityMode("hours_per_month")}
           />
@@ -125,7 +127,7 @@ export function RecipeCapacitySection({
               min="1"
               step="1"
               value={form.batchesPerMonth}
-              onChange={(e) => onUpdate("batchesPerMonth", e.target.value)}
+              onChange={(e) => onUpdate({ batchesPerMonth: e.target.value })}
             />
             {fixedLoadAllocated !== null && monthlyTotal !== null ? (
               <span className="capacity-result" aria-live="polite">
@@ -143,7 +145,7 @@ export function RecipeCapacitySection({
             min="0"
             step="0.5"
             value={form.hoursPerMonth}
-            onChange={(e) => onUpdate("hoursPerMonth", e.target.value)}
+            onChange={(e) => onUpdate({ hoursPerMonth: e.target.value })}
           />
         </label>
       )}

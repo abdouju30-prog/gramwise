@@ -484,7 +484,7 @@ export function RecipeForm() {
                 form={form}
                 monthlyTotal={monthlyTotal}
                 fixedLoadAllocated={preview?.result.fixedLoadAllocated ?? null}
-                onUpdate={updateRecipeField}
+                onUpdate={(patch) => updateForm({ ...form, ...patch })}
               />
 
               <div className="recipe-composer-section">
