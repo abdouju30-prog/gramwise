@@ -111,27 +111,16 @@ export type Messages = {
     chargeCustomPlaceholder: string;
     addChargeLine: string;
     removeChargeLine: string;
-    capacityLegend: string;
-    capacityHint: string;
-    capacityMode: string;
-    batchesPerMonth: string;
-    hoursPerMonth: string;
-    batchesLabel: string;
-    shopHours: string;
-    recipeHours: string;
-    recipeHoursHint: string;
-    hintBatches: string;
-    hintHours: string;
-    previewTitle: string;
-    previewAllocated: string;
-    previewPerBatch: string;
-    previewPerRecipe: string;
-    previewError: string;
     monthlyPreviewCaption: string;
     monthlyPreviewError: string;
     catalog: {
       legend: string;
       hint: string;
+      summaryCount: string;
+      summaryEmpty: string;
+      searchLabel: string;
+      searchPlaceholder: string;
+      searchEmpty: string;
       name: string;
       namePlaceholder: string;
       unit: string;
@@ -158,12 +147,18 @@ export type Messages = {
       unnamedRecipe: string;
       loadedHint: string;
     };
-    fixedLoadPreview: {
+    capacity: {
       title: string;
       hint: string;
-      batchesDenom: string;
-      editShop: string;
-      incomplete: string;
+      modeGroup: string;
+      unitBatches: string;
+      unitPreparations: string;
+      unitHours: string;
+      countLabelBatches: string;
+      countLabelPreparations: string;
+      shopHours: string;
+      perBatch: string;
+      perPreparation: string;
     };
     ingredientsLegend: string;
     ingredientsHint: string;

@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { INGREDIENT_QUANTITY_UNITS } from "@/lib/ingredient-units";
 import {
   createCatalogIngredient,
@@ -18,6 +18,8 @@ export function IngredientCatalogSection() {
   const t = m.fixed.catalog;
   const [items, setItems] = useState<CatalogIngredient[]>([]);
   const [hydrated, setHydrated] = useState(false);
+  const [open, setOpen] = useState(false);
+  const [query, setQuery] = useState("");
 
   useEffect(() => {
     setItems(loadIngredientCatalog());
@@ -28,6 +30,12 @@ export function IngredientCatalogSection() {
     if (!hydrated) return;
     saveIngredientCatalog(items);
   }, [items, hydrated]);
+
+  const filteredItems = useMemo(() => {
+    const q = query.trim().toLowerCase();
+    if (!q) return items;
+    return items.filter((item) => item.name.toLowerCase().includes(q));
+  }, [items, query]);
 
   function updateItem(id: string, patch: Partial<CatalogIngredient>) {
     setItems((prev) =>
@@ -44,9 +52,21 @@ export function IngredientCatalogSection() {
 
   if (!hydrated) return null;
 
+  const namedCount = items.filter((i) => i.name.trim()).length;
+
   return (
-    <fieldset className="field-group">
-      <legend className="field-group-legend">{t.legend}</legend>
+    <details
+      className="catalog-disclosure field-group"
+      open={open}
+      onToggle={(e) => setOpen(e.currentTarget.open)}
+    >
+      <summary className="catalog-disclosure-summary">
+        <span className="field-group-legend">{t.legend}</span>
+        <span className="catalog-disclosure-meta">
+          {namedCount > 0 ? t.summaryCount.replace("{n}", String(namedCount)) : t.summaryEmpty}
+        </span>
+      </summary>
+
       <p className="field-hint field-hint-block">{t.hint}</p>
 
       <div className="catalog-grid" role="table">
@@ -58,7 +78,7 @@ export function IngredientCatalogSection() {
           </span>
           <span className="catalog-grid-actions-head" aria-hidden />
         </div>
-        {items.map((item) => (
+        {filteredItems.map((item) => (
           <div key={item.id} className="catalog-grid-row" role="row">
             <input
               type="text"
@@ -111,6 +131,21 @@ export function IngredientCatalogSection() {
         ))}
       </div>
 
+      {filteredItems.length === 0 && query.trim() ? (
+        <p className="field-hint">{t.searchEmpty}</p>
+      ) : null}
+
+      <label className="catalog-search field">
+        <span className="field-label">{t.searchLabel}</span>
+        <input
+          type="search"
+          value={query}
+          onChange={(e) => setQuery(e.target.value)}
+          placeholder={t.searchPlaceholder}
+          autoComplete="off"
+        />
+      </label>
+
       <button
         type="button"
         className="btn btn-ghost btn-sm"
@@ -118,6 +153,6 @@ export function IngredientCatalogSection() {
       >
         {t.add}
       </button>
-    </fieldset>
+    </details>
   );
 }

@@ -488,6 +488,53 @@ h1 {
   color: var(--brown-mid);
 }
 
+.catalog-disclosure {
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 0.65rem 0.85rem;
+  background: var(--surface);
+}
+
+.catalog-disclosure-summary {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.75rem;
+  cursor: pointer;
+  list-style: none;
+}
+
+.catalog-disclosure-summary::-webkit-details-marker {
+  display: none;
+}
+
+.catalog-disclosure-summary::before {
+  content: "▸";
+  margin-inline-end: 0.45rem;
+  color: var(--brown-light);
+  transition: transform 0.15s;
+}
+
+.catalog-disclosure[open] .catalog-disclosure-summary::before {
+  transform: rotate(90deg);
+}
+
+.catalog-disclosure-meta {
+  font-size: 0.72rem;
+  color: var(--brown-light);
+  font-weight: 500;
+}
+
+.catalog-disclosure .catalog-grid {
+  margin-top: 0.75rem;
+  max-height: min(14rem, 40vh);
+  overflow-y: auto;
+}
+
+.catalog-search {
+  margin-top: 0.65rem;
+}
+
 .mode-option {
   display: flex;
   align-items: flex-start;

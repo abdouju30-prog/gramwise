@@ -1,13 +1,10 @@
 import { calculateCosting } from "@/engine";
 import type { CostingInput, CostingResult } from "@/engine/types";
-import {
-  buildShopCapacity,
-  monthlyFixedTotal,
-  type FixedChargesForm,
-} from "@/lib/fixed-charges";
+import { monthlyFixedTotal, type FixedChargesForm } from "@/lib/fixed-charges";
 import type { DisplayCurrency } from "@/lib/currency";
 import { parsePercentToFraction } from "@/lib/parse";
 import {
+  buildRecipeCapacity,
   parseIngredients,
   parseLaborPhases,
   recipeLaborHours,
@@ -36,9 +33,9 @@ export function buildCostingInput(
   }
 
   const laborHours = recipeLaborHours(laborPhases);
-  const capacity = buildShopCapacity(
-    fixed,
-    fixed.capacityMode === "hours_per_month" ? laborHours : undefined,
+  const capacity = buildRecipeCapacity(
+    recipe,
+    recipe.capacityMode === "hours_per_month" ? laborHours : undefined,
   );
 
   if (capacity === null) return null;

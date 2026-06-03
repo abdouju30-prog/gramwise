@@ -1,8 +1,5 @@
-import { calculateCosting } from "@/engine";
-import type { Capacity, CostingInput } from "@/engine/types";
 import type { DisplayCurrency } from "@/lib/currency";
-import { parsePositive, parsePositiveInMad } from "@/lib/parse";
-import type { RecipeForm } from "@/lib/recipe";
+import { parsePositiveInMad } from "@/lib/parse";
 
 export type CapacityMode = "batches_per_month" | "hours_per_month";
 
@@ -20,21 +17,12 @@ export type FixedChargeLine = {
   amount: string;
 };
 
-export const DEFAULT_SHOP_CAPACITY = {
-  capacityMode: "batches_per_month" as CapacityMode,
-  batchesPerMonth: "120",
-  hoursPerMonth: "160",
-};
-
 export type FixedChargesForm = {
   chargeLines: FixedChargeLine[];
-  capacityMode: CapacityMode;
-  batchesPerMonth: string;
-  hoursPerMonth: string;
 };
 
-/** Legacy session / saved recipe may still carry per-recipe capacity. */
-export type LegacyCapacityFields = {
+/** Session saved before capacity moved off step 1. */
+export type LegacyFixedChargesForm = FixedChargesForm & {
   capacityMode?: CapacityMode;
   batchesPerMonth?: string;
   hoursPerMonth?: string;
@@ -50,7 +38,6 @@ export const DEFAULT_CHARGE_LINES: FixedChargeLine[] = [
 
 export const DEFAULT_FIXED_CHARGES: FixedChargesForm = {
   chargeLines: DEFAULT_CHARGE_LINES,
-  ...DEFAULT_SHOP_CAPACITY,
 };
 
 function newChargeLineId(): string {
@@ -78,92 +65,33 @@ export function monthlyFixedTotal(
 }
 
 export function normalizeFixedChargesForm(
-  raw: Partial<FixedChargesForm> & LegacyCapacityFields,
+  raw: LegacyFixedChargesForm,
 ): FixedChargesForm {
-  const chargeLines = raw.chargeLines?.length
-    ? raw.chargeLines
-    : (() => {
-        const legacy = raw.monthlyFixedCharges?.trim();
-        return DEFAULT_CHARGE_LINES.map((line, index) =>
-          index === 0 && legacy
-            ? { ...line, amount: legacy }
-            : { ...line, amount: line.amount },
-        );
-      })();
-
-  return {
-    chargeLines,
-    capacityMode:
-      raw.capacityMode ?? DEFAULT_SHOP_CAPACITY.capacityMode,
-    batchesPerMonth:
-      raw.batchesPerMonth ?? DEFAULT_SHOP_CAPACITY.batchesPerMonth,
-    hoursPerMonth:
-      raw.hoursPerMonth ?? DEFAULT_SHOP_CAPACITY.hoursPerMonth,
-  };
-}
-
-/** Pull shop capacity from an old per-recipe save into fixed charges (once). */
-export function mergeCapacityFromRecipe(
-  fixed: FixedChargesForm,
-  recipe?: LegacyCapacityFields | null,
-): FixedChargesForm {
-  if (!recipe?.capacityMode) return fixed;
-  return {
-    ...fixed,
-    capacityMode: recipe.capacityMode,
-    batchesPerMonth:
-      recipe.batchesPerMonth ?? fixed.batchesPerMonth,
-    hoursPerMonth: recipe.hoursPerMonth ?? fixed.hoursPerMonth,
-  };
-}
-
-export function buildShopCapacity(
-  fixed: FixedChargesForm,
-  recipeLaborHours?: number,
-): Capacity | null {
-  if (fixed.capacityMode === "batches_per_month") {
-    const batches = parsePositive(fixed.batchesPerMonth);
-    if (batches === null) return null;
-    return { mode: "batches_per_month", batchesPerMonth: batches };
+  if (raw.chargeLines?.length) {
+    return { chargeLines: raw.chargeLines };
   }
-  const hoursPerMonth = parsePositive(fixed.hoursPerMonth);
-  if (hoursPerMonth === null || recipeLaborHours === undefined) return null;
-  if (recipeLaborHours <= 0) return null;
-  return {
-    mode: "hours_per_month",
-    hoursPerMonth,
-    recipeTotalHours: recipeLaborHours,
-  };
+
+  const legacy = raw.monthlyFixedCharges?.trim();
+  const chargeLines = DEFAULT_CHARGE_LINES.map((line, index) =>
+    index === 0 && legacy
+      ? { ...line, amount: legacy }
+      : { ...line, amount: line.amount },
+  );
+
+  return { chargeLines };
 }
 
-export function previewShopFixedPerBatch(
-  fixed: FixedChargesForm,
-  entryCurrency: DisplayCurrency = "MAD",
+export function extractLegacyCapacity(
+  raw: LegacyFixedChargesForm | undefined,
 ): {
-  fixedLoadAllocated: number;
-  monthlyTotal: number;
+  capacityMode?: CapacityMode;
+  batchesPerMonth?: string;
+  hoursPerMonth?: string;
 } | null {
-  const monthlyFixed = monthlyFixedTotal(fixed.chargeLines, entryCurrency);
-  const capacity = buildShopCapacity(fixed);
-  if (monthlyFixed === null || capacity === null) return null;
-  if (capacity.mode !== "batches_per_month") return null;
-
-  const input: CostingInput = {
-    monthlyFixedCharges: monthlyFixed,
-    capacity,
-    ingredients: [],
-    laborPhases: [],
-    wasteFraction: 0,
-    marginFraction: 0,
+  if (!raw?.capacityMode) return null;
+  return {
+    capacityMode: raw.capacityMode,
+    batchesPerMonth: raw.batchesPerMonth,
+    hoursPerMonth: raw.hoursPerMonth,
   };
-
-  try {
-    const result = calculateCosting(input);
-    return {
-      fixedLoadAllocated: result.fixedLoadAllocated,
-      monthlyTotal: monthlyFixed,
-    };
-  } catch {
-    return null;
-  }
 }

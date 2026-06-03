@@ -1,10 +1,11 @@
-import type { IngredientLine, LaborPhase } from "@/engine/types";
+import type { Capacity, IngredientLine, LaborPhase } from "@/engine/types";
+import type { CapacityMode } from "@/lib/fixed-charges";
 import {
   type IngredientQuantityUnit,
   isIngredientQuantityUnit,
 } from "@/lib/ingredient-units";
 import type { DisplayCurrency } from "@/lib/currency";
-import { parseNonNegativeInMad } from "@/lib/parse";
+import { parseNonNegativeInMad, parsePositive } from "@/lib/parse";
 
 export type IngredientRow = {
   id: string;
@@ -21,12 +22,28 @@ export type LaborRow = {
   hourlyRate: string;
 };
 
+export type ProductionCountUnit = "batches" | "preparations";
+
 export type RecipeForm = {
   name: string;
   ingredients: IngredientRow[];
   laborPhases: LaborRow[];
   wastePercent: string;
   marginPercent: string;
+  capacityMode: CapacityMode;
+  productionCountUnit: ProductionCountUnit;
+  batchesPerMonth: string;
+  hoursPerMonth: string;
+};
+
+export const DEFAULT_RECIPE_CAPACITY: Pick<
+  RecipeForm,
+  "capacityMode" | "productionCountUnit" | "batchesPerMonth" | "hoursPerMonth"
+> = {
+  capacityMode: "batches_per_month",
+  productionCountUnit: "batches",
+  batchesPerMonth: "40",
+  hoursPerMonth: "120",
 };
 
 function rowId(): string {
@@ -50,6 +67,7 @@ export const CUPCAKES_PRESET: RecipeForm = {
   ],
   wastePercent: "3",
   marginPercent: "40",
+  ...DEFAULT_RECIPE_CAPACITY,
 };
 
 export function ingredientRowsFromNames(names: readonly string[]): IngredientRow[] {
@@ -149,11 +167,15 @@ export const DEFAULT_RECIPE: RecipeForm = {
   ]),
   wastePercent: "3",
   marginPercent: "40",
+  ...DEFAULT_RECIPE_CAPACITY,
 };
 
 export function normalizeRecipeForm(raw: Partial<RecipeForm>): RecipeForm {
+  const productionCountUnit =
+    raw.productionCountUnit === "preparations" ? "preparations" : "batches";
   return {
     ...DEFAULT_RECIPE,
+    ...DEFAULT_RECIPE_CAPACITY,
     ...raw,
     ingredients: raw.ingredients?.length
       ? raw.ingredients
@@ -161,6 +183,32 @@ export function normalizeRecipeForm(raw: Partial<RecipeForm>): RecipeForm {
     laborPhases: raw.laborPhases?.length
       ? raw.laborPhases
       : DEFAULT_RECIPE.laborPhases,
+    capacityMode:
+      raw.capacityMode ?? DEFAULT_RECIPE_CAPACITY.capacityMode,
+    productionCountUnit,
+    batchesPerMonth:
+      raw.batchesPerMonth ?? DEFAULT_RECIPE_CAPACITY.batchesPerMonth,
+    hoursPerMonth:
+      raw.hoursPerMonth ?? DEFAULT_RECIPE_CAPACITY.hoursPerMonth,
+  };
+}
+
+export function buildRecipeCapacity(
+  recipe: RecipeForm,
+  recipeTotalHours?: number,
+): Capacity | null {
+  if (recipe.capacityMode === "batches_per_month") {
+    const batches = parsePositive(recipe.batchesPerMonth);
+    if (batches === null) return null;
+    return { mode: "batches_per_month", batchesPerMonth: batches };
+  }
+  const hoursPerMonth = parsePositive(recipe.hoursPerMonth);
+  if (hoursPerMonth === null || recipeTotalHours === undefined) return null;
+  if (recipeTotalHours <= 0) return null;
+  return {
+    mode: "hours_per_month",
+    hoursPerMonth,
+    recipeTotalHours,
   };
 }
 
