@@ -1136,6 +1136,14 @@ h1 {
   min-width: 20rem;
 }
 
+.data-table--recipe th {
+  font-size: 0.75rem;
+  text-transform: none;
+  letter-spacing: 0.02em;
+  font-weight: 600;
+  color: var(--text);
+}
+
 .data-table--recipe th:first-child,
 .data-table--recipe td:first-child {
   min-width: 4.5rem;

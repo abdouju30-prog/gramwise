@@ -298,6 +298,7 @@ export function RecipeForm() {
 
         <fieldset className="field-group">
           <legend className="field-group-legend">{m.recipe.laborLegend}</legend>
+          <p className="field-hint field-hint-block">{m.recipe.laborHint}</p>
           <div className="table-scroll">
           <table className="data-table data-table--recipe">
             <thead>
@@ -328,6 +329,7 @@ export function RecipeForm() {
                       min="0"
                       step="0.25"
                       value={row.hours}
+                      placeholder={m.recipe.hoursPlaceholder}
                       onChange={(e) =>
                         updateLabor(row.id, { hours: e.target.value })
                       }
@@ -340,6 +342,7 @@ export function RecipeForm() {
                       min="0"
                       step="0.01"
                       value={row.hourlyRate}
+                      placeholder={m.recipe.ratePlaceholder}
                       onChange={(e) =>
                         updateLabor(row.id, { hourlyRate: e.target.value })
                       }
@@ -374,9 +377,12 @@ export function RecipeForm() {
           </button>
         </fieldset>
 
-        <div className="field-row">
+        <fieldset className="field-group">
+          <legend className="field-group-legend">{m.recipe.pricingLegend}</legend>
+          <div className="field-row">
           <label className="field">
             <span className="field-label">{m.recipe.wasteLabel}</span>
+            <span className="field-hint">{m.recipe.wasteHint}</span>
             <input
               type="number"
               inputMode="decimal"
@@ -404,7 +410,8 @@ export function RecipeForm() {
               }
             />
           </label>
-        </div>
+          </div>
+        </fieldset>
       </form>
 
       <section className="card preview-card" aria-live="polite">
