@@ -277,7 +277,7 @@ export const fr: Messages = {
       delete: "Supprimer",
       exportFile: "Exporter sur mon PC",
       privateNote:
-        "Vos recettes restent enregistrées sur cet appareil — vous seul pouvez les supprimer.",
+        "Recettes sur cet appareil, privées à votre profil navigateur. Plusieurs personnes peuvent coexister sans s’effacer. Exportez une copie pour ne rien perdre.",
     },
   },
   results: {

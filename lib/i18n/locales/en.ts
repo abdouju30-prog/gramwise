@@ -271,7 +271,7 @@ export const en: Messages = {
       delete: "Delete",
       exportFile: "Export to my PC",
       privateNote:
-        "Your recipes stay saved on this device — only you can delete them.",
+        "Recipes stay on this device, private to your browser profile. Multiple users won't erase each other. Export a backup to be safe.",
     },
   },
   results: {

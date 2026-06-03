@@ -9,7 +9,8 @@ import { getRecipeOwnerId } from "@/lib/recipe-owner";
 
 const LIBRARY_KEY = "gramwise-recipe-library-v2";
 const LEGACY_LIBRARY_KEY = "gramwise-recipe-library-v1";
-const MAX_SAVED_RECIPES = 200;
+const MAX_SAVED_RECIPES_PER_OWNER = 200;
+const MAX_TOTAL_STORED = 2000;
 
 export type SavedRecipe = {
   id: string;
@@ -74,20 +75,55 @@ function readRawLibrary(key: string): SavedRecipe[] | null {
   }
 }
 
-function migrateAndFilter(entries: SavedRecipe[], ownerId: string): SavedRecipe[] {
-  const owned = entries
-    .filter((e) => belongsToOwner(e, ownerId))
-    .map((e) => attachOwner(e, ownerId));
-  return owned.sort(
-    (a, b) => Date.parse(b.savedAt) - Date.parse(a.savedAt),
+/** All recipes in storage (every owner on this browser). */
+function readAllLibrary(): SavedRecipe[] {
+  const current = readRawLibrary(LIBRARY_KEY);
+  if (current) return current;
+
+  const legacy = readRawLibrary(LEGACY_LIBRARY_KEY);
+  if (legacy) {
+    writeAllLibrary(legacy);
+    return legacy;
+  }
+
+  return [];
+}
+
+function writeAllLibrary(entries: SavedRecipe[]): void {
+  localStorage.setItem(
+    LIBRARY_KEY,
+    JSON.stringify(entries.slice(0, MAX_TOTAL_STORED)),
   );
 }
 
-function persistLibrary(entries: SavedRecipe[]): void {
-  localStorage.setItem(
-    LIBRARY_KEY,
-    JSON.stringify(entries.slice(0, MAX_SAVED_RECIPES)),
+/** Keep other owners' recipes; replace only this owner's slice. */
+function persistOwnerRecipes(ownerRecipes: SavedRecipe[]): void {
+  const ownerId = getRecipeOwnerId();
+  const all = readAllLibrary();
+  const others = all.filter(
+    (e) => e.ownerId && e.ownerId !== ownerId,
   );
+  const trimmed = ownerRecipes.slice(0, MAX_SAVED_RECIPES_PER_OWNER);
+  writeAllLibrary([...trimmed, ...others]);
+}
+
+function recipesForOwner(all: SavedRecipe[], ownerId: string): SavedRecipe[] {
+  return all
+    .filter((e) => belongsToOwner(e, ownerId))
+    .map((e) => attachOwner(e, ownerId))
+    .sort((a, b) => Date.parse(b.savedAt) - Date.parse(a.savedAt));
+}
+
+/** Claim legacy rows without ownerId for this browser profile (once). */
+function claimUnownedRecipes(all: SavedRecipe[], ownerId: string): SavedRecipe[] {
+  let changed = false;
+  const next = all.map((entry) => {
+    if (entry.ownerId) return entry;
+    changed = true;
+    return attachOwner(entry, ownerId);
+  });
+  if (changed) writeAllLibrary(next);
+  return next;
 }
 
 export function loadRecipeLibrary(): SavedRecipe[] {
@@ -96,26 +132,9 @@ export function loadRecipeLibrary(): SavedRecipe[] {
   const ownerId = getRecipeOwnerId();
 
   try {
-    const current = readRawLibrary(LIBRARY_KEY);
-    if (current) {
-      const library = migrateAndFilter(current, ownerId);
-      if (
-        library.length !== current.length ||
-        current.some((e) => !e.ownerId)
-      ) {
-        persistLibrary(library);
-      }
-      return library;
-    }
-
-    const legacy = readRawLibrary(LEGACY_LIBRARY_KEY);
-    if (legacy) {
-      const library = migrateAndFilter(legacy, ownerId);
-      persistLibrary(library);
-      return library;
-    }
-
-    return [];
+    let all = readAllLibrary();
+    all = claimUnownedRecipes(all, ownerId);
+    return recipesForOwner(all, ownerId);
   } catch {
     return [];
   }
@@ -132,7 +151,7 @@ export function saveRecipeToLibrary(recipe: RecipeForm): SavedRecipe {
   };
   const library = loadRecipeLibrary();
   library.unshift(entry);
-  persistLibrary(library);
+  persistOwnerRecipes(library);
   return entry;
 }
 
@@ -154,7 +173,7 @@ export function updateSavedRecipe(
     recipe: structuredClone(recipe),
   };
   library[index] = entry;
-  persistLibrary(library);
+  persistOwnerRecipes(library);
   return entry;
 }
 
@@ -164,7 +183,7 @@ export function deleteSavedRecipe(id: string): boolean {
   const library = loadRecipeLibrary();
   const target = library.find((e) => e.id === id);
   if (!target || target.ownerId !== ownerId) return false;
-  persistLibrary(library.filter((e) => e.id !== id));
+  persistOwnerRecipes(library.filter((e) => e.id !== id));
   return true;
 }
 
@@ -202,7 +221,7 @@ export function mergeImportedLibrary(json: string): number {
   const merged = [...byId.values()].sort(
     (a, b) => Date.parse(b.savedAt) - Date.parse(a.savedAt),
   );
-  persistLibrary(merged);
+  persistOwnerRecipes(merged);
   return incoming.length;
 }
 
