@@ -266,6 +266,7 @@ export const ar: Messages = {
     calcError: "تعذّر الحساب — راجع المدخلات في الخطوات السابقة.",
     editRecipe: "تعديل الوصفة",
     editFixed: "تعديل المصاريف الثابتة",
+    fxNote: "الإدخال بالدرهم (MAD). اليورو والدولار بأسعار تقريبية.",
   },
   checkout: {
     eyebrow: "الدفع",

@@ -273,6 +273,8 @@ export const fr: Messages = {
     calcError: "Calcul impossible — vérifiez les saisies des étapes précédentes.",
     editRecipe: "Modifier la recette",
     editFixed: "Modifier les charges fixes",
+    fxNote:
+      "Saisie en dirhams (MAD). Euro et dollar : taux indicatifs ci-dessous.",
   },
   checkout: {
     eyebrow: "Paiement",

@@ -729,6 +729,57 @@ h1 {
   font-size: 0.72rem;
 }
 
+.multi-currency-price {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.multi-currency-price-primary {
+  font-family: var(--font-display), "Playfair Display", Georgia, serif;
+  font-size: 2.35rem;
+  font-weight: 700;
+  line-height: 1.1;
+  color: var(--gold);
+}
+
+.multi-currency-price-alt {
+  font-family: var(--font-mono), "DM Mono", monospace;
+  font-size: 1rem;
+  font-weight: 500;
+  color: rgba(255, 248, 235, 0.92);
+  margin-top: 0.35rem;
+}
+
+.hero-value.multi-currency-price {
+  margin: 0;
+}
+
+.hero-sub-prices.multi-currency-price {
+  display: inline;
+}
+
+.hero-sub-prices .multi-currency-price-primary,
+.hero-sub-prices .multi-currency-price-alt {
+  display: inline;
+  font-family: inherit;
+  font-size: inherit;
+  font-weight: inherit;
+  color: inherit;
+  margin: 0;
+}
+
+.hero-sub-prices .multi-currency-price-alt::before {
+  content: " · ";
+}
+
+.hero-fx-note {
+  margin: 0.65rem 0 0;
+  font-size: 0.62rem;
+  opacity: 0.85;
+  line-height: 1.4;
+}
+
 .breakdown-dl {
   display: flex;
   flex-direction: column;

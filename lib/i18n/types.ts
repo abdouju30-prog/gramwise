@@ -224,6 +224,7 @@ export type Messages = {
     calcError: string;
     editRecipe: string;
     editFixed: string;
+    fxNote: string;
   };
   checkout: {
     eyebrow: string;

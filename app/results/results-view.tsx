@@ -3,7 +3,9 @@
 import Link from "next/link";
 import { useMemo } from "react";
 import { BetaFeedbackCard } from "@/app/components/beta-feedback-card";
+import { MultiCurrencyPrice } from "@/app/components/multi-currency-price";
 import { runCosting } from "@/lib/costing";
+import { fxRatesLabel, formatFromMad } from "@/lib/currency";
 import { formatMoney } from "@/lib/format";
 import { interpolate } from "@/lib/i18n/format";
 import { useMessages } from "@/lib/i18n/locale-provider";
@@ -151,7 +153,12 @@ export function ResultsView() {
   </head>
   <body>
     <h1>${toHtml(title)}</h1>
-    <p><strong>${toHtml(m.results.recommendedPrice)}:</strong> ${toHtml(formatMoney(costing.result.recommendedPrice))}</p>
+    <p><strong>${toHtml(m.results.recommendedPrice)}:</strong></p>
+    <ul>
+      <li>${toHtml(formatFromMad(costing.result.recommendedPrice, "MAD"))}</li>
+      <li>${toHtml(formatFromMad(costing.result.recommendedPrice, "EUR"))}</li>
+      <li>${toHtml(formatFromMad(costing.result.recommendedPrice, "USD"))}</li>
+    </ul>
     <p><strong>${toHtml(m.results.fullCostBreakEven)}:</strong> ${toHtml(formatMoney(costing.result.fullCost))}</p>
     <p><strong>${toHtml(m.results.marginWaste)}:</strong> ${toHtml(
       interpolate(m.results.marginWaste, {
@@ -216,12 +223,16 @@ export function ResultsView() {
           <>
             <section className="card card-dark hero-price">
               <p className="hero-label">{m.results.recommendedPrice}</p>
-              <p className="hero-value">
-                {formatMoney(costing.result.recommendedPrice)}
-              </p>
+              <MultiCurrencyPrice
+                amountMad={costing.result.recommendedPrice}
+                className="hero-value"
+              />
               <p className="hero-sub">
                 {m.results.breakEvenSub}{" "}
                 {formatMoney(costing.result.fullCost)} · {title}
+              </p>
+              <p className="hero-fx-note">
+                {m.results.fxNote} {fxRatesLabel()}
               </p>
             </section>
 

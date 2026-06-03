@@ -267,6 +267,8 @@ export const en: Messages = {
     calcError: "Could not calculate — check your inputs on previous steps.",
     editRecipe: "Edit recipe",
     editFixed: "Edit fixed charges",
+    fxNote:
+      "Amounts entered in dirhams (MAD). Euro and dollar use indicative rates below.",
   },
   checkout: {
     eyebrow: "Payment",

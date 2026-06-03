@@ -1,6 +1,9 @@
-export function formatMoney(value: number): string {
-  return new Intl.NumberFormat("en-CA", {
-    style: "currency",
-    currency: "CAD",
-  }).format(value);
+import { formatFromMad, type DisplayCurrency } from "@/lib/currency";
+
+/** Format a MAD amount (default display currency for the app). */
+export function formatMoney(
+  value: number,
+  currency: DisplayCurrency = "MAD",
+): string {
+  return formatFromMad(value, currency);
 }
