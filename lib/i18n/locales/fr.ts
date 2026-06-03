@@ -188,6 +188,12 @@ export const fr: Messages = {
       "Sel",
       "Vanille",
     ],
+    defaultLaborPhaseLabels: [
+      "Préparation",
+      "Cuisson",
+      "Décoration",
+      "Conditionnement",
+    ],
     qty: "Qté",
     qtyUnit: "Unité",
     qtyUnitHint: "La quantité et le coût utilisent la même unité.",

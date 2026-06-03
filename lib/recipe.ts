@@ -82,6 +82,49 @@ export function mergeRecipeIngredientDefaults(
   return { ...recipe, ingredients: ingredientRowsFromNames(names) };
 }
 
+export function laborRowsFromLabels(labels: readonly string[]): LaborRow[] {
+  return labels.map((label) => ({
+    id: rowId(),
+    label,
+    hours: "",
+    hourlyRate: "",
+  }));
+}
+
+export function needsDefaultLaborRows(rows: LaborRow[]): boolean {
+  if (!rows.length) return true;
+  return !rows.some((row) => {
+    if (row.label?.trim()) return true;
+    const h = Number.parseFloat(row.hours);
+    const r = Number.parseFloat(row.hourlyRate);
+    return (
+      (Number.isFinite(h) && h > 0) ||
+      (Number.isFinite(r) && r > 0)
+    );
+  });
+}
+
+export function mergeRecipeLaborDefaults(
+  recipe: RecipeForm,
+  labels: readonly string[],
+): RecipeForm {
+  if (!needsDefaultLaborRows(recipe.laborPhases)) return recipe;
+  return { ...recipe, laborPhases: laborRowsFromLabels(labels) };
+}
+
+export function mergeRecipeDefaults(
+  recipe: RecipeForm,
+  options: {
+    ingredientNames: readonly string[];
+    laborLabels: readonly string[];
+  },
+): RecipeForm {
+  return mergeRecipeLaborDefaults(
+    mergeRecipeIngredientDefaults(recipe, options.ingredientNames),
+    options.laborLabels,
+  );
+}
+
 export const DEFAULT_RECIPE: RecipeForm = {
   name: "",
   ingredients: ingredientRowsFromNames([
@@ -96,7 +139,12 @@ export const DEFAULT_RECIPE: RecipeForm = {
     "Sel",
     "Vanille",
   ]),
-  laborPhases: [{ id: rowId(), label: "", hours: "", hourlyRate: "" }],
+  laborPhases: laborRowsFromLabels([
+    "Préparation",
+    "Cuisson",
+    "Décoration",
+    "Conditionnement",
+  ]),
   wastePercent: "3",
   marginPercent: "40",
 };

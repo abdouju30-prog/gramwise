@@ -187,6 +187,7 @@ export const en: Messages = {
       "Salt",
       "Vanilla",
     ],
+    defaultLaborPhaseLabels: ["Prep", "Baking", "Decorating", "Packaging"],
     qty: "Qty",
     qtyUnit: "Unit",
     qtyUnitHint: "Quantity and cost use the same unit.",

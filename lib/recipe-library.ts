@@ -1,6 +1,7 @@
 import {
   emptyIngredientRow,
   emptyLaborRow,
+  laborRowsFromLabels,
   type RecipeForm,
 } from "@/lib/recipe";
 
@@ -17,7 +18,7 @@ function rowId(): string {
   return crypto.randomUUID();
 }
 
-export function freshRecipeForm(): RecipeForm {
+export function freshRecipeForm(laborLabels?: readonly string[]): RecipeForm {
   return {
     name: "",
     ingredients: [
@@ -25,7 +26,9 @@ export function freshRecipeForm(): RecipeForm {
       emptyIngredientRow(),
       emptyIngredientRow(),
     ],
-    laborPhases: [emptyLaborRow()],
+    laborPhases: laborLabels?.length
+      ? laborRowsFromLabels(laborLabels)
+      : [emptyLaborRow()],
     wastePercent: "3",
     marginPercent: "40",
   };

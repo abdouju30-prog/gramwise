@@ -187,6 +187,7 @@ export const ar: Messages = {
       "ملح",
       "فانيليا",
     ],
+    defaultLaborPhaseLabels: ["تحضير", "خبز", "تزيين", "تعبئة"],
     qty: "كمية",
     qtyUnit: "وحدة",
     qtyUnitHint: "الكمية والتكلفة بنفس الوحدة.",

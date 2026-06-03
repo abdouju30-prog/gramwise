@@ -12,7 +12,7 @@ import {
   DEFAULT_RECIPE,
   emptyIngredientRow,
   ingredientRowsFromNames,
-  mergeRecipeIngredientDefaults,
+  mergeRecipeDefaults,
   normalizeIngredientRow,
   parsedLinesToRows,
   emptyLaborRow,
@@ -23,7 +23,6 @@ import {
 import { IngredientImportPanel } from "./ingredient-import-panel";
 import { RecipeLibraryPanel } from "./recipe-library-panel";
 import {
-  freshRecipeForm,
   recipeHasSaveableContent,
   saveRecipeToLibrary,
 } from "@/lib/recipe-library";
@@ -48,10 +47,11 @@ export function RecipeForm() {
   useEffect(() => {
     const data = loadWizardSession();
     const names = m.recipe.defaultIngredientNames;
+    const laborLabels = m.recipe.defaultLaborPhaseLabels;
     const base: RecipeForm = data?.recipe ?? DEFAULT_RECIPE;
     const staleGeneration =
       (data?.recipeDefaultsGeneration ?? 0) < RECIPE_DEFAULTS_GENERATION;
-    const next = mergeRecipeIngredientDefaults(
+    const next = mergeRecipeDefaults(
       {
         ...base,
         ingredients: base.ingredients.map((row) =>
@@ -61,20 +61,24 @@ export function RecipeForm() {
           }),
         ),
       },
-      names,
+      { ingredientNames: names, laborLabels },
     );
-    const ingredientsChanged =
+    const defaultsChanged =
       next.ingredients.length !== base.ingredients.length ||
-      next.ingredients.some((row, i) => row.name !== base.ingredients[i]?.name);
+      next.ingredients.some((row, i) => row.name !== base.ingredients[i]?.name) ||
+      next.laborPhases.length !== base.laborPhases.length ||
+      next.laborPhases.some(
+        (row, i) => row.label !== base.laborPhases[i]?.label,
+      );
 
     setForm(next);
-    if (data?.fixedCharges && (staleGeneration || ingredientsChanged)) {
+    if (data?.fixedCharges && (staleGeneration || defaultsChanged)) {
       saveRecipe(next, {
         recipeDefaultsGeneration: RECIPE_DEFAULTS_GENERATION,
       });
     }
     setHydrated(true);
-  }, [m.recipe.defaultIngredientNames]);
+  }, [m.recipe.defaultIngredientNames, m.recipe.defaultLaborPhaseLabels]);
 
   const preview = useMemo(() => {
     if (!session?.fixedCharges || !hydrated) return null;
@@ -129,7 +133,13 @@ export function RecipeForm() {
   function handleSaveAndNew() {
     if (!canSave) return;
     saveRecipeToLibrary(form);
-    const next = freshRecipeForm();
+    const next = mergeRecipeDefaults(
+      { ...DEFAULT_RECIPE, name: "" },
+      {
+        ingredientNames: m.recipe.defaultIngredientNames,
+        laborLabels: m.recipe.defaultLaborPhaseLabels,
+      },
+    );
     setForm(next);
     setLibraryRefresh((k) => k + 1);
     setSaveNotice(m.recipe.savedToast);

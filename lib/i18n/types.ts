@@ -145,6 +145,8 @@ export type Messages = {
     ingredientNamePlaceholder: string;
     /** Pre-filled ingredient names (qty/cost left empty for user). */
     defaultIngredientNames: string[];
+    /** Pre-filled labor phase labels (hours/rate left empty). */
+    defaultLaborPhaseLabels: string[];
     qty: string;
     qtyUnit: string;
     qtyUnitHint: string;

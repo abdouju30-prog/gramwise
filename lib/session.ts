@@ -5,7 +5,7 @@ const STORAGE_KEY_V2 = "gramwise-wizard-v2";
 const STORAGE_KEY_V1 = "gramwise-wizard-v1";
 
 /** Bump when default ingredient rows must be re-applied for existing sessions. */
-export const RECIPE_DEFAULTS_GENERATION = 2;
+export const RECIPE_DEFAULTS_GENERATION = 3;
 
 export type WizardSession = {
   fixedCharges: FixedChargesForm;
