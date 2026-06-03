@@ -151,18 +151,12 @@ export type Messages = {
     costPerUnit: string;
     costPerUnitHint: string;
     import: {
-      expand: string;
-      collapse: string;
-      title: string;
-      hint: string;
-      tabs: { paste: string; file: string; photo: string };
+      lead: string;
+      photo: string;
+      file: string;
       pasteLabel: string;
       pastePlaceholder: string;
-      analyze: string;
-      chooseFile: string;
-      fileTypes: string;
-      takePhoto: string;
-      photoHint: string;
+      organize: string;
       scanning: string;
       parseEmpty: string;
       fileError: string;
@@ -176,7 +170,6 @@ export type Messages = {
         ml: string;
         unit: string;
       };
-      costSuffix: (unit: IngredientQuantityUnit) => string;
     };
     removeIngredient: string;
     addIngredient: string;
@@ -199,24 +192,11 @@ export type Messages = {
     back: string;
     viewResults: string;
     saveAndNew: string;
-    saveAndNewHint: string;
     savedToast: string;
     library: {
-      expand: string;
-      collapse: string;
-      title: string;
-      hint: string;
-      exportJson: string;
-      saveToPc: string;
-      importJson: string;
-      empty: string;
-      load: string;
+      expand: (count: number) => string;
       delete: string;
-      savedPicker: string;
-      savedDownload: string;
-      saveError: string;
-      imported: (count: number) => string;
-      importError: string;
+      exportFile: string;
     };
   };
   results: {

@@ -1274,46 +1274,29 @@ h1 {
   border: 0;
 }
 
-.import-panel {
-  margin-bottom: 0.75rem;
-}
-
-.import-panel-toggle {
-  margin-bottom: 0.35rem;
-}
-
-.import-panel-body {
-  padding: 1rem;
-  margin-top: 0.35rem;
-}
-
-.import-panel-title {
-  font-size: 1rem;
-  margin: 0 0 0.35rem;
-}
-
-.import-tabs {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.35rem;
-  margin: 0.75rem 0;
-}
-
-.import-tab {
-  padding: 0.35rem 0.65rem;
-  font: inherit;
-  font-size: 0.8rem;
+.import-simple {
+  margin-bottom: 0.85rem;
+  padding: 0.85rem;
+  background: rgba(255, 252, 247, 0.85);
   border: 1px solid var(--border);
   border-radius: var(--radius);
-  background: var(--surface);
-  color: var(--brown-light);
-  cursor: pointer;
 }
 
-.import-tab--active {
-  border-color: var(--caramel);
-  color: var(--text);
-  background: rgba(212, 148, 58, 0.12);
+.import-simple-lead {
+  margin: 0 0 0.6rem;
+  font-size: 0.9rem;
+  color: var(--brown-light);
+}
+
+.import-simple-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin-bottom: 0.5rem;
+}
+
+.import-simple-paste {
+  margin-bottom: 0.35rem;
 }
 
 .import-textarea {

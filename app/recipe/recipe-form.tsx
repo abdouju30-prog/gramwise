@@ -42,6 +42,7 @@ export function RecipeForm() {
   const [form, setForm] = useState<RecipeForm>(DEFAULT_RECIPE);
   const [hydrated, setHydrated] = useState(false);
   const [saveNotice, setSaveNotice] = useState<string | null>(null);
+  const [libraryRefresh, setLibraryRefresh] = useState(0);
   const canSave = recipeHasSaveableContent(form);
 
   useEffect(() => {
@@ -130,6 +131,7 @@ export function RecipeForm() {
     saveRecipeToLibrary(form);
     const next = freshRecipeForm();
     setForm(next);
+    setLibraryRefresh((k) => k + 1);
     setSaveNotice(m.recipe.savedToast);
     window.setTimeout(() => setSaveNotice(null), 4000);
   }
@@ -166,7 +168,6 @@ export function RecipeForm() {
           className="btn btn-primary"
           disabled={!canSave}
           onClick={handleSaveAndNew}
-          title={m.recipe.saveAndNewHint}
         >
           {m.recipe.saveAndNew}
         </button>
@@ -176,7 +177,6 @@ export function RecipeForm() {
           {saveNotice}
         </p>
       ) : null}
-      <RecipeLibraryPanel onLoad={handleLoadSaved} />
 
       <form className="form" onSubmit={(e) => e.preventDefault()}>
         <label className="field">
@@ -191,8 +191,8 @@ export function RecipeForm() {
 
         <fieldset className="field-group">
           <legend className="field-group-legend">{m.recipe.ingredientsLegend}</legend>
-          <p className="field-hint field-hint-block">{m.recipe.ingredientsHint}</p>
           <IngredientImportPanel onApply={applyImportedIngredients} />
+          <p className="field-hint field-hint-block">{m.recipe.ingredientsHint}</p>
           <div className="ingredient-grid" role="table">
             <div className="ingredient-grid-head" role="row">
               <span role="columnheader">{m.recipe.ingredientName}</span>
@@ -280,6 +280,10 @@ export function RecipeForm() {
           >
             {m.recipe.addIngredient}
           </button>
+          <RecipeLibraryPanel
+            onLoad={handleLoadSaved}
+            refreshKey={libraryRefresh}
+          />
         </fieldset>
 
         <fieldset className="field-group">

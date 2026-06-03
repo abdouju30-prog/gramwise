@@ -2,7 +2,6 @@
 
 import { useCallback, useRef, useState } from "react";
 import {
-  INGREDIENT_QUANTITY_UNITS,
   type IngredientQuantityUnit,
 } from "@/lib/ingredient-units";
 import {
@@ -12,17 +11,13 @@ import {
 } from "@/lib/ingredient-import";
 import { useMessages } from "@/lib/i18n/locale-provider";
 
-type ImportTab = "paste" | "file" | "photo";
-
 type Props = {
   onApply: (lines: ParsedIngredientLine[]) => void;
 };
 
 async function ocrImage(file: File): Promise<string> {
   const { createWorker } = await import("tesseract.js");
-  const worker = await createWorker("fra+eng", 1, {
-    logger: () => {},
-  });
+  const worker = await createWorker("fra+eng", 1, { logger: () => {} });
   try {
     const { data } = await worker.recognize(file);
     return data.text;
@@ -34,56 +29,55 @@ async function ocrImage(file: File): Promise<string> {
 export function IngredientImportPanel({ onApply }: Props) {
   const m = useMessages();
   const imp = m.recipe.import;
-  const [open, setOpen] = useState(false);
-  const [tab, setTab] = useState<ImportTab>("paste");
-  const [pasteText, setPasteText] = useState("");
+  const [text, setText] = useState("");
   const [preview, setPreview] = useState<ParsedIngredientLine[] | null>(null);
-  const [status, setStatus] = useState<"idle" | "loading" | "error">("idle");
+  const [busy, setBusy] = useState(false);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
-  const fileInputRef = useRef<HTMLInputElement>(null);
-  const photoInputRef = useRef<HTMLInputElement>(null);
+  const photoRef = useRef<HTMLInputElement>(null);
+  const fileRef = useRef<HTMLInputElement>(null);
 
-  const runParse = useCallback((text: string) => {
-    const lines = parseIngredientText(text);
-    setPreview(lines.length > 0 ? lines : null);
-    if (lines.length === 0) {
-      setStatus("error");
-      setErrorMsg(imp.parseEmpty);
-    } else {
-      setStatus("idle");
-      setErrorMsg(null);
-    }
-  }, [imp.parseEmpty]);
+  const organize = useCallback(
+    (raw: string) => {
+      const lines = parseIngredientText(raw);
+      setPreview(lines.length > 0 ? lines : null);
+      if (lines.length === 0) {
+        setErrorMsg(imp.parseEmpty);
+      } else {
+        setErrorMsg(null);
+      }
+    },
+    [imp.parseEmpty],
+  );
 
-  async function handleFile(file: File) {
-    setStatus("loading");
+  async function fromImage(file: File) {
+    setBusy(true);
     setErrorMsg(null);
     try {
-      const text = file.type.startsWith("image/")
-        ? await ocrImage(file)
-        : await readIngredientFile(file);
-      setPasteText(text);
-      runParse(text);
-      setStatus("idle");
+      const extracted = await ocrImage(file);
+      setText(extracted);
+      organize(extracted);
     } catch {
-      setStatus("error");
-      setErrorMsg(imp.fileError);
+      setErrorMsg(imp.photoError);
       setPreview(null);
+    } finally {
+      setBusy(false);
     }
   }
 
-  async function handlePhoto(file: File) {
-    setStatus("loading");
+  async function fromFile(file: File) {
+    setBusy(true);
     setErrorMsg(null);
     try {
-      const text = await ocrImage(file);
-      setPasteText(text);
-      runParse(text);
-      setStatus("idle");
+      const extracted = file.type.startsWith("image/")
+        ? await ocrImage(file)
+        : await readIngredientFile(file);
+      setText(extracted);
+      organize(extracted);
     } catch {
-      setStatus("error");
-      setErrorMsg(imp.photoError);
+      setErrorMsg(imp.fileError);
       setPreview(null);
+    } finally {
+      setBusy(false);
     }
   }
 
@@ -91,161 +85,109 @@ export function IngredientImportPanel({ onApply }: Props) {
     if (!preview?.length) return;
     onApply(preview);
     setPreview(null);
-    setPasteText("");
-    setOpen(false);
-    setStatus("idle");
+    setText("");
     setErrorMsg(null);
   }
 
   return (
-    <section className="import-panel" aria-labelledby="import-panel-title">
+    <div className="import-simple">
+      <p className="import-simple-lead">{imp.lead}</p>
+
+      <div className="import-simple-actions">
+        <input
+          ref={photoRef}
+          type="file"
+          accept="image/*"
+          capture="environment"
+          className="sr-only"
+          onChange={(e) => {
+            const file = e.target.files?.[0];
+            if (file) void fromImage(file);
+            e.target.value = "";
+          }}
+        />
+        <input
+          ref={fileRef}
+          type="file"
+          accept=".txt,.csv,.tsv,text/plain,text/csv"
+          className="sr-only"
+          onChange={(e) => {
+            const file = e.target.files?.[0];
+            if (file) void fromFile(file);
+            e.target.value = "";
+          }}
+        />
+        <button
+          type="button"
+          className="btn btn-primary btn-sm"
+          disabled={busy}
+          onClick={() => photoRef.current?.click()}
+        >
+          {imp.photo}
+        </button>
+        <button
+          type="button"
+          className="btn btn-ghost btn-sm"
+          disabled={busy}
+          onClick={() => fileRef.current?.click()}
+        >
+          {imp.file}
+        </button>
+      </div>
+
+      <label className="field import-simple-paste">
+        <span className="sr-only">{imp.pasteLabel}</span>
+        <textarea
+          className="import-textarea"
+          rows={4}
+          value={text}
+          disabled={busy}
+          onChange={(e) => setText(e.target.value)}
+          placeholder={imp.pastePlaceholder}
+        />
+      </label>
+
       <button
         type="button"
-        className="btn btn-ghost btn-sm import-panel-toggle"
-        onClick={() => setOpen((v) => !v)}
-        aria-expanded={open}
+        className="btn btn-ghost btn-sm"
+        disabled={busy || !text.trim()}
+        onClick={() => organize(text)}
       >
-        {open ? imp.collapse : imp.expand}
+        {imp.organize}
       </button>
 
-      {open ? (
-        <div className="import-panel-body card">
-          <h3 id="import-panel-title" className="import-panel-title">
-            {imp.title}
-          </h3>
-          <p className="field-hint field-hint-block">{imp.hint}</p>
+      {busy ? (
+        <p className="preview-caption" role="status">
+          {imp.scanning}
+        </p>
+      ) : null}
 
-          <div className="import-tabs" role="tablist">
-            {(["paste", "file", "photo"] as const).map((id) => (
-              <button
-                key={id}
-                type="button"
-                role="tab"
-                aria-selected={tab === id}
-                className={`import-tab${tab === id ? " import-tab--active" : ""}`}
-                onClick={() => setTab(id)}
-              >
-                {imp.tabs[id]}
-              </button>
+      {errorMsg ? (
+        <p className="preview-caption preview-error" role="alert">
+          {errorMsg}
+        </p>
+      ) : null}
+
+      {preview && preview.length > 0 ? (
+        <div className="import-preview">
+          <p className="field-label">{imp.previewTitle(preview.length)}</p>
+          <ul className="import-preview-list">
+            {preview.map((row, i) => (
+              <li key={`${row.name}-${i}`}>
+                {row.name} — {row.quantity}{" "}
+                {imp.units[row.quantityUnit as IngredientQuantityUnit]}
+              </li>
             ))}
-          </div>
-
-          {tab === "paste" ? (
-            <label className="field">
-              <span className="field-label">{imp.pasteLabel}</span>
-              <textarea
-                className="import-textarea"
-                rows={6}
-                value={pasteText}
-                onChange={(e) => setPasteText(e.target.value)}
-                placeholder={imp.pastePlaceholder}
-              />
-              <button
-                type="button"
-                className="btn btn-ghost btn-sm"
-                disabled={!pasteText.trim()}
-                onClick={() => runParse(pasteText)}
-              >
-                {imp.analyze}
-              </button>
-            </label>
-          ) : null}
-
-          {tab === "file" ? (
-            <div className="import-file-block">
-              <input
-                ref={fileInputRef}
-                type="file"
-                accept=".txt,.csv,.tsv,text/plain,text/csv,image/*"
-                className="sr-only"
-                onChange={(e) => {
-                  const file = e.target.files?.[0];
-                  if (file) void handleFile(file);
-                  e.target.value = "";
-                }}
-              />
-              <button
-                type="button"
-                className="btn btn-ghost"
-                disabled={status === "loading"}
-                onClick={() => fileInputRef.current?.click()}
-              >
-                {imp.chooseFile}
-              </button>
-              <p className="field-hint">{imp.fileTypes}</p>
-            </div>
-          ) : null}
-
-          {tab === "photo" ? (
-            <div className="import-file-block">
-              <input
-                ref={photoInputRef}
-                type="file"
-                accept="image/*"
-                capture="environment"
-                className="sr-only"
-                onChange={(e) => {
-                  const file = e.target.files?.[0];
-                  if (file) void handlePhoto(file);
-                  e.target.value = "";
-                }}
-              />
-              <button
-                type="button"
-                className="btn btn-primary"
-                disabled={status === "loading"}
-                onClick={() => photoInputRef.current?.click()}
-              >
-                {status === "loading" ? imp.scanning : imp.takePhoto}
-              </button>
-              <p className="field-hint">{imp.photoHint}</p>
-            </div>
-          ) : null}
-
-          {status === "loading" ? (
-            <p className="preview-caption" role="status">
-              {imp.scanning}
-            </p>
-          ) : null}
-
-          {errorMsg ? (
-            <p className="preview-caption preview-error" role="alert">
-              {errorMsg}
-            </p>
-          ) : null}
-
-          {preview && preview.length > 0 ? (
-            <div className="import-preview">
-              <p className="field-label">{imp.previewTitle(preview.length)}</p>
-              <ul className="import-preview-list">
-                {preview.map((row, i) => (
-                  <li key={`${row.name}-${i}`}>
-                    <strong>{row.name}</strong> — {row.quantity}{" "}
-                    {unitLabel(imp.units, row.quantityUnit)}
-                    {row.costPerUnit
-                      ? ` · ${row.costPerUnit} ${imp.costSuffix(row.quantityUnit)}`
-                      : ""}
-                  </li>
-                ))}
-              </ul>
-              <button
-                type="button"
-                className="btn btn-primary btn-sm"
-                onClick={handleApply}
-              >
-                {imp.apply}
-              </button>
-            </div>
-          ) : null}
+          </ul>
+          <button
+            type="button"
+            className="btn btn-primary btn-sm"
+            onClick={handleApply}
+          >
+            {imp.apply}
+          </button>
         </div>
       ) : null}
-    </section>
+    </div>
   );
-}
-
-function unitLabel(
-  units: Record<IngredientQuantityUnit, string>,
-  unit: IngredientQuantityUnit,
-): string {
-  return units[unit] ?? unit;
 }
