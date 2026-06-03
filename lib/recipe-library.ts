@@ -6,6 +6,7 @@ import {
   type RecipeForm,
 } from "@/lib/recipe";
 import { getRecipeOwnerId } from "@/lib/recipe-owner";
+import { emitDataChanged } from "@/lib/data-events";
 
 const LIBRARY_KEY = "gramwise-recipe-library-v2";
 const LEGACY_LIBRARY_KEY = "gramwise-recipe-library-v1";
@@ -106,6 +107,19 @@ function persistOwnerRecipes(ownerRecipes: SavedRecipe[]): void {
   );
   const trimmed = ownerRecipes.slice(0, MAX_SAVED_RECIPES_PER_OWNER);
   writeAllLibrary([...trimmed, ...others]);
+  emitDataChanged();
+}
+
+export function attachOwnerToRecipes(
+  recipes: SavedRecipe[],
+  ownerId: string,
+): SavedRecipe[] {
+  return recipes.map((entry) => attachOwner(entry, ownerId));
+}
+
+export function replaceOwnerRecipeLibrary(recipes: SavedRecipe[]): void {
+  const ownerId = getRecipeOwnerId();
+  persistOwnerRecipes(attachOwnerToRecipes(recipes, ownerId));
 }
 
 function recipesForOwner(all: SavedRecipe[], ownerId: string): SavedRecipe[] {

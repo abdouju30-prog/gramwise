@@ -2,6 +2,7 @@ import {
   normalizeFixedChargesForm,
   type FixedChargesForm,
 } from "@/lib/fixed-charges";
+import { emitDataChanged } from "@/lib/data-events";
 import { normalizeRecipeForm, type RecipeForm } from "@/lib/recipe";
 
 const STORAGE_KEY_V2 = "gramwise-wizard-v2";
@@ -47,6 +48,7 @@ export function loadWizardSession(): WizardSession | null {
 
 export function saveWizardSession(session: WizardSession): void {
   sessionStorage.setItem(STORAGE_KEY_V2, JSON.stringify(session));
+  emitDataChanged();
 }
 
 export function saveFixedCharges(fixedCharges: FixedChargesForm): void {

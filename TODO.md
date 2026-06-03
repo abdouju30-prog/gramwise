@@ -26,6 +26,7 @@
 
 - [x] Landing page
 - [x] Legal pages (privacy, terms, footer) — [docs/GLOBAL_LAUNCH.md](docs/GLOBAL_LAUNCH.md) step 1
+- [x] Cloud account + sync (Supabase magic link) — [docs/SUPABASE_SETUP.md](docs/SUPABASE_SETUP.md) step 2
 - [x] Gumroad checkout (€29 lifetime)
 - [x] Stripe or lifetime payment (Checkout API + webhook stub)
 - [ ] Link from Instagram pastry page

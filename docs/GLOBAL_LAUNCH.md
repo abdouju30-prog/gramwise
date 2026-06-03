@@ -3,7 +3,7 @@
 | # | Étape | Statut |
 |---|--------|--------|
 | 1 | Pages légales (CGU, confidentialité, footer) | **Fait** |
-| 2 | Compte utilisateur + sauvegarde cloud | À faire |
+| 2 | Compte utilisateur + sauvegarde cloud | **Fait** — [docs/SUPABASE_SETUP.md](./SUPABASE_SETUP.md) |
 | 3 | Vérification achat Gumroad (licence) | À faire |
 | 4 | Onboarding guidé (1ère recette) | À faire |
 | 5 | Export PDF / devis pro | À faire |

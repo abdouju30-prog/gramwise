@@ -20,6 +20,7 @@ export const fr: LocaleBundle = {
     stepResults: "Résultats",
     openCalculator: "Ouvrir le calculateur",
     home: "Accueil",
+    account: "Compte",
   },
   beta: {
     bannerStrong: "Beta gratuite",

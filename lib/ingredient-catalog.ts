@@ -3,6 +3,7 @@ import {
   type IngredientQuantityUnit,
 } from "@/lib/ingredient-units";
 import type { IngredientRow } from "@/lib/recipe";
+import { emitDataChanged } from "@/lib/data-events";
 
 const CATALOG_KEY = "gramwise-ingredient-catalog-v2";
 const LEGACY_CATALOG_KEY = "gramwise-ingredient-catalog-v1";
@@ -145,6 +146,7 @@ export function loadIngredientCatalog(): CatalogIngredient[] {
 
 function persistCatalog(entries: CatalogIngredient[]): void {
   localStorage.setItem(CATALOG_KEY, JSON.stringify(entries));
+  emitDataChanged();
 }
 
 export function saveIngredientCatalog(entries: CatalogIngredient[]): void {

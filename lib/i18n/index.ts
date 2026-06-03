@@ -1,6 +1,9 @@
 import { ar } from "./locales/ar";
 import { en } from "./locales/en";
 import { fr } from "./locales/fr";
+import { accountAr } from "./account/ar";
+import { accountEn } from "./account/en";
+import { accountFr } from "./account/fr";
 import { legalAr } from "./legal/ar";
 import { legalEn } from "./legal/en";
 import { legalFr } from "./legal/fr";
@@ -10,9 +13,9 @@ export type { Locale, Messages, LegalDoc } from "./types";
 export { LOCALES, LOCALE_LABELS } from "./types";
 
 const CATALOG: Record<Locale, Messages> = {
-  fr: { ...fr, legal: legalFr },
-  ar: { ...ar, legal: legalAr },
-  en: { ...en, legal: legalEn },
+  fr: { ...fr, legal: legalFr, account: accountFr },
+  ar: { ...ar, legal: legalAr, account: accountAr },
+  en: { ...en, legal: legalEn, account: accountEn },
 };
 
 export const DEFAULT_LOCALE: Locale = "fr";

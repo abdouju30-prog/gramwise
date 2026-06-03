@@ -25,6 +25,7 @@ export type Messages = {
     stepResults: string;
     openCalculator: string;
     home: string;
+    account: string;
   };
   beta: {
     bannerStrong: string;
@@ -329,6 +330,26 @@ export type Messages = {
     privacy: LegalDoc;
     terms: LegalDoc;
   };
+  account: {
+    navLabel: string;
+    eyebrow: string;
+    title: string;
+    lead: string;
+    notConfiguredTitle: string;
+    notConfiguredBody: string;
+    emailLabel: string;
+    emailPlaceholder: string;
+    sendLink: string;
+    linkSent: string;
+    signedInAs: string;
+    syncNow: string;
+    syncing: string;
+    synced: string;
+    lastSync: string;
+    signOut: string;
+    syncHint: string;
+    errorGeneric: string;
+  };
 };
 
 export type LegalDoc = {
@@ -339,4 +360,4 @@ export type LegalDoc = {
   sections: { title: string; paragraphs: string[] }[];
 };
 
-export type LocaleBundle = Omit<Messages, "legal">;
+export type LocaleBundle = Omit<Messages, "legal" | "account">;

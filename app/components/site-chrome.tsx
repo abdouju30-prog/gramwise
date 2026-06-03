@@ -39,6 +39,9 @@ export function SiteChrome({ children }: { children: React.ReactNode }) {
           <span className="brand-tag">{m.brand.tag}</span>
         </Link>
         <div className="site-header-controls">
+          <Link href="/account" className="btn btn-ghost btn-sm site-header-account">
+            {m.nav.account}
+          </Link>
           <LanguageSwitcher />
           <CurrencySwitcher />
         </div>
