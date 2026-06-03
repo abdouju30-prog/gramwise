@@ -1251,6 +1251,69 @@ h1 {
   direction: rtl;
 }
 
+.catalog-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  margin-bottom: 0.75rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  background: var(--surface);
+}
+
+.catalog-grid-head,
+.catalog-grid-row {
+  display: grid;
+  grid-template-columns: 1.4fr 0.7fr 0.9fr 2.25rem;
+  gap: 0.5rem;
+  align-items: center;
+  padding: 0.5rem 0.65rem;
+}
+
+.catalog-grid-head span {
+  font-size: 0.65rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--brown-light);
+}
+
+.catalog-grid-actions-head {
+  width: 2.25rem;
+}
+
+.catalog-grid-row {
+  border-top: 1px solid var(--border);
+}
+
+.catalog-grid-row input,
+.catalog-grid-row select {
+  width: 100%;
+  min-width: 0;
+  padding: 0.45rem 0.5rem;
+  font: inherit;
+  font-variant-numeric: tabular-nums;
+  color: var(--text);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+}
+
+.catalog-grid-row input:focus,
+.catalog-grid-row select:focus {
+  outline: none;
+  border-color: var(--caramel);
+  box-shadow: 0 0 0 2px rgba(212, 148, 58, 0.2);
+}
+
+@media (max-width: 520px) {
+  .catalog-grid-head,
+  .catalog-grid-row {
+    grid-template-columns: 1fr 0.75fr 0.85fr 2.25rem;
+  }
+}
+
 .ingredient-grid {
   display: flex;
   flex-direction: column;

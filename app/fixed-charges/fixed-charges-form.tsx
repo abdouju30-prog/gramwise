@@ -16,6 +16,7 @@ import { formatMoney } from "@/lib/format";
 import { useMessages } from "@/lib/i18n/locale-provider";
 import type { Messages } from "@/lib/i18n/types";
 import { loadWizardSession, saveFixedCharges } from "@/lib/session";
+import { IngredientCatalogSection } from "./ingredient-catalog-section";
 
 function presetLabel(
   preset: ChargeLinePreset,
@@ -173,6 +174,8 @@ export function FixedChargesForm() {
             {m.fixed.addChargeLine}
           </button>
         </fieldset>
+
+        <IngredientCatalogSection />
       </form>
 
       <section className="card preview-card" aria-live="polite">

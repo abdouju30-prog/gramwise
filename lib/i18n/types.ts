@@ -131,6 +131,16 @@ export type Messages = {
     previewError: string;
     monthlyPreviewCaption: string;
     monthlyPreviewError: string;
+    catalog: {
+      legend: string;
+      hint: string;
+      name: string;
+      namePlaceholder: string;
+      unit: string;
+      price: string;
+      add: string;
+      remove: string;
+    };
     back: string;
     continue: string;
   };

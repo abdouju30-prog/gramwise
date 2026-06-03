@@ -36,6 +36,11 @@ import {
   updateSavedRecipe,
 } from "@/lib/recipe-library";
 import { extractLegacyCapacity, monthlyFixedTotal } from "@/lib/fixed-charges";
+import {
+  applyCatalogToRow,
+  applyCatalogToRows,
+  loadIngredientCatalog,
+} from "@/lib/ingredient-catalog";
 import { useMessages } from "@/lib/i18n/locale-provider";
 import {
   loadWizardSession,
@@ -55,6 +60,7 @@ export function RecipeForm() {
   const [picker, setPicker] = useState("");
   const editingSaved = isSavedRecipePicker(picker);
   const canSave = recipeHasSaveableContent(form);
+  const catalog = useMemo(() => loadIngredientCatalog(), [libraryRefresh]);
 
   useEffect(() => {
     const data = loadWizardSession();
@@ -87,9 +93,14 @@ export function RecipeForm() {
         (row, i) => row.label !== base.laborPhases[i]?.label,
       );
 
-    setForm(next);
+    const withCatalog = {
+      ...next,
+      ingredients: applyCatalogToRows(next.ingredients, loadIngredientCatalog()),
+    };
+
+    setForm(withCatalog);
     if (data?.fixedCharges && (staleGeneration || defaultsChanged)) {
-      saveRecipe(next, {
+      saveRecipe(withCatalog, {
         recipeDefaultsGeneration: RECIPE_DEFAULTS_GENERATION,
       });
     }
@@ -123,9 +134,14 @@ export function RecipeForm() {
   function updateIngredient(id: string, patch: Partial<IngredientRow>) {
     updateForm({
       ...form,
-      ingredients: form.ingredients.map((r) =>
-        r.id === id ? { ...r, ...patch } : r,
-      ),
+      ingredients: form.ingredients.map((r) => {
+        if (r.id !== id) return r;
+        let row = { ...r, ...patch };
+        if (patch.name !== undefined) {
+          row = applyCatalogToRow(row, catalog);
+        }
+        return row;
+      }),
     });
   }
 
@@ -157,7 +173,7 @@ export function RecipeForm() {
   function applyImportedIngredients(lines: ParsedIngredientLine[]) {
     updateForm({
       ...form,
-      ingredients: parsedLinesToRows(lines),
+      ingredients: applyCatalogToRows(parsedLinesToRows(lines), catalog),
     });
   }
 
@@ -178,8 +194,12 @@ export function RecipeForm() {
       ...recipe,
       ingredients: recipe.ingredients.map((row) => normalizeIngredientRow(row)),
     });
-    updateForm(loaded);
-    saveRecipe(loaded);
+    const withCatalog = {
+      ...loaded,
+      ingredients: applyCatalogToRows(loaded.ingredients, catalog),
+    };
+    updateForm(withCatalog);
+    saveRecipe(withCatalog);
   }
 
   function handlePickerChange(value: string) {
