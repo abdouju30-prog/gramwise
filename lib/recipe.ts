@@ -4,7 +4,8 @@ import {
   isIngredientQuantityUnit,
 } from "@/lib/ingredient-units";
 import type { CapacityMode } from "@/lib/fixed-charges";
-import { parsePositive } from "@/lib/parse";
+import type { DisplayCurrency } from "@/lib/currency";
+import { parseNonNegativeInMad, parsePositive } from "@/lib/parse";
 
 export type IngredientRow = {
   id: string;
@@ -243,11 +244,14 @@ export function emptyLaborRow(): LaborRow {
   return { id: rowId(), label: "", hours: "", hourlyRate: "" };
 }
 
-export function parseIngredients(rows: IngredientRow[]): IngredientLine[] | null {
+export function parseIngredients(
+  rows: IngredientRow[],
+  entryCurrency: DisplayCurrency = "MAD",
+): IngredientLine[] | null {
   const lines: IngredientLine[] = [];
   for (const row of rows) {
     const q = parseNonNegative(row.quantity);
-    const c = parseNonNegative(row.costPerUnit);
+    const c = parseNonNegativeInMad(row.costPerUnit, entryCurrency);
     if (q === null && c === null) continue;
     if (q === null || c === null || (q === 0 && c === 0)) return null;
     lines.push({ quantity: q, costPerUnit: c });
@@ -255,11 +259,14 @@ export function parseIngredients(rows: IngredientRow[]): IngredientLine[] | null
   return lines.length > 0 ? lines : null;
 }
 
-export function parseLaborPhases(rows: LaborRow[]): LaborPhase[] | null {
+export function parseLaborPhases(
+  rows: LaborRow[],
+  entryCurrency: DisplayCurrency = "MAD",
+): LaborPhase[] | null {
   const phases: LaborPhase[] = [];
   for (const row of rows) {
     const hours = parseNonNegative(row.hours);
-    const rate = parseNonNegative(row.hourlyRate);
+    const rate = parseNonNegativeInMad(row.hourlyRate, entryCurrency);
     if (hours === null && rate === null) continue;
     if (hours === null || rate === null || hours === 0) return null;
     phases.push({ hours, hourlyRate: rate });

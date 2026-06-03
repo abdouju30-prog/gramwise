@@ -2,6 +2,7 @@
 
 import { useMessages } from "@/lib/i18n/locale-provider";
 import { FixedChargesForm } from "./fixed-charges-form";
+import { WizardSettingsBar } from "./wizard-settings-bar";
 
 export default function FixedChargesPage() {
   const m = useMessages();
@@ -12,6 +13,7 @@ export default function FixedChargesPage() {
       <h1>{m.fixed.title}</h1>
       <p className="lead">{m.fixed.lead}</p>
       <p className="explain-short">{m.fixed.explainShort}</p>
+      <WizardSettingsBar />
       <FixedChargesForm />
     </main>
   );

@@ -94,6 +94,40 @@ body {
   background: rgba(212, 148, 58, 0.12);
 }
 
+.site-header-controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.wizard-settings-bar {
+  margin-bottom: 1.25rem;
+  padding: 0.85rem 1rem;
+  background: rgba(255, 252, 247, 0.9);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+}
+
+.wizard-settings-group {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.65rem;
+}
+
+.wizard-settings-label {
+  font-size: 0.65rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--brown-mid);
+}
+
+.wizard-settings-hint {
+  margin: 0.5rem 0 0;
+}
+
 .brand {
   display: flex;
   flex-direction: column;

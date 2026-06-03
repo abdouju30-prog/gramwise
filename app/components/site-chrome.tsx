@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { LanguageSwitcher } from "./language-switcher";
+import { CurrencySwitcher } from "./currency-switcher";
 import { useMessages } from "@/lib/i18n/locale-provider";
 
 const STEP_PATHS = [
@@ -36,7 +37,10 @@ export function SiteChrome({ children }: { children: React.ReactNode }) {
           </span>
           <span className="brand-tag">{m.brand.tag}</span>
         </Link>
-        <LanguageSwitcher />
+        <div className="site-header-controls">
+          <LanguageSwitcher />
+          <CurrencySwitcher />
+        </div>
         {onWizard && (
           <nav className="wizard-progress" aria-label={m.nav.progress}>
             {STEP_PATHS.map((step, i) => {

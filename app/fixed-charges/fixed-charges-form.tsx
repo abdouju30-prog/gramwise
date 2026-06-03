@@ -12,8 +12,8 @@ import {
   type FixedChargeLine,
   type FixedChargesForm,
 } from "@/lib/fixed-charges";
-import { formatMoney } from "@/lib/format";
-import { useMessages } from "@/lib/i18n/locale-provider";
+import { CURRENCY_LABELS } from "@/lib/currency";
+import { useLocale, useMessages } from "@/lib/i18n/locale-provider";
 import type { Messages } from "@/lib/i18n/types";
 import { loadWizardSession, saveFixedCharges } from "@/lib/session";
 import { IngredientCatalogSection } from "./ingredient-catalog-section";
@@ -38,6 +38,7 @@ function presetLabel(
 
 export function FixedChargesForm() {
   const m = useMessages();
+  const { entryCurrency, formatMoney } = useLocale();
   const router = useRouter();
   const [form, setForm] = useState<FixedChargesForm>(DEFAULT_FIXED_CHARGES);
 
@@ -47,8 +48,8 @@ export function FixedChargesForm() {
   }, []);
 
   const monthlyTotal = useMemo(
-    () => monthlyFixedTotal(form.chargeLines),
-    [form.chargeLines],
+    () => monthlyFixedTotal(form.chargeLines, entryCurrency),
+    [form.chargeLines, entryCurrency],
   );
 
   function updateChargeLine(
@@ -127,7 +128,7 @@ export function FixedChargesForm() {
                 )}
                 <div className="field-input-wrap charge-line-amount" role="cell">
                   <span className="field-prefix" aria-hidden>
-                    $
+                    {CURRENCY_LABELS[entryCurrency]}
                   </span>
                   <input
                     type="number"

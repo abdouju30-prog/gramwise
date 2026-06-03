@@ -8,6 +8,11 @@ export const en: Messages = {
   },
   brand: { tag: "Pastry costing" },
   lang: { choose: "Language" },
+  currency: {
+    choose: "Entry currency",
+    legend: "Currency",
+    hint: "All amounts (overhead, ingredients, wages) are entered in this currency.",
+  },
   nav: {
     progress: "Progress",
     stepFixed: "Fixed charges",
@@ -170,7 +175,7 @@ export const en: Messages = {
       name: "Ingredient",
       namePlaceholder: "e.g. Flour",
       unit: "Unit",
-      price: "Price / unit (MAD)",
+      price: "Price / unit",
       add: "Add ingredient",
       remove: "Remove",
     },

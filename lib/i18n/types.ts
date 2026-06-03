@@ -13,6 +13,11 @@ export type Messages = {
   meta: { title: string; description: string };
   brand: { tag: string };
   lang: { choose: string };
+  currency: {
+    choose: string;
+    legend: string;
+    hint: string;
+  };
   nav: {
     progress: string;
     stepFixed: string;

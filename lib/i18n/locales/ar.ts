@@ -8,6 +8,11 @@ export const ar: Messages = {
   },
   brand: { tag: "تسعير الحلويات" },
   lang: { choose: "اللغة" },
+  currency: {
+    choose: "عملة الإدخال",
+    legend: "العملة",
+    hint: "كل المبالغ (مصاريف، مكونات، أجور) تُدخل بهذه العملة.",
+  },
   nav: {
     progress: "التقدم",
     stepFixed: "مصاريف ثابتة",
@@ -170,7 +175,7 @@ export const ar: Messages = {
       name: "مكوّن",
       namePlaceholder: "مثال: دقيق",
       unit: "الوحدة",
-      price: "السعر / وحدة (MAD)",
+      price: "السعر / وحدة",
       add: "إضافة مكوّن",
       remove: "حذف",
     },

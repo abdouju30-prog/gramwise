@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
 import { runCosting } from "@/lib/costing";
-import { formatMoney } from "@/lib/format";
+import { CURRENCY_LABELS } from "@/lib/currency";
 import { INGREDIENT_QUANTITY_UNITS } from "@/lib/ingredient-units";
 import type { ParsedIngredientLine } from "@/lib/ingredient-import";
 import {
@@ -41,7 +41,7 @@ import {
   applyCatalogToRows,
   loadIngredientCatalog,
 } from "@/lib/ingredient-catalog";
-import { useMessages } from "@/lib/i18n/locale-provider";
+import { useLocale, useMessages } from "@/lib/i18n/locale-provider";
 import {
   loadWizardSession,
   RECIPE_DEFAULTS_GENERATION,
@@ -51,6 +51,7 @@ import { useWizardGuard } from "@/lib/use-wizard-guard";
 
 export function RecipeForm() {
   const m = useMessages();
+  const { entryCurrency, formatMoney } = useLocale();
   const router = useRouter();
   const session = useWizardGuard("fixed");
   const [form, setForm] = useState<RecipeForm>(DEFAULT_RECIPE);
@@ -109,15 +110,15 @@ export function RecipeForm() {
 
   const preview = useMemo(() => {
     if (!session?.fixedCharges || !hydrated) return null;
-    return runCosting(session.fixedCharges, form);
-  }, [session, form, hydrated]);
+    return runCosting(session.fixedCharges, form, entryCurrency);
+  }, [session, form, hydrated, entryCurrency]);
 
   const monthlyTotal = useMemo(
     () =>
       session?.fixedCharges
-        ? monthlyFixedTotal(session.fixedCharges.chargeLines)
+        ? monthlyFixedTotal(session.fixedCharges.chargeLines, entryCurrency)
         : null,
-    [session?.fixedCharges],
+    [session?.fixedCharges, entryCurrency],
   );
 
   function updateForm(next: RecipeForm) {
@@ -298,7 +299,9 @@ export function RecipeForm() {
               <span role="columnheader">{m.recipe.ingredientName}</span>
               <span role="columnheader">{m.recipe.qty}</span>
               <span role="columnheader">{m.recipe.qtyUnit}</span>
-              <span role="columnheader">{m.recipe.costPerUnit}</span>
+              <span role="columnheader">
+                {m.recipe.costPerUnit} ({CURRENCY_LABELS[entryCurrency]})
+              </span>
               <span className="ingredient-grid-actions-head" aria-hidden />
             </div>
             {form.ingredients.map((row) => (
@@ -391,7 +394,7 @@ export function RecipeForm() {
               <tr>
                 <th>{m.recipe.phase}</th>
                 <th>{m.recipe.hours}</th>
-                <th>{m.recipe.ratePerHour}</th>
+                <th>{m.recipe.ratePerHour.replace("MAD", CURRENCY_LABELS[entryCurrency])}</th>
                 <th aria-label="Actions" />
               </tr>
             </thead>

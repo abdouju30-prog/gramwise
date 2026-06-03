@@ -8,11 +8,13 @@ import {
   saveIngredientCatalog,
   type CatalogIngredient,
 } from "@/lib/ingredient-catalog";
-import { useMessages } from "@/lib/i18n/locale-provider";
+import { useLocale, useMessages } from "@/lib/i18n/locale-provider";
+import { CURRENCY_LABELS } from "@/lib/currency";
 import type { IngredientQuantityUnit } from "@/lib/ingredient-units";
 
 export function IngredientCatalogSection() {
   const m = useMessages();
+  const { entryCurrency } = useLocale();
   const t = m.fixed.catalog;
   const [items, setItems] = useState<CatalogIngredient[]>([]);
   const [hydrated, setHydrated] = useState(false);
@@ -51,7 +53,9 @@ export function IngredientCatalogSection() {
         <div className="catalog-grid-head" role="row">
           <span role="columnheader">{t.name}</span>
           <span role="columnheader">{t.unit}</span>
-          <span role="columnheader">{t.price}</span>
+          <span role="columnheader">
+            {t.price} ({CURRENCY_LABELS[entryCurrency]})
+          </span>
           <span className="catalog-grid-actions-head" aria-hidden />
         </div>
         {items.map((item) => (

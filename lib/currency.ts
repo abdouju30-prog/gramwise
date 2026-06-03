@@ -13,6 +13,33 @@ const LOCALE_FOR: Record<DisplayCurrency, string> = {
   USD: "en-US",
 };
 
+export const CURRENCY_STORAGE_KEY = "gramwise-entry-currency-v1";
+
+export const CURRENCY_LABELS: Record<DisplayCurrency, string> = {
+  MAD: "MAD",
+  EUR: "EUR",
+  USD: "USD",
+};
+
+export function loadEntryCurrency(): DisplayCurrency {
+  if (typeof window === "undefined") return "MAD";
+  try {
+    const raw = localStorage.getItem(CURRENCY_STORAGE_KEY);
+    if (raw === "EUR" || raw === "USD" || raw === "MAD") return raw;
+  } catch {
+    /* ignore */
+  }
+  return "MAD";
+}
+
+export function saveEntryCurrency(currency: DisplayCurrency): void {
+  try {
+    localStorage.setItem(CURRENCY_STORAGE_KEY, currency);
+  } catch {
+    /* ignore */
+  }
+}
+
 function madPerUnit(currency: Exclude<DisplayCurrency, "MAD">): number {
   if (currency === "EUR") {
     const n = Number.parseFloat(process.env.NEXT_PUBLIC_MAD_PER_EUR ?? "10.85");
@@ -20,6 +47,15 @@ function madPerUnit(currency: Exclude<DisplayCurrency, "MAD">): number {
   }
   const n = Number.parseFloat(process.env.NEXT_PUBLIC_MAD_PER_USD ?? "10");
   return Number.isFinite(n) && n > 0 ? n : 10;
+}
+
+/** Convert an amount entered in the user's currency to MAD for the engine. */
+export function convertToMad(
+  amount: number,
+  currency: DisplayCurrency,
+): number {
+  if (currency === "MAD") return amount;
+  return amount * madPerUnit(currency);
 }
 
 /** Convert an amount stored in MAD to another display currency. */

@@ -18,22 +18,34 @@ import {
   type Locale,
   type Messages,
 } from "./index";
+import {
+  formatFromMad,
+  loadEntryCurrency,
+  saveEntryCurrency,
+  type DisplayCurrency,
+} from "@/lib/currency";
 
 type LocaleContextValue = {
   locale: Locale;
   messages: Messages;
   dir: "ltr" | "rtl";
   setLocale: (locale: Locale) => void;
+  entryCurrency: DisplayCurrency;
+  setEntryCurrency: (currency: DisplayCurrency) => void;
+  formatMoney: (amountMad: number) => string;
 };
 
 const LocaleContext = createContext<LocaleContextValue | null>(null);
 
 export function LocaleProvider({ children }: { children: ReactNode }) {
   const [locale, setLocaleState] = useState<Locale>(DEFAULT_LOCALE);
+  const [entryCurrency, setEntryCurrencyState] =
+    useState<DisplayCurrency>("MAD");
   const [ready, setReady] = useState(false);
 
   useEffect(() => {
     setLocaleState(detectLocale());
+    setEntryCurrencyState(loadEntryCurrency());
     setReady(true);
   }, []);
 
@@ -46,6 +58,16 @@ export function LocaleProvider({ children }: { children: ReactNode }) {
     }
   }, []);
 
+  const setEntryCurrency = useCallback((next: DisplayCurrency) => {
+    setEntryCurrencyState(next);
+    saveEntryCurrency(next);
+  }, []);
+
+  const formatMoney = useCallback(
+    (amountMad: number) => formatFromMad(amountMad, entryCurrency),
+    [entryCurrency],
+  );
+
   const dir = localeDirection(locale);
   const messages = useMemo(() => getMessages(locale), [locale]);
 
@@ -56,8 +78,16 @@ export function LocaleProvider({ children }: { children: ReactNode }) {
   }, [locale, dir, ready]);
 
   const value = useMemo(
-    () => ({ locale, messages, dir, setLocale }),
-    [locale, messages, dir, setLocale],
+    () => ({
+      locale,
+      messages,
+      dir,
+      setLocale,
+      entryCurrency,
+      setEntryCurrency,
+      formatMoney,
+    }),
+    [locale, messages, dir, setLocale, entryCurrency, setEntryCurrency, formatMoney],
   );
 
   return (

@@ -6,9 +6,8 @@ import { BetaFeedbackCard } from "@/app/components/beta-feedback-card";
 import { MultiCurrencyPrice } from "@/app/components/multi-currency-price";
 import { runCosting } from "@/lib/costing";
 import { fxRatesLabel, formatFromMad } from "@/lib/currency";
-import { formatMoney } from "@/lib/format";
 import { interpolate } from "@/lib/i18n/format";
-import { useMessages } from "@/lib/i18n/locale-provider";
+import { useLocale, useMessages } from "@/lib/i18n/locale-provider";
 import { useWizardGuard } from "@/lib/use-wizard-guard";
 
 function toCsvCell(value: string): string {
@@ -31,12 +30,13 @@ function toHtml(value: string): string {
 
 export function ResultsView() {
   const m = useMessages();
+  const { entryCurrency, formatMoney } = useLocale();
   const session = useWizardGuard("recipe");
 
   const costing = useMemo(() => {
     if (!session?.fixedCharges || !session.recipe) return null;
-    return runCosting(session.fixedCharges, session.recipe);
-  }, [session]);
+    return runCosting(session.fixedCharges, session.recipe, entryCurrency);
+  }, [session, entryCurrency]);
 
   if (!session?.recipe) return null;
   const recipe = session.recipe;

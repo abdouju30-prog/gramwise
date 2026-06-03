@@ -1,4 +1,5 @@
-import { parsePositive } from "@/lib/parse";
+import type { DisplayCurrency } from "@/lib/currency";
+import { parsePositiveInMad } from "@/lib/parse";
 
 export type CapacityMode = "batches_per_month" | "hours_per_month";
 
@@ -48,13 +49,16 @@ export function createCustomChargeLine(): FixedChargeLine {
   return { id: newChargeLineId(), preset: "custom", customLabel: "", amount: "" };
 }
 
-/** Sum of line amounts; null if any filled line is invalid. */
-export function monthlyFixedTotal(lines: FixedChargeLine[]): number | null {
+/** Sum of line amounts; null if any filled line is invalid. Values converted to MAD. */
+export function monthlyFixedTotal(
+  lines: FixedChargeLine[],
+  entryCurrency: DisplayCurrency = "MAD",
+): number | null {
   let sum = 0;
   for (const line of lines) {
     const trimmed = line.amount.trim();
     if (!trimmed) continue;
-    const value = parsePositive(line.amount);
+    const value = parsePositiveInMad(line.amount, entryCurrency);
     if (value === null) return null;
     sum += value;
   }

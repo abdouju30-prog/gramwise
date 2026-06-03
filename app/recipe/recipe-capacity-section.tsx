@@ -2,10 +2,14 @@
 
 import { useMemo } from "react";
 import type { CapacityMode } from "@/lib/fixed-charges";
-import { formatMoney } from "@/lib/format";
+import { formatFromMad } from "@/lib/currency";
+import { useLocale, useMessages } from "@/lib/i18n/locale-provider";
 import { parsePositive } from "@/lib/parse";
-import { recipeLaborHours, parseLaborPhases, type RecipeForm } from "@/lib/recipe";
-import { useMessages } from "@/lib/i18n/locale-provider";
+import {
+  parseLaborPhases,
+  recipeLaborHours,
+  type RecipeForm,
+} from "@/lib/recipe";
 
 type Props = {
   form: RecipeForm;
@@ -21,6 +25,7 @@ export function RecipeCapacitySection({
   onUpdate,
 }: Props) {
   const m = useMessages();
+  const { entryCurrency } = useLocale();
 
   const previewFormula = useMemo(() => {
     if (monthlyTotal === null || fixedLoadAllocated === null) return null;
@@ -28,18 +33,19 @@ export function RecipeCapacitySection({
     if (form.capacityMode === "batches_per_month") {
       const batches = parsePositive(form.batchesPerMonth);
       if (batches === null) return null;
-      return `${formatMoney(monthlyTotal)} ÷ ${batches} = ${formatMoney(fixedLoadAllocated)} ${m.fixed.previewPerBatch}`;
+      return `${formatFromMad(monthlyTotal, entryCurrency)} ÷ ${batches} = ${formatFromMad(fixedLoadAllocated, entryCurrency)} ${m.fixed.previewPerBatch}`;
     }
 
     const shopHours = parsePositive(form.hoursPerMonth);
     const phases = parseLaborPhases(form.laborPhases);
     const recipeHours = phases ? recipeLaborHours(phases) : null;
     if (shopHours === null || recipeHours === null || recipeHours === 0) return null;
-    return `${formatMoney(monthlyTotal)} ÷ ${shopHours} h × ${recipeHours} h = ${formatMoney(fixedLoadAllocated)} ${m.fixed.previewPerRecipe}`;
+    return `${formatFromMad(monthlyTotal, entryCurrency)} ÷ ${shopHours} h × ${recipeHours} h = ${formatFromMad(fixedLoadAllocated, entryCurrency)} ${m.fixed.previewPerRecipe}`;
   }, [
     form,
     monthlyTotal,
     fixedLoadAllocated,
+    entryCurrency,
     m.fixed.previewPerBatch,
     m.fixed.previewPerRecipe,
   ]);

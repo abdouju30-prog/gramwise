@@ -8,6 +8,11 @@ export const fr: Messages = {
   },
   brand: { tag: "Coût pâtisserie" },
   lang: { choose: "Langue" },
+  currency: {
+    choose: "Monnaie de saisie",
+    legend: "Monnaie",
+    hint: "Tous les montants (charges, ingrédients, salaires) sont saisis dans cette monnaie.",
+  },
   nav: {
     progress: "Progression",
     stepFixed: "Charges fixes",
@@ -171,7 +176,7 @@ export const fr: Messages = {
       name: "Ingrédient",
       namePlaceholder: "ex. Farine",
       unit: "Unité",
-      price: "Prix / unité (MAD)",
+      price: "Prix / unité",
       add: "Ajouter un ingrédient",
       remove: "Retirer",
     },
