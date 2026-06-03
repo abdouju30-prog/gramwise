@@ -1724,8 +1724,20 @@ h1 {
   box-shadow: 0 0 0 2px rgba(212, 148, 58, 0.2);
 }
 
-.recipe-export-btn {
+.recipe-library-actions {
   grid-column: 1 / -1;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem 1rem;
+}
+
+.recipe-library-private {
+  margin: 0;
+  flex: 1 1 12rem;
+}
+
+.recipe-export-btn {
   justify-self: start;
 }
 

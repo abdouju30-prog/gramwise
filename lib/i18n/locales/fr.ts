@@ -275,6 +275,8 @@ export const fr: Messages = {
       expand: (count) => `Mes recettes (${count})`,
       delete: "Supprimer",
       exportFile: "Exporter sur mon PC",
+      privateNote:
+        "Vos recettes restent enregistrées sur cet appareil — vous seul pouvez les supprimer.",
     },
   },
   results: {

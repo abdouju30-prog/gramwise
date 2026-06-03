@@ -5,11 +5,16 @@ import {
   laborRowsFromLabels,
   type RecipeForm,
 } from "@/lib/recipe";
+import { getRecipeOwnerId } from "@/lib/recipe-owner";
 
-const LIBRARY_KEY = "gramwise-recipe-library-v1";
+const LIBRARY_KEY = "gramwise-recipe-library-v2";
+const LEGACY_LIBRARY_KEY = "gramwise-recipe-library-v1";
+const MAX_SAVED_RECIPES = 200;
 
 export type SavedRecipe = {
   id: string;
+  /** Owner on this device — only they can read, update, or delete. */
+  ownerId: string;
   name: string;
   savedAt: string;
   recipe: RecipeForm;
@@ -49,32 +54,85 @@ export function recipeHasSaveableContent(form: RecipeForm): boolean {
   });
 }
 
+function belongsToOwner(entry: SavedRecipe, ownerId: string): boolean {
+  return !entry.ownerId || entry.ownerId === ownerId;
+}
+
+function attachOwner(entry: SavedRecipe, ownerId: string): SavedRecipe {
+  return { ...entry, ownerId: entry.ownerId ?? ownerId };
+}
+
+function readRawLibrary(key: string): SavedRecipe[] | null {
+  if (typeof window === "undefined") return null;
+  try {
+    const raw = localStorage.getItem(key);
+    if (!raw) return null;
+    const parsed = JSON.parse(raw) as SavedRecipe[];
+    return Array.isArray(parsed) ? parsed : null;
+  } catch {
+    return null;
+  }
+}
+
+function migrateAndFilter(entries: SavedRecipe[], ownerId: string): SavedRecipe[] {
+  const owned = entries
+    .filter((e) => belongsToOwner(e, ownerId))
+    .map((e) => attachOwner(e, ownerId));
+  return owned.sort(
+    (a, b) => Date.parse(b.savedAt) - Date.parse(a.savedAt),
+  );
+}
+
+function persistLibrary(entries: SavedRecipe[]): void {
+  localStorage.setItem(
+    LIBRARY_KEY,
+    JSON.stringify(entries.slice(0, MAX_SAVED_RECIPES)),
+  );
+}
+
 export function loadRecipeLibrary(): SavedRecipe[] {
   if (typeof window === "undefined") return [];
+
+  const ownerId = getRecipeOwnerId();
+
   try {
-    const raw = localStorage.getItem(LIBRARY_KEY);
-    if (!raw) return [];
-    const parsed = JSON.parse(raw) as SavedRecipe[];
-    return Array.isArray(parsed) ? parsed : [];
+    const current = readRawLibrary(LIBRARY_KEY);
+    if (current) {
+      const library = migrateAndFilter(current, ownerId);
+      if (
+        library.length !== current.length ||
+        current.some((e) => !e.ownerId)
+      ) {
+        persistLibrary(library);
+      }
+      return library;
+    }
+
+    const legacy = readRawLibrary(LEGACY_LIBRARY_KEY);
+    if (legacy) {
+      const library = migrateAndFilter(legacy, ownerId);
+      persistLibrary(library);
+      return library;
+    }
+
+    return [];
   } catch {
     return [];
   }
 }
 
-function persistLibrary(entries: SavedRecipe[]): void {
-  localStorage.setItem(LIBRARY_KEY, JSON.stringify(entries));
-}
-
 export function saveRecipeToLibrary(recipe: RecipeForm): SavedRecipe {
+  const ownerId = getRecipeOwnerId();
   const entry: SavedRecipe = {
     id: rowId(),
+    ownerId,
     name: recipe.name.trim() || `Recette ${new Date().toLocaleDateString()}`,
     savedAt: new Date().toISOString(),
     recipe: structuredClone(recipe),
   };
   const library = loadRecipeLibrary();
   library.unshift(entry);
-  persistLibrary(library.slice(0, 50));
+  persistLibrary(library);
   return entry;
 }
 
@@ -82,11 +140,15 @@ export function updateSavedRecipe(
   id: string,
   recipe: RecipeForm,
 ): SavedRecipe | null {
+  const ownerId = getRecipeOwnerId();
   const library = loadRecipeLibrary();
   const index = library.findIndex((e) => e.id === id);
   if (index === -1) return null;
+  if (library[index].ownerId !== ownerId) return null;
+
   const entry: SavedRecipe = {
     ...library[index],
+    ownerId,
     name: recipe.name.trim() || library[index].name,
     savedAt: new Date().toISOString(),
     recipe: structuredClone(recipe),
@@ -96,8 +158,14 @@ export function updateSavedRecipe(
   return entry;
 }
 
-export function deleteSavedRecipe(id: string): void {
-  persistLibrary(loadRecipeLibrary().filter((e) => e.id !== id));
+/** Returns false if the recipe is missing or not owned by this user. */
+export function deleteSavedRecipe(id: string): boolean {
+  const ownerId = getRecipeOwnerId();
+  const library = loadRecipeLibrary();
+  const target = library.find((e) => e.id === id);
+  if (!target || target.ownerId !== ownerId) return false;
+  persistLibrary(library.filter((e) => e.id !== id));
+  return true;
 }
 
 export function downloadRecipeLibraryJson(
@@ -115,6 +183,7 @@ export function downloadRecipeLibraryJson(
 }
 
 export function mergeImportedLibrary(json: string): number {
+  const ownerId = getRecipeOwnerId();
   const parsed = JSON.parse(json) as unknown;
   if (!Array.isArray(parsed)) throw new Error("INVALID_FORMAT");
   const incoming = parsed.filter(
@@ -123,16 +192,17 @@ export function mergeImportedLibrary(json: string): number {
       e !== null &&
       "id" in e &&
       "recipe" in e &&
-      typeof (e as SavedRecipe).recipe === "object",
+      typeof (e as SavedRecipe).recipe === "object" &&
+      belongsToOwner(e as SavedRecipe, ownerId),
   );
   const byId = new Map(loadRecipeLibrary().map((e) => [e.id, e]));
   for (const entry of incoming) {
-    byId.set(entry.id, entry);
+    byId.set(entry.id, attachOwner(entry, ownerId));
   }
   const merged = [...byId.values()].sort(
     (a, b) => Date.parse(b.savedAt) - Date.parse(a.savedAt),
   );
-  persistLibrary(merged.slice(0, 100));
+  persistLibrary(merged);
   return incoming.length;
 }
 

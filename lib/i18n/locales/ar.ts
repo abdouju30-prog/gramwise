@@ -267,6 +267,8 @@ export const ar: Messages = {
       expand: (count) => `وصفاتي (${count})`,
       delete: "حذف",
       exportFile: "تصدير على جهازي",
+      privateNote:
+        "وصفاتك تبقى محفوظة على هذا الجهاز — أنت وحدك من يمكنه حذفها.",
     },
   },
   results: {

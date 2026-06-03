@@ -269,6 +269,8 @@ export const en: Messages = {
       expand: (count) => `My recipes (${count})`,
       delete: "Delete",
       exportFile: "Export to my PC",
+      privateNote:
+        "Your recipes stay saved on this device — only you can delete them.",
     },
   },
   results: {

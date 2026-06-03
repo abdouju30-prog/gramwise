@@ -126,13 +126,16 @@ export function RecipeTitleHeader({
       </div>
 
       {saved.length > 0 ? (
-        <button
-          type="button"
-          className="btn btn-ghost btn-sm recipe-export-btn"
-          onClick={() => void saveLibraryToUserFile()}
-        >
-          {m.recipe.library.exportFile}
-        </button>
+        <div className="recipe-library-actions">
+          <p className="field-hint recipe-library-private">{m.recipe.library.privateNote}</p>
+          <button
+            type="button"
+            className="btn btn-ghost btn-sm recipe-export-btn"
+            onClick={() => void saveLibraryToUserFile()}
+          >
+            {m.recipe.library.exportFile}
+          </button>
+        </div>
       ) : null}
     </div>
   );

@@ -229,6 +229,7 @@ export type Messages = {
       expand: (count: number) => string;
       delete: string;
       exportFile: string;
+      privateNote: string;
     };
   };
   results: {

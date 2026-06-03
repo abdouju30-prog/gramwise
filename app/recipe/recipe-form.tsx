@@ -228,7 +228,7 @@ export function RecipeForm() {
 
   function handleDeleteSaved() {
     if (!isSavedRecipePicker(picker)) return;
-    deleteSavedRecipe(picker);
+    if (!deleteSavedRecipe(picker)) return;
     setLibraryRefresh((k) => k + 1);
     setPicker("");
     handleNewRecipe();
