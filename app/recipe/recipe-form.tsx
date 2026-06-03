@@ -26,7 +26,6 @@ import { RecipeCapacitySection } from "./recipe-capacity-section";
 import {
   RecipeTitleHeader,
   RECIPE_PICKER_CUPCAKES,
-  isRecipeEditorMode,
   isSavedRecipePicker,
 } from "./recipe-title-header";
 import {
@@ -34,6 +33,7 @@ import {
   loadRecipeLibrary,
   recipeHasSaveableContent,
   saveRecipeToLibrary,
+  updateSavedRecipe,
 } from "@/lib/recipe-library";
 import { extractLegacyCapacity, monthlyFixedTotal } from "@/lib/fixed-charges";
 import { useMessages } from "@/lib/i18n/locale-provider";
@@ -53,7 +53,7 @@ export function RecipeForm() {
   const [saveNotice, setSaveNotice] = useState<string | null>(null);
   const [libraryRefresh, setLibraryRefresh] = useState(0);
   const [picker, setPicker] = useState("");
-  const showEditor = isRecipeEditorMode(picker);
+  const editingSaved = isSavedRecipePicker(picker);
   const canSave = recipeHasSaveableContent(form);
 
   useEffect(() => {
@@ -204,8 +204,18 @@ export function RecipeForm() {
     handleNewRecipe();
   }
 
-  function handleSaveAndNew() {
+  function handleSave() {
     if (!canSave) return;
+    saveRecipe(form);
+
+    if (editingSaved) {
+      updateSavedRecipe(picker, form);
+      setLibraryRefresh((k) => k + 1);
+      setSaveNotice(m.recipe.updatedToast);
+      window.setTimeout(() => setSaveNotice(null), 4000);
+      return;
+    }
+
     saveRecipeToLibrary(form);
     const next = mergeRecipeDefaults(
       { ...DEFAULT_RECIPE, name: "" },
@@ -237,9 +247,9 @@ export function RecipeForm() {
           type="button"
           className="btn btn-primary"
           disabled={!canSave}
-          onClick={handleSaveAndNew}
+          onClick={handleSave}
         >
-          {m.recipe.saveAndNew}
+          {editingSaved ? m.recipe.saveChanges : m.recipe.saveAndNew}
         </button>
       </div>
       {saveNotice ? (
@@ -259,8 +269,6 @@ export function RecipeForm() {
             refreshKey={libraryRefresh}
           />
 
-          {showEditor ? (
-            <>
               <div className="recipe-composer-section">
                 <p className="recipe-section-label">{m.recipe.ingredientsLegend}</p>
                 <IngredientImportPanel onApply={applyImportedIngredients} />
@@ -477,12 +485,6 @@ export function RecipeForm() {
           </label>
           </div>
               </div>
-            </>
-          ) : (
-            <p className="field-hint field-hint-block recipe-loaded-hint">
-              {m.recipe.titleHeader.loadedHint}
-            </p>
-          )}
         </fieldset>
       </form>
 

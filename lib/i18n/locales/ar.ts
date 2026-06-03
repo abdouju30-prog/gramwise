@@ -254,7 +254,9 @@ export const ar: Messages = {
     back: "رجوع",
     viewResults: "عرض النتائج",
     saveAndNew: "حفظ · وصفة جديدة",
+    saveChanges: "حفظ التعديلات",
     savedToast: "تم الحفظ.",
+    updatedToast: "تم تحديث الوصفة.",
     library: {
       expand: (count) => `وصفاتي (${count})`,
       delete: "حذف",

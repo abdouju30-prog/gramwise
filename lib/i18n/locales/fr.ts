@@ -261,7 +261,9 @@ export const fr: Messages = {
     back: "Retour",
     viewResults: "Voir les résultats",
     saveAndNew: "Sauvegarder · nouvelle recette",
+    saveChanges: "Enregistrer les modifications",
     savedToast: "Recette sauvegardée.",
+    updatedToast: "Recette mise à jour.",
     library: {
       expand: (count) => `Mes recettes (${count})`,
       delete: "Supprimer",

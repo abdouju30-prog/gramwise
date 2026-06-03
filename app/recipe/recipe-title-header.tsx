@@ -45,10 +45,6 @@ function RecipeTitleIcon() {
   );
 }
 
-export function isRecipeEditorMode(picker: string): boolean {
-  return picker === "" || picker === RECIPE_PICKER_CUPCAKES;
-}
-
 export function isSavedRecipePicker(picker: string): boolean {
   return picker !== "" && picker !== RECIPE_PICKER_CUPCAKES;
 }
@@ -66,7 +62,6 @@ export function RecipeTitleHeader({
   const nameInputId = useId();
   const nameRef = useRef<HTMLInputElement>(null);
   const [saved, setSaved] = useState<SavedRecipe[]>([]);
-  const showEditor = isRecipeEditorMode(picker);
   const canDelete = isSavedRecipePicker(picker);
 
   useEffect(() => {
@@ -117,24 +112,17 @@ export function RecipeTitleHeader({
           </div>
         </label>
 
-        {showEditor ? (
-          <label className="field" htmlFor={nameInputId}>
-            <span className="field-label">{m.recipe.nameLabel}</span>
-            <input
-              id={nameInputId}
-              ref={nameRef}
-              type="text"
-              value={name}
-              onChange={(e) => onNameChange(e.target.value)}
-              placeholder={m.recipe.namePlaceholder}
-            />
-          </label>
-        ) : (
-          <div className="field">
-            <span className="field-label">{m.recipe.nameLabel}</span>
-            <p className="recipe-loaded-name">{name || t.unnamedRecipe}</p>
-          </div>
-        )}
+        <label className="field" htmlFor={nameInputId}>
+          <span className="field-label">{m.recipe.nameLabel}</span>
+          <input
+            id={nameInputId}
+            ref={nameRef}
+            type="text"
+            value={name}
+            onChange={(e) => onNameChange(e.target.value)}
+            placeholder={m.recipe.namePlaceholder}
+          />
+        </label>
       </div>
 
       {saved.length > 0 ? (

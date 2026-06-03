@@ -255,7 +255,9 @@ export const en: Messages = {
     back: "Back",
     viewResults: "View results",
     saveAndNew: "Save · new recipe",
+    saveChanges: "Save changes",
     savedToast: "Recipe saved.",
+    updatedToast: "Recipe updated.",
     library: {
       expand: (count) => `My recipes (${count})`,
       delete: "Delete",

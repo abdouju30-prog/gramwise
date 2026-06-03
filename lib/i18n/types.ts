@@ -210,7 +210,9 @@ export type Messages = {
     back: string;
     viewResults: string;
     saveAndNew: string;
+    saveChanges: string;
     savedToast: string;
+    updatedToast: string;
     library: {
       expand: (count: number) => string;
       delete: string;

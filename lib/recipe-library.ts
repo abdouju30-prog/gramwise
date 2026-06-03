@@ -79,6 +79,24 @@ export function saveRecipeToLibrary(recipe: RecipeForm): SavedRecipe {
   return entry;
 }
 
+export function updateSavedRecipe(
+  id: string,
+  recipe: RecipeForm,
+): SavedRecipe | null {
+  const library = loadRecipeLibrary();
+  const index = library.findIndex((e) => e.id === id);
+  if (index === -1) return null;
+  const entry: SavedRecipe = {
+    ...library[index],
+    name: recipe.name.trim() || library[index].name,
+    savedAt: new Date().toISOString(),
+    recipe: structuredClone(recipe),
+  };
+  library[index] = entry;
+  persistLibrary(library);
+  return entry;
+}
+
 export function deleteSavedRecipe(id: string): void {
   persistLibrary(loadRecipeLibrary().filter((e) => e.id !== id));
 }
