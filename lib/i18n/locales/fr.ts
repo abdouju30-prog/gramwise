@@ -127,7 +127,7 @@ export const fr: Messages = {
     title: "Charges fixes",
     lead: "Listez vos factures du mois — loyer, énergie, assurance, etc.",
     explainShort:
-      "Étape 1 : charges mensuelles, liste d’ingrédients et production totale de l’atelier. Étape 2 : chaque recette reçoit sa part de charges fixes.",
+      "Charges, prix ingrédients, puis rythme de production de l'atelier.",
     monthlyLegend: "Charges mensuelles",
     monthlyTotalLabel: "Total / mois",
     monthlyHint: "Remplissez chaque poste — le total se calcule automatiquement.",
@@ -140,30 +140,16 @@ export const fr: Messages = {
     chargeCustomPlaceholder: "Autre poste",
     addChargeLine: "Ajouter un poste",
     removeChargeLine: "Retirer ce poste",
-    capacityLegend: "Production de l'atelier",
-    capacityExplainShort:
-      "Répartissez le loyer et les factures sur tout ce que vous fabriquez au mois — gâteaux, entremets, viennoiseries, etc. Chaque recette reçoit la même part par fournée.",
-    capacityChooseMode: "Vous comptez votre production en :",
-    capacityMode: "Mode de production",
-    batchesPerMonth: "Fournées par mois",
-    batchesPerMonthDesc: "Tous vos produits confondus",
-    hoursPerMonth: "Heures de travail",
-    hoursPerMonthDesc: "Temps passé à l’atelier",
-    capacityBatchesExplain:
-      "Exemple : si vous payez 1 100 $/mois et faites 40 fournées, chaque fournée « emporte » 27,50 $ de loyer et factures.",
-    capacityHoursExplain:
-      "On divise les charges du mois par vos heures d’atelier, puis on multiplie par le temps de cette recette.",
-    batchesLabel: "Combien de fournées par mois à l'atelier ?",
-    batchesHint:
-      "Une fournée = une production complète, peu importe la recette. Comptez tout l'atelier (ex. 120 fournées/mois si vous enchaînez plusieurs produits).",
-    shopBatchNote:
-      "Même montant ajouté sur chaque recette : une fournée de cupcakes ou de caramel compte pareil.",
-    capacityExampleLabel: "Calcul avec vos chiffres",
-    shopHours: "Heures à l’atelier / mois (toutes recettes)",
+    capacityLegend: "Répartir les charges",
+    capacityHint:
+      "Tout l'atelier, tous produits : indiquez votre rythme mensuel. La même part s'ajoute sur chaque recette.",
+    capacityMode: "Mode",
+    batchesPerMonth: "Fournées",
+    hoursPerMonth: "Heures",
+    batchesLabel: "Fournées par mois (atelier entier)",
     recipeHours: "Heures pour cette recette",
     recipeHoursHint: "Temps de main-d'œuvre pour cette recette (étape recette).",
-    shopHoursHint:
-      "Temps total passé en production sur le mois, toutes recettes confondues.",
+    shopHours: "Heures atelier / mois",
     hintBatches: "Charges fixes mensuelles ÷ lots par mois",
     hintHours: "Charges fixes ÷ heures atelier × heures recette",
     previewTitle: "Frais fixes par fournée",

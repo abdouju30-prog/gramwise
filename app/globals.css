@@ -467,6 +467,27 @@ h1 {
   margin-bottom: 1rem;
 }
 
+.mode-toggle--compact {
+  margin-bottom: 0.75rem;
+}
+
+.capacity-input-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.65rem 1rem;
+}
+
+.capacity-input-row input {
+  width: min(7rem, 100%);
+}
+
+.capacity-result {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--brown-mid);
+}
+
 .mode-option {
   display: flex;
   align-items: flex-start;

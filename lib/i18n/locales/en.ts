@@ -126,7 +126,7 @@ export const en: Messages = {
     title: "Fixed charges",
     lead: "List your monthly bills — rent, utilities, insurance, and more.",
     explainShort:
-      "Step 1: monthly overhead and ingredient purchase prices. Step 2: recipes auto-fill from your list.",
+      "Overhead, ingredient prices, then your shop’s monthly output.",
     monthlyLegend: "Monthly overhead",
     monthlyTotalLabel: "Total / month",
     monthlyHint: "Fill each line — the total updates automatically.",
@@ -139,27 +139,14 @@ export const en: Messages = {
     chargeCustomPlaceholder: "Other expense",
     addChargeLine: "Add another line",
     removeChargeLine: "Remove this line",
-    capacityLegend: "Your monthly output",
-    capacityExplainShort:
-      "Monthly fixed costs must be spread over everything you make. Tell us your usual pace — we compute how much to add to each recipe.",
-    capacityChooseMode: "You measure production in:",
-    capacityMode: "Production measure",
-    batchesPerMonth: "Batches per month",
-    batchesPerMonthDesc: "All products combined",
-    hoursPerMonth: "Work hours",
-    hoursPerMonthDesc: "Time in the shop",
-    capacityBatchesExplain:
-      "Example: $1,100/month and 40 batches → each batch carries $27.50 of rent and bills.",
-    capacityHoursExplain:
-      "We divide monthly costs by shop hours, then multiply by this recipe’s labor time.",
-    batchesLabel: "How many batches per month at the shop?",
-    batchesHint:
-      "One batch = one full production run, any recipe. Count the whole shop (e.g. 120 batches/month).",
-    shopBatchNote:
-      "Same fixed share on every recipe — cupcakes or caramel, one batch counts the same.",
-    capacityExampleLabel: "With your numbers",
-    shopHours: "Shop hours / month (all recipes)",
-    shopHoursHint: "Total production hours in the shop per month, all recipes.",
+    capacityLegend: "Spread fixed costs",
+    capacityHint:
+      "Whole shop, all products: enter your monthly pace. The same share is added to every recipe.",
+    capacityMode: "Mode",
+    batchesPerMonth: "Batches",
+    hoursPerMonth: "Hours",
+    batchesLabel: "Batches per month (whole shop)",
+    shopHours: "Shop hours / month",
     recipeHours: "Hours for this recipe",
     recipeHoursHint: "Total time to make this recipe once (prep, baking, finishing).",
     hintBatches: "Monthly fixed ÷ batches per month",

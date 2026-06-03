@@ -22,33 +22,26 @@ export function ShopCapacitySection({ form, monthlyTotal, onUpdate }: Props) {
   const m = useMessages();
   const { entryCurrency } = useLocale();
 
-  const perBatchPreview = useMemo(
+  const perBatch = useMemo(
     () => previewShopFixedPerBatch(form, entryCurrency),
     [form, entryCurrency],
   );
 
-  const previewFormula = useMemo(() => {
-    if (!perBatchPreview || monthlyTotal === null) return null;
-    const batches = form.batchesPerMonth.trim();
-    if (!batches) return null;
-    return `${formatFromMad(monthlyTotal, entryCurrency)} ÷ ${batches} = ${formatFromMad(perBatchPreview.fixedLoadAllocated, entryCurrency)} ${m.fixed.previewPerBatch}`;
-  }, [form.batchesPerMonth, monthlyTotal, perBatchPreview, entryCurrency, m.fixed.previewPerBatch]);
+  const batchResult = useMemo(() => {
+    if (!perBatch || monthlyTotal === null) return null;
+    return formatFromMad(perBatch.fixedLoadAllocated, entryCurrency);
+  }, [perBatch, monthlyTotal, entryCurrency]);
 
   function setCapacityMode(mode: CapacityMode) {
     onUpdate("capacityMode", mode);
   }
 
   return (
-    <fieldset className="field-group">
+    <fieldset className="field-group shop-capacity">
       <legend className="field-group-legend">{m.fixed.capacityLegend}</legend>
-      <p className="explain-short capacity-explain">{m.fixed.capacityExplainShort}</p>
-      <p className="field-hint field-hint-block">{m.fixed.capacityChooseMode}</p>
+      <p className="field-hint field-hint-block">{m.fixed.capacityHint}</p>
 
-      <div
-        className="mode-toggle"
-        role="radiogroup"
-        aria-label={m.fixed.capacityMode}
-      >
+      <div className="mode-toggle mode-toggle--compact" role="radiogroup">
         <label className="mode-option">
           <input
             type="radio"
@@ -56,10 +49,7 @@ export function ShopCapacitySection({ form, monthlyTotal, onUpdate }: Props) {
             checked={form.capacityMode === "batches_per_month"}
             onChange={() => setCapacityMode("batches_per_month")}
           />
-          <span className="mode-option-text">
-            <span className="mode-option-title">{m.fixed.batchesPerMonth}</span>
-            <span className="mode-option-desc">{m.fixed.batchesPerMonthDesc}</span>
-          </span>
+          <span className="mode-option-title">{m.fixed.batchesPerMonth}</span>
         </label>
         <label className="mode-option">
           <input
@@ -68,18 +58,14 @@ export function ShopCapacitySection({ form, monthlyTotal, onUpdate }: Props) {
             checked={form.capacityMode === "hours_per_month"}
             onChange={() => setCapacityMode("hours_per_month")}
           />
-          <span className="mode-option-text">
-            <span className="mode-option-title">{m.fixed.hoursPerMonth}</span>
-            <span className="mode-option-desc">{m.fixed.hoursPerMonthDesc}</span>
-          </span>
+          <span className="mode-option-title">{m.fixed.hoursPerMonth}</span>
         </label>
       </div>
 
       {form.capacityMode === "batches_per_month" ? (
-        <>
-          <p className="field-hint field-hint-block">{m.fixed.capacityBatchesExplain}</p>
-          <label className="field">
-            <span className="field-label">{m.fixed.batchesLabel}</span>
+        <label className="field">
+          <span className="field-label">{m.fixed.batchesLabel}</span>
+          <div className="capacity-input-row">
             <input
               type="number"
               inputMode="numeric"
@@ -88,32 +74,25 @@ export function ShopCapacitySection({ form, monthlyTotal, onUpdate }: Props) {
               value={form.batchesPerMonth}
               onChange={(e) => onUpdate("batchesPerMonth", e.target.value)}
             />
-            <span className="field-hint">{m.fixed.batchesHint}</span>
-          </label>
-          {previewFormula ? (
-            <div className="capacity-example" aria-live="polite">
-              <span className="capacity-example-label">{m.fixed.capacityExampleLabel}</span>
-              <p className="capacity-example-formula">{previewFormula}</p>
-              <p className="field-hint field-hint-block">{m.fixed.shopBatchNote}</p>
-            </div>
-          ) : null}
-        </>
+            {batchResult ? (
+              <span className="capacity-result" aria-live="polite">
+                → {batchResult} {m.fixed.previewPerBatch}
+              </span>
+            ) : null}
+          </div>
+        </label>
       ) : (
-        <>
-          <p className="field-hint field-hint-block">{m.fixed.capacityHoursExplain}</p>
-          <label className="field">
-            <span className="field-label">{m.fixed.shopHours}</span>
-            <input
-              type="number"
-              inputMode="decimal"
-              min="0"
-              step="0.5"
-              value={form.hoursPerMonth}
-              onChange={(e) => onUpdate("hoursPerMonth", e.target.value)}
-            />
-            <span className="field-hint">{m.fixed.shopHoursHint}</span>
-          </label>
-        </>
+        <label className="field">
+          <span className="field-label">{m.fixed.shopHours}</span>
+          <input
+            type="number"
+            inputMode="decimal"
+            min="0"
+            step="0.5"
+            value={form.hoursPerMonth}
+            onChange={(e) => onUpdate("hoursPerMonth", e.target.value)}
+          />
+        </label>
       )}
     </fieldset>
   );

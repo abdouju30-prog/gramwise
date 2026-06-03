@@ -29,6 +29,13 @@ export function RecipeFixedLoadPreview({
   const t = m.recipe.fixedLoadPreview;
   const { entryCurrency } = useLocale();
 
+  const laborPhases = useMemo(
+    () => parseLaborPhases(recipe.laborPhases, entryCurrency),
+    [recipe.laborPhases, entryCurrency],
+  );
+
+  const recipeHours = laborPhases ? recipeLaborHours(laborPhases) : null;
+
   const formula = useMemo(() => {
     if (monthlyTotal === null || fixedLoadAllocated === null) return null;
 
@@ -39,26 +46,17 @@ export function RecipeFixedLoadPreview({
     }
 
     const shopHours = parsePositive(fixed.hoursPerMonth);
-    const phases = laborPhases;
-    const recipeHours = phases ? recipeLaborHours(phases) : null;
     if (shopHours === null || recipeHours === null || recipeHours === 0) return null;
     return `${formatFromMad(monthlyTotal, entryCurrency)} ÷ ${shopHours} h × ${recipeHours} h = ${formatFromMad(fixedLoadAllocated, entryCurrency)}`;
   }, [
     fixed,
-    recipe.laborPhases,
+    recipeHours,
     monthlyTotal,
     fixedLoadAllocated,
     entryCurrency,
     m.fixed.previewPerBatch,
     t.batchesDenom,
   ]);
-
-  const laborPhases = useMemo(
-    () => parseLaborPhases(recipe.laborPhases, entryCurrency),
-    [recipe.laborPhases, entryCurrency],
-  );
-
-  const recipeHours = laborPhases ? recipeLaborHours(laborPhases) : null;
 
   const capacityOk = buildShopCapacity(
     fixed,
@@ -78,10 +76,9 @@ export function RecipeFixedLoadPreview({
       ) : null}
 
       {formula ? (
-        <div className="capacity-example" aria-live="polite">
-          <span className="capacity-example-label">{m.fixed.capacityExampleLabel}</span>
-          <p className="capacity-example-formula">{formula}</p>
-        </div>
+        <p className="capacity-example-formula" aria-live="polite">
+          {formula}
+        </p>
       ) : null}
 
       {!capacityOk ? (

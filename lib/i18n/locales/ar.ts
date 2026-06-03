@@ -126,7 +126,7 @@ export const ar: Messages = {
     title: "مصاريف ثابتة",
     lead: "أدخل فواتيرك الشهرية — إيجار، طاقة، تأمين، إلخ.",
     explainShort:
-      "الخطوة 1: مصاريف شهرية وأسعار شراء المكونات. الخطوة 2: الوصفات تُملأ تلقائياً من قائمتك.",
+      "مصاريف، أسعار مكونات، ثم وتيرة الإنتاج الشهرية للورشة.",
     monthlyLegend: "مصاريف شهرية",
     monthlyTotalLabel: "المجموع / شهر",
     monthlyHint: "أدخل كل بند — يُحسب المجموع تلقائياً.",
@@ -139,26 +139,14 @@ export const ar: Messages = {
     chargeCustomPlaceholder: "بند آخر",
     addChargeLine: "إضافة بند",
     removeChargeLine: "حذف هذا البند",
-    capacityLegend: "إنتاجك الشهري",
-    capacityExplainShort:
-      "يجب توزيع المصاريف الثابتة الشهرية على كل ما تنتجه. أدخل وتيرتك المعتادة — نحسب الحصة المضافة لكل وصفة.",
-    capacityChooseMode: "تقيس الإنتاج بـ:",
-    capacityMode: "طريقة القياس",
-    batchesPerMonth: "دفعات في الشهر",
-    hoursPerMonth: "ساعات العمل",
-    hoursPerMonthDesc: "وقت الورشة",
-    capacityBatchesExplain:
-      "مثال: 1 100 $/شهر و40 دفعة → كل دفعة تحمل 27,50 $ من الإيجار والفواتير.",
-    capacityHoursExplain:
-      "نقسم مصاريف الشهر على ساعات الورشة، ثم نضرب بوقت هذه الوصفة.",
-    batchesPerMonthDesc: "كل المنتجات معاً",
-    batchesLabel: "كم دفعة في الشهر للورشة؟",
-    batchesHint:
-      "دفعة واحدة = إنتاج كامل لأي وصفة. احسب الورشة كاملة (مثلاً 120 دفعة/شهر).",
-    shopBatchNote: "نفس الحصة الثابتة لكل وصفة — أي منتج.",
-    capacityExampleLabel: "بحسب أرقامك",
-    shopHours: "ساعات الورشة / شهر (كل الوصفات)",
-    shopHoursHint: "إجمالي ساعات الإنتاج في الورشة شهرياً.",
+    capacityLegend: "توزيع المصاريف الثابتة",
+    capacityHint:
+      "الورشة كاملة، كل المنتجات: أدخل الوتيرة الشهرية. نفس الحصة تُضاف لكل وصفة.",
+    capacityMode: "الوضع",
+    batchesPerMonth: "دفعات",
+    hoursPerMonth: "ساعات",
+    batchesLabel: "دفعات / شهر (الورشة كاملة)",
+    shopHours: "ساعات الورشة / شهر",
     recipeHours: "ساعات لهذه الوصفة",
     recipeHoursHint: "الوقت الكامل لإعداد هذه الوصفة مرة واحدة.",
     hintBatches: "مصاريف شهرية ÷ دفعات في الشهر",
