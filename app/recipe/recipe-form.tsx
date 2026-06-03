@@ -8,7 +8,6 @@ import { formatMoney } from "@/lib/format";
 import { INGREDIENT_QUANTITY_UNITS } from "@/lib/ingredient-units";
 import type { ParsedIngredientLine } from "@/lib/ingredient-import";
 import {
-  CUPCAKES_PRESET,
   DEFAULT_RECIPE,
   emptyIngredientRow,
   ingredientRowsFromNames,
@@ -21,7 +20,7 @@ import {
   type RecipeForm,
 } from "@/lib/recipe";
 import { IngredientImportPanel } from "./ingredient-import-panel";
-import { RecipeLibraryPanel } from "./recipe-library-panel";
+import { RecipeTitleHeader } from "./recipe-title-header";
 import {
   recipeHasSaveableContent,
   saveRecipeToLibrary,
@@ -130,6 +129,27 @@ export function RecipeForm() {
     });
   }
 
+  function handleNewRecipe() {
+    const next = mergeRecipeDefaults(
+      { ...DEFAULT_RECIPE, name: "" },
+      {
+        ingredientNames: m.recipe.defaultIngredientNames,
+        laborLabels: m.recipe.defaultLaborPhaseLabels,
+      },
+    );
+    updateForm(next);
+    saveRecipe(next);
+  }
+
+  function handlePickRecipe(recipe: RecipeForm) {
+    const loaded = {
+      ...recipe,
+      ingredients: recipe.ingredients.map((row) => normalizeIngredientRow(row)),
+    };
+    updateForm(loaded);
+    saveRecipe(loaded);
+  }
+
   function handleSaveAndNew() {
     if (!canSave) return;
     saveRecipeToLibrary(form);
@@ -141,18 +161,10 @@ export function RecipeForm() {
       },
     );
     setForm(next);
+    saveRecipe(next);
     setLibraryRefresh((k) => k + 1);
     setSaveNotice(m.recipe.savedToast);
     window.setTimeout(() => setSaveNotice(null), 4000);
-  }
-
-  function handleLoadSaved(recipe: RecipeForm) {
-    const loaded = {
-      ...recipe,
-      ingredients: recipe.ingredients.map((row) => normalizeIngredientRow(row)),
-    };
-    updateForm(loaded);
-    saveRecipe(loaded);
   }
 
   function handleContinue() {
@@ -166,13 +178,6 @@ export function RecipeForm() {
   return (
     <>
       <div className="toolbar toolbar--recipe">
-        <button
-          type="button"
-          className="btn btn-ghost"
-          onClick={() => updateForm(CUPCAKES_PRESET)}
-        >
-          {m.recipe.loadPreset}
-        </button>
         <button
           type="button"
           className="btn btn-primary"
@@ -189,15 +194,13 @@ export function RecipeForm() {
       ) : null}
 
       <form className="form" onSubmit={(e) => e.preventDefault()}>
-        <label className="field">
-          <span className="field-label">{m.recipe.nameLabel}</span>
-          <input
-            type="text"
-            value={form.name}
-            onChange={(e) => updateForm({ ...form, name: e.target.value })}
-            placeholder={m.recipe.namePlaceholder}
-          />
-        </label>
+        <RecipeTitleHeader
+          name={form.name}
+          onNameChange={(name) => updateForm({ ...form, name })}
+          onPickRecipe={handlePickRecipe}
+          onNewRecipe={handleNewRecipe}
+          refreshKey={libraryRefresh}
+        />
 
         <fieldset className="field-group">
           <legend className="field-group-legend">{m.recipe.ingredientsLegend}</legend>
@@ -290,10 +293,6 @@ export function RecipeForm() {
           >
             {m.recipe.addIngredient}
           </button>
-          <RecipeLibraryPanel
-            onLoad={handleLoadSaved}
-            refreshKey={libraryRefresh}
-          />
         </fieldset>
 
         <fieldset className="field-group">

@@ -171,6 +171,12 @@ export const ar: Messages = {
     loadPreset: "تحميل مثال الكب كيك",
     nameLabel: "اسم الوصفة",
     namePlaceholder: "مثال: كب كيك",
+    titleHeader: {
+      chooseRecipe: "اختيار وصفة",
+      newRecipe: "وصفة جديدة",
+      presetCupcakes: "مثال — كب كيك",
+      iconLabel: "تسمية الوصفة",
+    },
     ingredientsLegend: "المكونات",
     ingredientsHint: "كغ، ل أو قطعة — نفس الوحدة للكمية والتكلفة.",
     ingredientName: "الاسم",

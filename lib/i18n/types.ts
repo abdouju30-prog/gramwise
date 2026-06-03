@@ -139,6 +139,12 @@ export type Messages = {
     loadPreset: string;
     nameLabel: string;
     namePlaceholder: string;
+    titleHeader: {
+      chooseRecipe: string;
+      newRecipe: string;
+      presetCupcakes: string;
+      iconLabel: string;
+    };
     ingredientsLegend: string;
     ingredientsHint: string;
     ingredientName: string;

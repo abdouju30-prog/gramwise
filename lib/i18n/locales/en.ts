@@ -171,6 +171,12 @@ export const en: Messages = {
     loadPreset: "Load cupcakes preset",
     nameLabel: "Recipe name",
     namePlaceholder: "e.g. Cupcakes",
+    titleHeader: {
+      chooseRecipe: "Choose a recipe",
+      newRecipe: "New recipe",
+      presetCupcakes: "Example — Cupcakes",
+      iconLabel: "Name this recipe",
+    },
     ingredientsLegend: "Ingredients",
     ingredientsHint: "Use kg, L or each — same unit for quantity and cost.",
     ingredientName: "Name",

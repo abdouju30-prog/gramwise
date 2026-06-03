@@ -172,6 +172,12 @@ export const fr: Messages = {
     loadPreset: "Charger l’exemple cupcakes",
     nameLabel: "Nom de la recette",
     namePlaceholder: "ex. Cupcakes",
+    titleHeader: {
+      chooseRecipe: "Choisir une recette",
+      newRecipe: "Nouvelle recette",
+      presetCupcakes: "Exemple — Cupcakes",
+      iconLabel: "Nommer la recette",
+    },
     ingredientsLegend: "Ingrédients",
     ingredientsHint: "Indiquez kg, L ou pièce — même unité pour la quantité et le coût.",
     ingredientName: "Nom",
