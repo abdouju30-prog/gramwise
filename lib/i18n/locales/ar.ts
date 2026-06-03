@@ -95,6 +95,8 @@ export const ar: Messages = {
     guideTester: "دليل المختبر (15 د)",
     pricingTitle: "الأسعار",
     pricingNoteReady: "دفع آمن عبر Stripe.",
+    pricingNoteGumroad:
+      "الدفع عبر Gumroad (بطاقة، PayPal). Gumroad يستلم المبالغ نيابة عنك — مناسب قبل تأسيس شركة. الحاسبة تبقى مجانية.",
     pricingNoteFree: "الحاسبة مجانية حتى تفعيل الدفع.",
     lifetimeLabel: "للمشاريع الصغيرة",
     lifetimeTitle: "مدى الحياة",
@@ -358,7 +360,7 @@ export const ar: Messages = {
     eyebrow: "الدفع",
     successTitle: "شكراً لك",
     successBody:
-      "تم استلام الدفع. استخدم الحاسبة الآن — ربط الحساب لاحقاً.",
+      "شكراً لشرائك. Gumroad يرسل الإيصال بالبريد. الحاسبة جاهزة الآن — احتفظ برسالة الشراء.",
     cancelTitle: "تم إلغاء الدفع",
     cancelBody: "لم يتم أي خصم. الحاسبة تبقى مجانية خلال التجربة.",
     openCalculator: "فتح الحاسبة",

@@ -96,6 +96,8 @@ export const fr: Messages = {
     guideTester: "Guide testeur (15 min)",
     pricingTitle: "Tarifs",
     pricingNoteReady: "Paiement sécurisé via Stripe.",
+    pricingNoteGumroad:
+      "Paiement via Gumroad (carte, PayPal). Gumroad encaisse en votre nom — idéal avant création de société. Le calculateur reste utilisable gratuitement.",
     pricingNoteFree: "Calculateur gratuit tant que le paiement n’est pas activé.",
     lifetimeLabel: "Idéal solo",
     lifetimeTitle: "À vie",
@@ -367,9 +369,9 @@ export const fr: Messages = {
     eyebrow: "Paiement",
     successTitle: "Merci",
     successBody:
-      "Paiement reçu. Utilisez le calculateur tout de suite — liaison compte à suivre.",
+      "Merci pour votre achat. Gumroad vous envoie un reçu par e-mail. Le calculateur est disponible tout de suite — conservez votre e-mail d’achat.",
     cancelTitle: "Paiement annulé",
-    cancelBody: "Aucun débit. Le calculateur reste gratuit pendant la beta.",
+    cancelBody: "Aucun débit. Vous pouvez utiliser le calculateur gratuitement.",
     openCalculator: "Ouvrir le calculateur",
     home: "Accueil",
     viewPricing: "Voir les tarifs",

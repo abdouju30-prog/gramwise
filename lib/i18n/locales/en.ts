@@ -95,6 +95,8 @@ export const en: Messages = {
     guideTester: "Tester guide (15 min)",
     pricingTitle: "Pricing",
     pricingNoteReady: "Secure checkout via Stripe.",
+    pricingNoteGumroad:
+      "Checkout on Gumroad (card, PayPal). Gumroad is the seller of record — ideal before you form a company. The calculator stays free to use.",
     pricingNoteFree: "Calculator is free until checkout is configured.",
     lifetimeLabel: "Best for solo shops",
     lifetimeTitle: "Lifetime",
@@ -361,7 +363,7 @@ export const en: Messages = {
     eyebrow: "Payment",
     successTitle: "Thank you",
     successBody:
-      "Your payment was received. Use the calculator now — account linking will follow later.",
+      "Thank you for your purchase. Gumroad will email your receipt. The calculator is ready now — keep your purchase email.",
     cancelTitle: "Checkout cancelled",
     cancelBody: "No charge was made. The calculator stays free during beta.",
     openCalculator: "Open calculator",

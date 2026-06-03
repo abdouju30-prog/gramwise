@@ -2,14 +2,84 @@
 
 import Link from "next/link";
 import { isPublicBeta } from "@/lib/beta";
+import {
+  isGumroadConfigured,
+  isGumroadMonthlyConfigured,
+} from "@/lib/gumroad";
 import { useMessages } from "@/lib/i18n/locale-provider";
 import { CheckoutButton } from "./checkout-button";
+import { GumroadCheckoutButton } from "./gumroad-checkout-button";
 import { isStripeConfigured } from "@/lib/stripe";
+
+function LifetimeCta({
+  paymentsReady,
+  useGumroad,
+  className,
+  label,
+  soonLabel,
+}: {
+  paymentsReady: boolean;
+  useGumroad: boolean;
+  className: string;
+  label: string;
+  soonLabel: string;
+}) {
+  if (!paymentsReady) {
+    return <span className={`${className} btn-disabled`}>{soonLabel}</span>;
+  }
+  if (useGumroad) {
+    return (
+      <GumroadCheckoutButton plan="lifetime" className={className}>
+        {label}
+      </GumroadCheckoutButton>
+    );
+  }
+  return (
+    <CheckoutButton plan="lifetime" className={className}>
+      {label}
+    </CheckoutButton>
+  );
+}
+
+function MonthlyCta({
+  paymentsReady,
+  useGumroad,
+  monthlyAvailable,
+  className,
+  label,
+  soonLabel,
+}: {
+  paymentsReady: boolean;
+  useGumroad: boolean;
+  monthlyAvailable: boolean;
+  className: string;
+  label: string;
+  soonLabel: string;
+}) {
+  if (!paymentsReady || !monthlyAvailable) {
+    return <span className={`${className} btn-disabled`}>{soonLabel}</span>;
+  }
+  if (useGumroad) {
+    return (
+      <GumroadCheckoutButton plan="monthly" className={className}>
+        {label}
+      </GumroadCheckoutButton>
+    );
+  }
+  return (
+    <CheckoutButton plan="monthly" className={className}>
+      {label}
+    </CheckoutButton>
+  );
+}
 
 export function PricingSection() {
   const m = useMessages();
   const publicBeta = isPublicBeta();
-  const paymentsReady = isStripeConfigured() && !publicBeta;
+  const useGumroad = isGumroadConfigured();
+  const useStripe = isStripeConfigured() && !useGumroad;
+  const paymentsReady = useGumroad || useStripe;
+  const monthlyGumroad = useGumroad && isGumroadMonthlyConfigured();
 
   if (publicBeta) {
     return (
@@ -28,14 +98,16 @@ export function PricingSection() {
     );
   }
 
+  const pricingNote = useGumroad
+    ? m.landing.pricingNoteGumroad
+    : paymentsReady
+      ? m.landing.pricingNoteReady
+      : m.landing.pricingNoteFree;
+
   return (
     <section className="landing-section" id="pricing">
       <h2 className="landing-heading">{m.landing.pricingTitle}</h2>
-      <p className="landing-pricing-note">
-        {paymentsReady
-          ? m.landing.pricingNoteReady
-          : m.landing.pricingNoteFree}
-      </p>
+      <p className="landing-pricing-note">{pricingNote}</p>
       <div className="pricing-grid">
         <article className="card pricing-card pricing-card--featured">
           <p className="pricing-label">{m.landing.lifetimeLabel}</p>
@@ -48,15 +120,13 @@ export function PricingSection() {
               <li key={f}>{f}</li>
             ))}
           </ul>
-          {paymentsReady ? (
-            <CheckoutButton plan="lifetime" className="btn btn-primary">
-              {m.landing.lifetimeCta}
-            </CheckoutButton>
-          ) : (
-            <span className="btn btn-primary btn-disabled">
-              {m.landing.checkoutSoon}
-            </span>
-          )}
+          <LifetimeCta
+            paymentsReady={paymentsReady}
+            useGumroad={useGumroad}
+            className="btn btn-primary"
+            label={m.landing.lifetimeCta}
+            soonLabel={m.landing.checkoutSoon}
+          />
         </article>
         <article className="card pricing-card">
           <p className="pricing-label">{m.landing.monthlyLabel}</p>
@@ -69,15 +139,14 @@ export function PricingSection() {
               <li key={f}>{f}</li>
             ))}
           </ul>
-          {paymentsReady ? (
-            <CheckoutButton plan="monthly" className="btn btn-ghost">
-              {m.landing.monthlyCta}
-            </CheckoutButton>
-          ) : (
-            <span className="btn btn-ghost btn-disabled">
-              {m.landing.checkoutSoon}
-            </span>
-          )}
+          <MonthlyCta
+            paymentsReady={paymentsReady}
+            useGumroad={useGumroad}
+            monthlyAvailable={useGumroad ? monthlyGumroad : useStripe}
+            className="btn btn-ghost"
+            label={m.landing.monthlyCta}
+            soonLabel={m.landing.checkoutSoon}
+          />
         </article>
       </div>
       <p className="landing-pricing-cta">

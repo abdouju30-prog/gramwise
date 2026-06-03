@@ -18,8 +18,9 @@
 
 - [x] Deploy Vercel prod + `NEXT_PUBLIC_APP_URL=https://fixload.vercel.app` — [docs/DEPLOY_VERCEL.md](docs/DEPLOY_VERCEL.md)
 - [ ] Beta: 5 pâtissiers valident chiffres — [docs/BETA_CHECKLIST.md](docs/BETA_CHECKLIST.md)
-- [x] Stripe Checkout stub (test keys only; live blocked without `STRIPE_ALLOW_LIVE=1`)
-- [ ] Stripe **live** — only after legal entity + beta sign-off (not before)
+- [x] Gumroad checkout links on landing (no LTD required) — [docs/GUMROAD_SETUP.md](docs/GUMROAD_SETUP.md)
+- [x] Stripe Checkout stub (optional; live blocked without `STRIPE_ALLOW_LIVE=1`)
+- [ ] Stripe **live** — only after LTD if you outgrow Gumroad
 
 ## P2 — Launch
 

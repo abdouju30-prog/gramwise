@@ -68,6 +68,7 @@ export type Messages = {
     guideTester: string;
     pricingTitle: string;
     pricingNoteReady: string;
+    pricingNoteGumroad: string;
     pricingNoteFree: string;
     lifetimeLabel: string;
     lifetimeTitle: string;

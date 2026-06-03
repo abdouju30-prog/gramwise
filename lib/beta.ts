@@ -1,10 +1,12 @@
 import { DEFAULT_LOCALE, getMessages, type Locale } from "@/lib/i18n";
+import { isGumroadConfigured } from "@/lib/gumroad";
 import { isStripeConfigured } from "@/lib/stripe";
 
-/** Public beta: free calculator, no live Stripe, collect tester feedback. */
+/** Public beta: free calculator, collect tester feedback. Off when Gumroad URLs are set. */
 export function isPublicBeta(): boolean {
   const mode = process.env.NEXT_PUBLIC_BETA_MODE?.trim();
   if (mode === "0") return false;
+  if (isGumroadConfigured()) return false;
   if (mode === "1") return true;
   return !isStripeConfigured();
 }
