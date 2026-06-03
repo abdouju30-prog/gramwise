@@ -72,6 +72,7 @@ export type Messages = {
     pricingNoteFree: string;
     lifetimeLabel: string;
     lifetimeTitle: string;
+    lifetimePrice: string;
     lifetimeOnce: string;
     lifetimeFeatures: [string, string, string];
     lifetimeCta: string;

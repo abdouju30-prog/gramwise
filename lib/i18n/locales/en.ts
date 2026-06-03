@@ -100,6 +100,7 @@ export const en: Messages = {
     pricingNoteFree: "Calculator is free until checkout is configured.",
     lifetimeLabel: "Best for solo shops",
     lifetimeTitle: "Lifetime",
+    lifetimePrice: "29",
     lifetimeOnce: "once",
     lifetimeFeatures: ["Unlimited recipes", "Full cost breakdown", "No subscription"],
     lifetimeCta: "Get lifetime access",

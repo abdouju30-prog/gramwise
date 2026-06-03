@@ -8,7 +8,7 @@ const PLAN_CONFIG: Record<
 > = {
   lifetime: {
     mode: "payment",
-    amountCents: 9900,
+    amountCents: 2900,
     name: "GramWise Lifetime",
   },
   monthly: {

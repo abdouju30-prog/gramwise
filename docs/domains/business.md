@@ -5,7 +5,7 @@
 | Option | Price | Notes |
 |--------|-------|-------|
 | **A** | €29 / month | Recurring, supportable |
-| **B** | €99 lifetime | Faster cash, pastry IG audience |
+| **B** | €29 lifetime | Faster cash, pastry IG audience |
 | **C** | Freemium | 3 saves free → paywall |
 
 Decision deferred until MVP works and is **accurate**.
@@ -22,7 +22,7 @@ Decision deferred until MVP works and is **accurate**.
 ## Tech direction
 
 - Web app: Next.js App Router + tested `engine/`
-- Stripe Checkout: `POST /api/checkout` (lifetime €99 / monthly €29) — env in `.env.example`
+- Stripe Checkout: `POST /api/checkout` (lifetime €29) — optional; Gumroad preferred pre-LTD
 - Webhook: `POST /api/webhooks/stripe` — logs completion; user access TBD with auth
 - Deploy: Vercel + `NEXT_PUBLIC_APP_URL` — [DEPLOY_VERCEL.md](../DEPLOY_VERCEL.md)
 - Beta Maroc: [BETA_CHECKLIST.md](../BETA_CHECKLIST.md) — 5 pâtissiers, calculator free, **Stripe test only**

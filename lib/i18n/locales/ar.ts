@@ -100,6 +100,7 @@ export const ar: Messages = {
     pricingNoteFree: "الحاسبة مجانية حتى تفعيل الدفع.",
     lifetimeLabel: "للمشاريع الصغيرة",
     lifetimeTitle: "مدى الحياة",
+    lifetimePrice: "29",
     lifetimeOnce: "مرة واحدة",
     lifetimeFeatures: ["وصفات غير محدودة", "تفصيل التكاليف", "بلا اشتراك"],
     lifetimeCta: "وصول مدى الحياة",

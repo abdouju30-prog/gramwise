@@ -101,6 +101,7 @@ export const fr: Messages = {
     pricingNoteFree: "Calculateur gratuit tant que le paiement n’est pas activé.",
     lifetimeLabel: "Idéal solo",
     lifetimeTitle: "À vie",
+    lifetimePrice: "29",
     lifetimeOnce: "une fois",
     lifetimeFeatures: ["Recettes illimitées", "Détail des coûts", "Sans abonnement"],
     lifetimeCta: "Accès à vie",

@@ -5,8 +5,8 @@ Gumroad acts as **seller of record** and holds payouts until you form a company 
 ## 1. Create products on Gumroad
 
 1. [Gumroad](https://gumroad.com) → **Products** → **New product**.
-2. **Lifetime** — one-time price (e.g. €99). Type: digital / license.
-3. **Monthly** (optional) — enable **Membership** with monthly billing (e.g. €29/mo).
+2. **Lifetime** — one-time **€29**. Type: digital / license.
+3. **Monthly** (optional, not shown on site) — skip unless you add a tier later.
 4. Copy each product **URL** (Share link).
 
 ## 2. Redirect after purchase

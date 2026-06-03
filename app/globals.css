@@ -1161,6 +1161,11 @@ h1 {
   .pricing-grid {
     grid-template-columns: 1fr 1fr;
   }
+
+  .pricing-grid--single {
+    grid-template-columns: minmax(0, 22rem);
+    justify-content: center;
+  }
 }
 
 .pricing-card h3 {
