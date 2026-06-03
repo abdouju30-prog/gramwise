@@ -21,6 +21,12 @@ import {
   type RecipeForm,
 } from "@/lib/recipe";
 import { IngredientImportPanel } from "./ingredient-import-panel";
+import { RecipeLibraryPanel } from "./recipe-library-panel";
+import {
+  freshRecipeForm,
+  recipeHasSaveableContent,
+  saveRecipeToLibrary,
+} from "@/lib/recipe-library";
 import { useMessages } from "@/lib/i18n/locale-provider";
 import {
   loadWizardSession,
@@ -35,6 +41,8 @@ export function RecipeForm() {
   const session = useWizardGuard("fixed");
   const [form, setForm] = useState<RecipeForm>(DEFAULT_RECIPE);
   const [hydrated, setHydrated] = useState(false);
+  const [saveNotice, setSaveNotice] = useState<string | null>(null);
+  const canSave = recipeHasSaveableContent(form);
 
   useEffect(() => {
     const data = loadWizardSession();
@@ -117,6 +125,24 @@ export function RecipeForm() {
     });
   }
 
+  function handleSaveAndNew() {
+    if (!canSave) return;
+    saveRecipeToLibrary(form);
+    const next = freshRecipeForm();
+    setForm(next);
+    setSaveNotice(m.recipe.savedToast);
+    window.setTimeout(() => setSaveNotice(null), 4000);
+  }
+
+  function handleLoadSaved(recipe: RecipeForm) {
+    const loaded = {
+      ...recipe,
+      ingredients: recipe.ingredients.map((row) => normalizeIngredientRow(row)),
+    };
+    updateForm(loaded);
+    saveRecipe(loaded);
+  }
+
   function handleContinue() {
     if (!preview || !session?.fixedCharges) return;
     saveRecipe(form);
@@ -127,7 +153,7 @@ export function RecipeForm() {
 
   return (
     <>
-      <div className="toolbar">
+      <div className="toolbar toolbar--recipe">
         <button
           type="button"
           className="btn btn-ghost"
@@ -135,7 +161,22 @@ export function RecipeForm() {
         >
           {m.recipe.loadPreset}
         </button>
+        <button
+          type="button"
+          className="btn btn-primary"
+          disabled={!canSave}
+          onClick={handleSaveAndNew}
+          title={m.recipe.saveAndNewHint}
+        >
+          {m.recipe.saveAndNew}
+        </button>
       </div>
+      {saveNotice ? (
+        <p className="tip-box" role="status">
+          {saveNotice}
+        </p>
+      ) : null}
+      <RecipeLibraryPanel onLoad={handleLoadSaved} />
 
       <form className="form" onSubmit={(e) => e.preventDefault()}>
         <label className="field">

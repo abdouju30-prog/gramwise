@@ -1345,6 +1345,61 @@ h1 {
   font-size: 0.9rem;
 }
 
+.toolbar--recipe {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.recipe-library {
+  margin-bottom: 0.75rem;
+}
+
+.recipe-library-body {
+  margin-top: 0.35rem;
+  padding: 1rem;
+}
+
+.recipe-library-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  margin-bottom: 0.5rem;
+}
+
+.recipe-library-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.recipe-library-item {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.recipe-library-item:last-child {
+  border-bottom: none;
+}
+
+.recipe-library-date {
+  display: block;
+  font-size: 0.75rem;
+  color: var(--brown-light);
+}
+
+.recipe-library-item-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
 [dir="rtl"] .ingredient-grid-head,
 [dir="rtl"] .ingredient-grid-row {
   direction: rtl;

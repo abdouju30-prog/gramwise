@@ -198,6 +198,26 @@ export type Messages = {
     previewError: string;
     back: string;
     viewResults: string;
+    saveAndNew: string;
+    saveAndNewHint: string;
+    savedToast: string;
+    library: {
+      expand: string;
+      collapse: string;
+      title: string;
+      hint: string;
+      exportJson: string;
+      saveToPc: string;
+      importJson: string;
+      empty: string;
+      load: string;
+      delete: string;
+      savedPicker: string;
+      savedDownload: string;
+      saveError: string;
+      imported: (count: number) => string;
+      importError: string;
+    };
   };
   results: {
     eyebrow: string;

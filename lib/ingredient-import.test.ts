@@ -32,4 +32,19 @@ describe("parseIngredientText", () => {
       quantityUnit: "kg",
     });
   });
+
+  it("strips OCR label noise and keeps ingredient name", () => {
+    const rows = parseIngredientText("IngrédientQuantitéSucre 500 g 6");
+    expect(rows.some((r) => /sucre/i.test(r.name))).toBe(true);
+    const sucre = rows.find((r) => /sucre/i.test(r.name));
+    expect(sucre?.quantity).toBe("500");
+    expect(sucre?.quantityUnit).toBe("g");
+  });
+
+  it("parses name-first messy lines", () => {
+    const rows = parseIngredientText("Caramel 2 kg 15\nbeurre 200 g 12");
+    expect(rows[0]?.name.toLowerCase()).toMatch(/caramel/);
+    expect(rows[0]?.quantity).toBe("2");
+    expect(rows[1]?.name.toLowerCase()).toMatch(/beurre/);
+  });
 });
