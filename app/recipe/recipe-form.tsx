@@ -431,8 +431,12 @@ export function RecipeForm() {
                 <p className="field-hint field-hint-block">{m.recipe.laborHint}</p>
                 <p className="field-hint field-hint-block">{m.recipe.laborHintActive}</p>
                 <p className="field-hint field-hint-block">{m.recipe.laborPassiveExample}</p>
-                <p className="field-hint field-hint-block">
-                  {m.recipe.laborSmigRateNote.replace("{rate}", smigRateDisplay)}
+                <p
+                  className={`field-hint field-hint-block${smigHourly === null ? " preview-error" : ""}`}
+                >
+                  {smigHourly === null
+                    ? m.recipe.laborSmigMissing
+                    : m.recipe.laborSmigRateNote.replace("{rate}", smigRateDisplay)}
                 </p>
                 <label className="field field-checkbox">
                   <input
