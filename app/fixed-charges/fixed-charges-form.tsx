@@ -70,10 +70,19 @@ export function FixedChargesForm() {
   }
 
   function removeChargeLine(id: string) {
-    setForm((prev) => ({
-      ...prev,
-      chargeLines: prev.chargeLines.filter((line) => line.id !== id),
-    }));
+    setForm((prev) => {
+      if (prev.chargeLines.length <= 1) return prev;
+      return {
+        ...prev,
+        chargeLines: prev.chargeLines.filter((line) => line.id !== id),
+      };
+    });
+  }
+
+  function chargeLineLabel(line: FixedChargeLine): string {
+    return line.preset === "custom"
+      ? line.customLabel?.trim() || m.fixed.chargeCustomPlaceholder
+      : presetLabel(line.preset, m.fixed);
   }
 
   const totalDisplay =
@@ -128,15 +137,15 @@ export function FixedChargesForm() {
                     onChange={(e) =>
                       updateChargeLine(line.id, { amount: e.target.value })
                     }
-                    aria-label={`${line.preset === "custom" ? line.customLabel || m.fixed.chargeCustomPlaceholder : presetLabel(line.preset, m.fixed)} — ${m.fixed.chargeAmount}`}
+                    aria-label={`${chargeLineLabel(line)} — ${m.fixed.chargeAmount}`}
                   />
                 </div>
-                {line.preset === "custom" ? (
+                {form.chargeLines.length > 1 ? (
                   <button
                     type="button"
                     className="btn-icon"
                     onClick={() => removeChargeLine(line.id)}
-                    aria-label={m.fixed.removeChargeLine}
+                    aria-label={`${m.fixed.removeChargeLine} — ${chargeLineLabel(line)}`}
                   >
                     ×
                   </button>
