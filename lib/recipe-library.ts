@@ -38,6 +38,7 @@ export function freshRecipeForm(laborLabels?: readonly string[]): RecipeForm {
       : [emptyLaborRow()],
     wastePercent: "3",
     marginPercent: "40",
+    laborByOwner: false,
     ...DEFAULT_RECIPE_CAPACITY,
   };
 }

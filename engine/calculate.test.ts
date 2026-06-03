@@ -65,13 +65,14 @@ describe("GramWise costing engine — 10 reference cases", () => {
         });
       }
 
-      if (ref.expected.wrongIfMarkupOnCost != null) {
+      const wrongIfMarkupOnCost = ref.expected.wrongIfMarkupOnCost;
+      if (wrongIfMarkupOnCost != null) {
         it("must not use markup-on-cost at same nominal rate", () => {
           const wrong = priceIfMarkupOnCost(
             ref.expected.fullCost,
             ref.input.marginFraction,
           );
-          expectMoney(wrong, ref.expected.wrongIfMarkupOnCost);
+          expectMoney(wrong, wrongIfMarkupOnCost);
           expect(result.recommendedPrice).not.toBe(wrong);
         });
       }

@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
 import { runCosting } from "@/lib/costing";
-import { CURRENCY_LABELS } from "@/lib/currency";
+import { convertFromMad, CURRENCY_LABELS } from "@/lib/currency";
 import { INGREDIENT_QUANTITY_UNITS } from "@/lib/ingredient-units";
 import type { ParsedIngredientLine } from "@/lib/ingredient-import";
 import {
@@ -42,6 +42,10 @@ import {
   monthlyFixedTotal,
   normalizeFixedChargesForm,
 } from "@/lib/fixed-charges";
+import {
+  parseSmigHourlyMad,
+  smigLaborOptionsFromFixed,
+} from "@/lib/smic";
 import {
   applyCatalogToRow,
   applyCatalogToRows,
@@ -131,6 +135,29 @@ export function RecipeForm() {
         : null,
     [session?.fixedCharges, entryCurrency],
   );
+
+  const smigHourly = useMemo(
+    () =>
+      session?.fixedCharges
+        ? parseSmigHourlyMad(session.fixedCharges, entryCurrency)
+        : null,
+    [session?.fixedCharges, entryCurrency],
+  );
+
+  const smigLaborOptions = useMemo(
+    () =>
+      session?.fixedCharges
+        ? smigLaborOptionsFromFixed(
+            session.fixedCharges,
+            form.laborByOwner,
+            entryCurrency,
+          )
+        : undefined,
+    [session?.fixedCharges, form.laborByOwner, entryCurrency],
+  );
+
+  const smigRateDisplay =
+    smigHourly === null ? "—" : formatMoney(smigHourly);
 
   function updateForm(next: RecipeForm) {
     setForm(next);
@@ -402,12 +429,28 @@ export function RecipeForm() {
               <div className="recipe-composer-section">
                 <p className="recipe-section-label">{m.recipe.laborLegend}</p>
                 <p className="field-hint field-hint-block">{m.recipe.laborHint}</p>
+                <p className="field-hint field-hint-block">{m.recipe.laborHintActive}</p>
+                <p className="field-hint field-hint-block">{m.recipe.laborPassiveExample}</p>
+                <p className="field-hint field-hint-block">
+                  {m.recipe.laborSmigRateNote.replace("{rate}", smigRateDisplay)}
+                </p>
+                <label className="field field-checkbox">
+                  <input
+                    type="checkbox"
+                    checked={form.laborByOwner}
+                    onChange={(e) =>
+                      updateRecipeField("laborByOwner", e.target.checked)
+                    }
+                  />
+                  <span>{m.recipe.laborByOwner}</span>
+                </label>
+                <p className="field-hint field-hint-block">{m.recipe.laborByOwnerHint}</p>
                 <div className="table-scroll">
           <table className="data-table data-table--recipe">
             <thead>
               <tr>
                 <th>{m.recipe.phase}</th>
-                <th>{m.recipe.hours}</th>
+                <th>{m.recipe.activeHours}</th>
                 <th>{m.recipe.ratePerHour.replace("MAD", CURRENCY_LABELS[entryCurrency])}</th>
                 <th aria-label="Actions" />
               </tr>
@@ -445,7 +488,16 @@ export function RecipeForm() {
                       min="0"
                       step="0.01"
                       value={row.hourlyRate}
-                      placeholder={m.recipe.ratePlaceholder}
+                      placeholder={
+                        smigHourly === null
+                          ? m.recipe.ratePlaceholder
+                          : m.recipe.rateSmigDefaultHint
+                      }
+                      title={
+                        form.laborByOwner && smigHourly !== null
+                          ? m.recipe.laborByOwnerHint
+                          : undefined
+                      }
                       onChange={(e) =>
                         updateLabor(row.id, { hourlyRate: e.target.value })
                       }
@@ -472,7 +524,18 @@ export function RecipeForm() {
             onClick={() =>
               updateForm({
                 ...form,
-                laborPhases: [...form.laborPhases, emptyLaborRow()],
+                laborPhases: [
+                  ...form.laborPhases,
+                  emptyLaborRow(
+                    smigHourly === null
+                      ? ""
+                      : String(
+                          Math.round(
+                            convertFromMad(smigHourly, entryCurrency) * 100,
+                          ) / 100,
+                        ),
+                  ),
+                ],
               })
             }
           >
@@ -484,6 +547,7 @@ export function RecipeForm() {
                 form={form}
                 monthlyTotal={monthlyTotal}
                 fixedLoadAllocated={preview?.result.fixedLoadAllocated ?? null}
+                smigLaborOptions={smigLaborOptions}
                 onUpdate={(patch) => updateForm({ ...form, ...patch })}
               />
 

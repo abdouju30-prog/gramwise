@@ -5,7 +5,12 @@ import { useMemo } from "react";
 import { BetaFeedbackCard } from "@/app/components/beta-feedback-card";
 import { MultiCurrencyPrice } from "@/app/components/multi-currency-price";
 import { runCosting } from "@/lib/costing";
-import { fxRatesLabel, formatFromMad } from "@/lib/currency";
+import { convertFromMad, fxRatesLabel, formatFromMad } from "@/lib/currency";
+import { parseNonNegativeInMad } from "@/lib/parse";
+import {
+  effectiveLaborHourlyMad,
+  smigLaborOptionsFromFixed,
+} from "@/lib/smic";
 import { interpolate } from "@/lib/i18n/format";
 import { useLocale, useMessages } from "@/lib/i18n/locale-provider";
 import { useWizardGuard } from "@/lib/use-wizard-guard";
@@ -71,13 +76,30 @@ export function ResultsView() {
         total: quantity * costPerUnit,
       };
     });
+  const smigLabor = session?.fixedCharges
+    ? smigLaborOptionsFromFixed(
+        session.fixedCharges,
+        recipe.laborByOwner,
+        entryCurrency,
+      )
+    : null;
   const laborRows = recipe.laborPhases
     .filter(
       (row) => row.label.trim() !== "" || row.hours.trim() !== "" || row.hourlyRate.trim() !== "",
     )
     .map((row, index) => {
-      const hours = Number.parseFloat(row.hours) || 0;
-      const hourlyRate = Number.parseFloat(row.hourlyRate) || 0;
+      const hours = Number.parseFloat(row.hours.replace(",", ".")) || 0;
+      if (hours <= 0) return null;
+      const entered = row.hourlyRate.trim()
+        ? parseNonNegativeInMad(row.hourlyRate, entryCurrency)
+        : null;
+      const hourlyMad = effectiveLaborHourlyMad(
+        entered,
+        smigLabor?.smigHourlyMad ?? null,
+        smigLabor?.laborByOwner ?? false,
+      );
+      if (hourlyMad === null) return null;
+      const hourlyRate = convertFromMad(hourlyMad, entryCurrency);
       return {
         name:
           row.label.trim() !== "" ? row.label.trim() : `${m.recipe.phase} ${index + 1}`,
@@ -85,7 +107,8 @@ export function ResultsView() {
         hourlyRate,
         total: hours * hourlyRate,
       };
-    });
+    })
+    .filter((row): row is NonNullable<typeof row> => row !== null);
 
   function handleExportCsv() {
     if (!costing) return;

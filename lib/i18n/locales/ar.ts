@@ -140,6 +140,13 @@ export const ar: Messages = {
     removeChargeLine: "حذف هذا البند",
     monthlyPreviewCaption: "يُوزَّع على كل وصفة في الخطوة التالية (دفعات أو تحضيرات).",
     monthlyPreviewError: "أدخل مبلغاً صالحاً واحداً على الأقل للمتابعة.",
+    smigLegend: "الحد الأدنى للأجور (SMIG) — تكلفة العمل",
+    smigHint:
+      "الأجر الأدنى المضمون: يحوّل وقت «اليد على المهمة» إلى تكلفة بالساعة، تُطبَّق تلقائياً في خطوة الوصفة.",
+    smigMonthlyLabel: "SMIG إجمالي / شهر",
+    smigHoursLabel: "ساعات مرجعية / شهر",
+    smigHourlyPreview: "التكلفة بالساعة التقديرية: {rate}",
+    smigHourlyInvalid: "أدخل SMIG وساعات صالحة (> 0).",
     catalog: {
       legend: "قائمة المكونات (أسعار الشراء)",
       hint: "أدخل الأسعار مرة واحدة — تُملأ تلقائياً في كل وصفة.",
@@ -236,12 +243,22 @@ export const ar: Messages = {
     },
     removeIngredient: "حذف المكوّن",
     addIngredient: "+ مكوّن",
-    laborLegend: "وقت العمل",
+    laborLegend: "عمل يدوي نشط (SMIG)",
     laborHint:
-      "كل سطر: ماذا تفعل، كم ساعة، ثم كم تريد أن تربح في الساعة بالدرهم.",
+      "احسب فقط الوقت الذي يكون فيه العامل مشغولاً ولا يستطيع عمل شيء آخر بالتوازي.",
+    laborHintActive:
+      "ساعات نشطة: خلط، مراقبة الفرن، تزيين… وليس المدة السلبية (مثلاً فرن 2 س لكن 30 د عمل فعلي).",
+    laborPassiveExample:
+      "مثال: خبز 2 س في الفرن لكن 0,5 س عمل فعلي → أدخل 0,5 س وليس 2 س.",
+    laborSmigRateNote: "الأجر بالساعة من SMIG (الخطوة 1): {rate}. اتركه فارغاً لاستخدامه.",
+    laborByOwner: "العمل يقوم به المالك",
+    laborByOwnerHint:
+      "لا يمكن أن تكون التكلفة بالساعة أقل من SMIG (حتى بدون راتب مدفوع).",
     phase: "خطوة",
-    hours: "ساعات",
+    activeHours: "ساعات نشطة",
+    hours: "ساعات نشطة",
     ratePerHour: "MAD / ساعة",
+    rateSmigDefaultHint: "افتراضي: SMIG",
     phasePlaceholder: "مثال: تزيين",
     hoursPlaceholder: "مثال: 2",
     ratePlaceholder: "مثال: 120",

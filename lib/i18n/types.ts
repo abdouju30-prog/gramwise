@@ -113,6 +113,12 @@ export type Messages = {
     removeChargeLine: string;
     monthlyPreviewCaption: string;
     monthlyPreviewError: string;
+    smigLegend: string;
+    smigHint: string;
+    smigMonthlyLabel: string;
+    smigHoursLabel: string;
+    smigHourlyPreview: string;
+    smigHourlyInvalid: string;
     catalog: {
       legend: string;
       hint: string;
@@ -201,9 +207,16 @@ export type Messages = {
     addIngredient: string;
     laborLegend: string;
     laborHint: string;
+    laborHintActive: string;
+    laborPassiveExample: string;
+    laborSmigRateNote: string;
+    laborByOwner: string;
+    laborByOwnerHint: string;
     phase: string;
+    activeHours: string;
     hours: string;
     ratePerHour: string;
+    rateSmigDefaultHint: string;
     phasePlaceholder: string;
     hoursPlaceholder: string;
     ratePlaceholder: string;

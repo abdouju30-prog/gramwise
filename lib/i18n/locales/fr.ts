@@ -142,6 +142,13 @@ export const fr: Messages = {
     monthlyPreviewCaption:
       "Réparti sur chaque recette à l’étape suivante (fournées ou préparations).",
     monthlyPreviewError: "Renseignez au moins un montant valide pour continuer.",
+    smigLegend: "SMIG — coût de la main-d’œuvre",
+    smigHint:
+      "Salaire minimum garanti : base pour convertir le temps « main sur la tâche » en coût horaire. Utilisé automatiquement à l’étape recette.",
+    smigMonthlyLabel: "SMIG brut / mois",
+    smigHoursLabel: "Heures de référence / mois",
+    smigHourlyPreview: "Coût horaire estimé : {rate}",
+    smigHourlyInvalid: "Renseignez un SMIG et des heures valides (> 0).",
     catalog: {
       legend: "Liste d’ingrédients (prix d’achat)",
       hint: "Renseignez une fois vos prix — ils se rempliront automatiquement dans chaque recette.",
@@ -244,12 +251,22 @@ export const fr: Messages = {
     },
     removeIngredient: "Retirer l’ingrédient",
     addIngredient: "+ Ingrédient",
-    laborLegend: "Temps de travail",
+    laborLegend: "Main-d’œuvre engagée (SMIG)",
     laborHint:
-      "Chaque ligne = une étape (mélange, cuisson…), le nombre d'heures, puis ce que vous voulez gagner par heure en dirhams.",
+      "Comptez seulement le temps où la personne est occupée et ne peut pas faire autre chose en parallèle.",
+    laborHintActive:
+      "Heures actives : mélange, surveillance au four, décoration… Pas la durée passive (ex. four 2 h si la personne n’y consacre que 30 min).",
+    laborPassiveExample:
+      "Ex. cuisson 2 h au four, mais 0,5 h de travail réel → saisissez 0,5 h, pas 2 h.",
+    laborSmigRateNote: "Taux horaire issu du SMIG (étape 1) : {rate}. Laissez vide pour l’appliquer.",
+    laborByOwner: "Travail réalisé par le propriétaire",
+    laborByOwnerHint:
+      "Le coût horaire ne peut pas être inférieur au SMIG (même sans salaire versé).",
     phase: "Étape",
-    hours: "Heures",
+    activeHours: "Heures actives",
+    hours: "Heures actives",
     ratePerHour: "MAD / heure",
+    rateSmigDefaultHint: "Par défaut : SMIG",
     phasePlaceholder: "ex. Décoration",
     hoursPlaceholder: "ex. 2",
     ratePlaceholder: "ex. 120",

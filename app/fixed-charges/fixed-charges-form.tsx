@@ -16,6 +16,7 @@ import { CURRENCY_LABELS } from "@/lib/currency";
 import { useLocale, useMessages } from "@/lib/i18n/locale-provider";
 import type { Messages } from "@/lib/i18n/types";
 import { loadWizardSession, saveFixedCharges } from "@/lib/session";
+import { parseSmigHourlyMad } from "@/lib/smic";
 import { IngredientCatalogSection } from "./ingredient-catalog-section";
 
 function presetLabel(
@@ -53,6 +54,11 @@ export function FixedChargesForm() {
   const monthlyTotal = useMemo(
     () => monthlyFixedTotal(form.chargeLines, entryCurrency),
     [form.chargeLines, entryCurrency],
+  );
+
+  const smigHourly = useMemo(
+    () => parseSmigHourlyMad(form, entryCurrency),
+    [form, entryCurrency],
   );
 
   function updateChargeLine(
@@ -93,7 +99,8 @@ export function FixedChargesForm() {
   const totalDisplay =
     monthlyTotal === null ? "—" : formatMoney(monthlyTotal);
 
-  const canContinue = monthlyTotal !== null && monthlyTotal > 0;
+  const canContinue =
+    monthlyTotal !== null && monthlyTotal > 0 && smigHourly !== null;
 
   return (
     <>
@@ -177,6 +184,61 @@ export function FixedChargesForm() {
           >
             {m.fixed.addChargeLine}
           </button>
+        </fieldset>
+
+        <fieldset className="field-group">
+          <legend className="field-group-legend">{m.fixed.smigLegend}</legend>
+          <p className="field-hint field-hint-block">{m.fixed.smigHint}</p>
+          <div className="field-row">
+            <label className="field">
+              <span className="field-label">{m.fixed.smigMonthlyLabel}</span>
+              <div className="field-input-wrap">
+                <span className="field-prefix" aria-hidden>
+                  {CURRENCY_LABELS[entryCurrency]}
+                </span>
+                <input
+                  type="number"
+                  inputMode="decimal"
+                  min="0"
+                  step="0.01"
+                  value={form.smigMonthlyMad}
+                  onChange={(e) =>
+                    setForm((prev) => ({
+                      ...prev,
+                      smigMonthlyMad: e.target.value,
+                    }))
+                  }
+                />
+              </div>
+            </label>
+            <label className="field">
+              <span className="field-label">{m.fixed.smigHoursLabel}</span>
+              <input
+                type="number"
+                inputMode="decimal"
+                min="0"
+                step="1"
+                value={form.smigHoursPerMonth}
+                onChange={(e) =>
+                  setForm((prev) => ({
+                    ...prev,
+                    smigHoursPerMonth: e.target.value,
+                  }))
+                }
+              />
+            </label>
+          </div>
+          <p
+            className={`field-hint field-hint-block${smigHourly === null ? " preview-error" : ""}`}
+            aria-live="polite"
+          >
+            {smigHourly === null
+              ? m.fixed.smigHourlyInvalid
+              : m.fixed.smigHourlyPreview.replace(
+                  "{rate}",
+                  formatMoney(smigHourly),
+                )}
+          </p>
         </fieldset>
 
         <IngredientCatalogSection />

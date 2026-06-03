@@ -141,6 +141,13 @@ export const en: Messages = {
     monthlyPreviewCaption:
       "Spread per recipe in the next step (batches or prep runs).",
     monthlyPreviewError: "Enter at least one valid amount to continue.",
+    smigLegend: "Minimum wage (SMIG) — labor cost",
+    smigHint:
+      "Guaranteed minimum wage: converts hands-on time into an hourly labor cost, applied automatically on the recipe step.",
+    smigMonthlyLabel: "Gross SMIG / month",
+    smigHoursLabel: "Reference hours / month",
+    smigHourlyPreview: "Estimated hourly cost: {rate}",
+    smigHourlyInvalid: "Enter a valid SMIG and hours (> 0).",
     catalog: {
       legend: "Ingredient list (purchase prices)",
       hint: "Set prices once — they auto-fill in every recipe.",
@@ -238,12 +245,22 @@ export const en: Messages = {
     },
     removeIngredient: "Remove ingredient",
     addIngredient: "+ Ingredient",
-    laborLegend: "Your work time",
+    laborLegend: "Hands-on labor (SMIG)",
     laborHint:
-      "Each row: what you do, how many hours, then what you want to earn per hour in dirhams.",
+      "Count only time when the worker is tied up and cannot do something else in parallel.",
+    laborHintActive:
+      "Active hours: mixing, watching the oven, decorating… Not passive duration (e.g. oven 2 h but only 30 min of real work).",
+    laborPassiveExample:
+      "e.g. bake 2 h in the oven but 0.5 h of actual work → enter 0.5 h, not 2 h.",
+    laborSmigRateNote: "Hourly rate from SMIG (step 1): {rate}. Leave blank to use it.",
+    laborByOwner: "Work done by the owner",
+    laborByOwnerHint:
+      "Hourly cost cannot be below SMIG (even if no salary is paid).",
     phase: "Step",
-    hours: "Hours",
+    activeHours: "Active hours",
+    hours: "Active hours",
     ratePerHour: "MAD / hour",
+    rateSmigDefaultHint: "Default: SMIG",
     phasePlaceholder: "e.g. Decorating",
     hoursPlaceholder: "e.g. 2",
     ratePlaceholder: "e.g. 120",

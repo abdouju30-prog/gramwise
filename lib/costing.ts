@@ -3,6 +3,7 @@ import type { CostingInput, CostingResult } from "@/engine/types";
 import { monthlyFixedTotal, type FixedChargesForm } from "@/lib/fixed-charges";
 import type { DisplayCurrency } from "@/lib/currency";
 import { parsePercentToFraction } from "@/lib/parse";
+import { smigLaborOptionsFromFixed } from "@/lib/smic";
 import {
   buildRecipeCapacity,
   parseIngredients,
@@ -18,7 +19,11 @@ export function buildCostingInput(
 ): CostingInput | null {
   const monthlyFixed = monthlyFixedTotal(fixed.chargeLines, entryCurrency);
   const ingredients = parseIngredients(recipe.ingredients, entryCurrency);
-  const laborPhases = parseLaborPhases(recipe.laborPhases, entryCurrency);
+  const laborPhases = parseLaborPhases(
+    recipe.laborPhases,
+    entryCurrency,
+    smigLaborOptionsFromFixed(fixed, recipe.laborByOwner, entryCurrency),
+  );
   const wasteFraction = parsePercentToFraction(recipe.wastePercent);
   const marginFraction = parsePercentToFraction(recipe.marginPercent);
 

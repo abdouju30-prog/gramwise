@@ -1,5 +1,9 @@
 import type { DisplayCurrency } from "@/lib/currency";
 import { parsePositiveInMad } from "@/lib/parse";
+import {
+  DEFAULT_SMIG_HOURS_PER_MONTH,
+  DEFAULT_SMIG_MONTHLY_MAD,
+} from "@/lib/smic";
 
 export type CapacityMode = "batches_per_month" | "hours_per_month";
 
@@ -19,6 +23,10 @@ export type FixedChargeLine = {
 
 export type FixedChargesForm = {
   chargeLines: FixedChargeLine[];
+  /** Gross monthly SMIG (basis for labor hourly rate). */
+  smigMonthlyMad: string;
+  /** Hours per month used to convert SMIG → hourly (e.g. 191). */
+  smigHoursPerMonth: string;
 };
 
 /** Session saved before capacity moved off step 1. */
@@ -38,6 +46,8 @@ export const DEFAULT_CHARGE_LINES: FixedChargeLine[] = [
 
 export const DEFAULT_FIXED_CHARGES: FixedChargesForm = {
   chargeLines: DEFAULT_CHARGE_LINES,
+  smigMonthlyMad: DEFAULT_SMIG_MONTHLY_MAD,
+  smigHoursPerMonth: DEFAULT_SMIG_HOURS_PER_MONTH,
 };
 
 function newChargeLineId(): string {
@@ -67,8 +77,13 @@ export function monthlyFixedTotal(
 export function normalizeFixedChargesForm(
   raw: LegacyFixedChargesForm,
 ): FixedChargesForm {
+  const smigMonthlyMad =
+    raw.smigMonthlyMad?.trim() || DEFAULT_FIXED_CHARGES.smigMonthlyMad;
+  const smigHoursPerMonth =
+    raw.smigHoursPerMonth?.trim() || DEFAULT_FIXED_CHARGES.smigHoursPerMonth;
+
   if (raw.chargeLines?.length) {
-    return { chargeLines: raw.chargeLines };
+    return { chargeLines: raw.chargeLines, smigMonthlyMad, smigHoursPerMonth };
   }
 
   const legacy = raw.monthlyFixedCharges?.trim();
@@ -78,7 +93,7 @@ export function normalizeFixedChargesForm(
       : { ...line, amount: line.amount },
   );
 
-  return { chargeLines };
+  return { chargeLines, smigMonthlyMad, smigHoursPerMonth };
 }
 
 export function extractLegacyCapacity(

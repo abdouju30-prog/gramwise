@@ -5,6 +5,7 @@ import type { CapacityMode } from "@/lib/fixed-charges";
 import { formatFromMad } from "@/lib/currency";
 import { useLocale, useMessages } from "@/lib/i18n/locale-provider";
 import { parsePositive } from "@/lib/parse";
+import type { SmigLaborOptions } from "@/lib/smic";
 import {
   parseLaborPhases,
   recipeLaborHours,
@@ -16,6 +17,7 @@ type Props = {
   form: RecipeForm;
   monthlyTotal: number | null;
   fixedLoadAllocated: number | null;
+  smigLaborOptions?: SmigLaborOptions;
   onUpdate: (patch: Partial<RecipeForm>) => void;
 };
 
@@ -23,6 +25,7 @@ export function RecipeCapacitySection({
   form,
   monthlyTotal,
   fixedLoadAllocated,
+  smigLaborOptions,
   onUpdate,
 }: Props) {
   const m = useMessages();
@@ -49,7 +52,11 @@ export function RecipeCapacitySection({
     }
 
     const shopHours = parsePositive(form.hoursPerMonth);
-    const phases = parseLaborPhases(form.laborPhases, entryCurrency);
+    const phases = parseLaborPhases(
+      form.laborPhases,
+      entryCurrency,
+      smigLaborOptions,
+    );
     const recipeHours = phases ? recipeLaborHours(phases) : null;
     if (shopHours === null || recipeHours === null || recipeHours === 0) return null;
     return `${formatFromMad(monthlyTotal, entryCurrency)} ÷ ${shopHours} h × ${recipeHours} h = ${formatFromMad(fixedLoadAllocated, entryCurrency)}`;
@@ -59,6 +66,7 @@ export function RecipeCapacitySection({
     fixedLoadAllocated,
     entryCurrency,
     perUnitLabel,
+    smigLaborOptions,
   ]);
 
   function setCountUnit(unit: ProductionCountUnit) {

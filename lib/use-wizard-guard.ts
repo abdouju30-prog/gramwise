@@ -2,7 +2,8 @@
 
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { loadWizardSession, type WizardSession } from "@/lib/session";
+import { normalizeFixedChargesForm } from "@/lib/fixed-charges";
+import { loadWizardSession, saveWizardSession, type WizardSession } from "@/lib/session";
 
 export function useWizardGuard(
   require: "fixed" | "recipe",
@@ -16,11 +17,19 @@ export function useWizardGuard(
       router.replace("/fixed-charges");
       return;
     }
-    if (require === "recipe" && !data.recipe) {
+    const fixedCharges = normalizeFixedChargesForm(data.fixedCharges);
+    const session: WizardSession = { ...data, fixedCharges };
+    if (
+      fixedCharges.smigMonthlyMad !== data.fixedCharges.smigMonthlyMad ||
+      fixedCharges.smigHoursPerMonth !== data.fixedCharges.smigHoursPerMonth
+    ) {
+      saveWizardSession(session);
+    }
+    if (require === "recipe" && !session.recipe) {
       router.replace("/recipe");
       return;
     }
-    setSession(data);
+    setSession(session);
   }, [router, require]);
 
   return session;

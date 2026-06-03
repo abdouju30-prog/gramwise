@@ -8,6 +8,10 @@ import {
 } from "@/lib/ingredient-units";
 import type { DisplayCurrency } from "@/lib/currency";
 import { parseNonNegativeInMad, parsePositive } from "@/lib/parse";
+import {
+  effectiveLaborHourlyMad,
+  type SmigLaborOptions,
+} from "@/lib/smic";
 
 export type IngredientRow = {
   id: string;
@@ -32,6 +36,8 @@ export type RecipeForm = {
   name: string;
   ingredients: IngredientRow[];
   laborPhases: LaborRow[];
+  /** When true, labor cost uses at least the SMIG hourly rate from step 1. */
+  laborByOwner: boolean;
   wastePercent: string;
   marginPercent: string;
   capacityMode: CapacityMode;
@@ -71,6 +77,7 @@ export const CUPCAKES_PRESET: RecipeForm = {
   ],
   wastePercent: "3",
   marginPercent: "40",
+  laborByOwner: false,
   ...DEFAULT_RECIPE_CAPACITY,
 };
 
@@ -171,6 +178,7 @@ export const DEFAULT_RECIPE: RecipeForm = {
   ]),
   wastePercent: "3",
   marginPercent: "40",
+  laborByOwner: false,
   ...DEFAULT_RECIPE_CAPACITY,
 };
 
@@ -194,6 +202,7 @@ export function normalizeRecipeForm(raw: Partial<RecipeForm>): RecipeForm {
       raw.batchesPerMonth ?? DEFAULT_RECIPE_CAPACITY.batchesPerMonth,
     hoursPerMonth:
       raw.hoursPerMonth ?? DEFAULT_RECIPE_CAPACITY.hoursPerMonth,
+    laborByOwner: raw.laborByOwner ?? false,
   };
 }
 
@@ -275,8 +284,13 @@ export function parsedLinesToRows(
   }));
 }
 
-export function emptyLaborRow(): LaborRow {
-  return { id: rowId(), label: "", hours: "", hourlyRate: "" };
+export function emptyLaborRow(defaultHourlyRate = ""): LaborRow {
+  return {
+    id: rowId(),
+    label: "",
+    hours: "",
+    hourlyRate: defaultHourlyRate,
+  };
 }
 
 export function parseIngredients(
@@ -303,13 +317,21 @@ export function parseIngredients(
 export function parseLaborPhases(
   rows: LaborRow[],
   entryCurrency: DisplayCurrency = "MAD",
+  smig?: SmigLaborOptions,
 ): LaborPhase[] | null {
   const phases: LaborPhase[] = [];
+  const smigHourly = smig?.smigHourlyMad ?? null;
+  const owner = smig?.laborByOwner ?? false;
+
   for (const row of rows) {
     const hours = parseNonNegative(row.hours);
-    const rate = parseNonNegativeInMad(row.hourlyRate, entryCurrency);
-    if (hours === null && rate === null) continue;
-    if (hours === null || rate === null || hours === 0) return null;
+    const entered = row.hourlyRate.trim()
+      ? parseNonNegativeInMad(row.hourlyRate, entryCurrency)
+      : null;
+    if (hours === null && entered === null) continue;
+    if (hours === null || hours === 0) continue;
+    const rate = effectiveLaborHourlyMad(entered, smigHourly, owner);
+    if (rate === null) continue;
     phases.push({ hours, hourlyRate: rate });
   }
   return phases.length > 0 ? phases : null;
