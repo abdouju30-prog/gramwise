@@ -6,17 +6,22 @@ import { useEffect, useMemo, useState } from "react";
 import {
   createCustomChargeLine,
   DEFAULT_FIXED_CHARGES,
+  mergeCapacityFromRecipe,
   monthlyFixedTotal,
   normalizeFixedChargesForm,
+  previewShopFixedPerBatch,
   type ChargeLinePreset,
   type FixedChargeLine,
   type FixedChargesForm,
+  type LegacyCapacityFields,
 } from "@/lib/fixed-charges";
 import { CURRENCY_LABELS } from "@/lib/currency";
 import { useLocale, useMessages } from "@/lib/i18n/locale-provider";
 import type { Messages } from "@/lib/i18n/types";
+import { parsePositive } from "@/lib/parse";
 import { loadWizardSession, saveFixedCharges } from "@/lib/session";
 import { IngredientCatalogSection } from "./ingredient-catalog-section";
+import { ShopCapacitySection } from "./shop-capacity-section";
 
 function presetLabel(
   preset: ChargeLinePreset,
@@ -43,9 +48,26 @@ export function FixedChargesForm() {
   const [form, setForm] = useState<FixedChargesForm>(DEFAULT_FIXED_CHARGES);
 
   useEffect(() => {
-    const saved = loadWizardSession()?.fixedCharges;
-    if (saved) setForm(normalizeFixedChargesForm(saved));
+    const session = loadWizardSession();
+    const saved = session?.fixedCharges;
+    let next = saved
+      ? normalizeFixedChargesForm(saved)
+      : DEFAULT_FIXED_CHARGES;
+    if (session?.recipe) {
+      next = mergeCapacityFromRecipe(
+        next,
+        session.recipe as LegacyCapacityFields,
+      );
+    }
+    setForm(next);
   }, []);
+
+  function update<K extends keyof FixedChargesForm>(
+    key: K,
+    value: FixedChargesForm[K],
+  ) {
+    setForm((prev) => ({ ...prev, [key]: value }));
+  }
 
   const monthlyTotal = useMemo(
     () => monthlyFixedTotal(form.chargeLines, entryCurrency),
@@ -91,6 +113,16 @@ export function FixedChargesForm() {
     monthlyTotal === null ? "—" : formatMoney(monthlyTotal);
 
   const canContinue = monthlyTotal !== null && monthlyTotal > 0;
+
+  const shopBatchPreview = useMemo(
+    () => previewShopFixedPerBatch(form, entryCurrency),
+    [form, entryCurrency],
+  );
+
+  const capacityReady =
+    form.capacityMode === "batches_per_month"
+      ? shopBatchPreview !== null
+      : parsePositive(form.hoursPerMonth) !== null;
 
   return (
     <>
@@ -176,6 +208,12 @@ export function FixedChargesForm() {
           </button>
         </fieldset>
 
+        <ShopCapacitySection
+          form={form}
+          monthlyTotal={monthlyTotal}
+          onUpdate={update}
+        />
+
         <IngredientCatalogSection />
       </form>
 
@@ -198,7 +236,7 @@ export function FixedChargesForm() {
         <button
           type="button"
           className="btn btn-primary"
-          disabled={!canContinue}
+          disabled={!canContinue || !capacityReady}
           onClick={() => {
             saveFixedCharges(form);
             router.push("/recipe");

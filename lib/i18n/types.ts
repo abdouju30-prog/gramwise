@@ -123,8 +123,10 @@ export type Messages = {
     capacityHoursExplain: string;
     batchesLabel: string;
     batchesHint: string;
+    shopBatchNote: string;
     capacityExampleLabel: string;
     shopHours: string;
+    shopHoursHint: string;
     recipeHours: string;
     recipeHoursHint: string;
     hintBatches: string;
@@ -164,6 +166,13 @@ export type Messages = {
       deleteRecipe: string;
       unnamedRecipe: string;
       loadedHint: string;
+    };
+    fixedLoadPreview: {
+      title: string;
+      hint: string;
+      batchesDenom: string;
+      editShop: string;
+      incomplete: string;
     };
     ingredientsLegend: string;
     ingredientsHint: string;

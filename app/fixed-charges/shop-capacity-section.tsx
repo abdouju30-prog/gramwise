@@ -1,62 +1,46 @@
 "use client";
 
 import { useMemo } from "react";
-import type { CapacityMode } from "@/lib/fixed-charges";
+import {
+  previewShopFixedPerBatch,
+  type CapacityMode,
+  type FixedChargesForm,
+} from "@/lib/fixed-charges";
 import { formatFromMad } from "@/lib/currency";
 import { useLocale, useMessages } from "@/lib/i18n/locale-provider";
-import { parsePositive } from "@/lib/parse";
-import {
-  parseLaborPhases,
-  recipeLaborHours,
-  type RecipeForm,
-} from "@/lib/recipe";
 
 type Props = {
-  form: RecipeForm;
+  form: FixedChargesForm;
   monthlyTotal: number | null;
-  fixedLoadAllocated: number | null;
-  onUpdate: <K extends keyof RecipeForm>(key: K, value: RecipeForm[K]) => void;
+  onUpdate: <K extends keyof FixedChargesForm>(
+    key: K,
+    value: FixedChargesForm[K],
+  ) => void;
 };
 
-export function RecipeCapacitySection({
-  form,
-  monthlyTotal,
-  fixedLoadAllocated,
-  onUpdate,
-}: Props) {
+export function ShopCapacitySection({ form, monthlyTotal, onUpdate }: Props) {
   const m = useMessages();
   const { entryCurrency } = useLocale();
 
+  const perBatchPreview = useMemo(
+    () => previewShopFixedPerBatch(form, entryCurrency),
+    [form, entryCurrency],
+  );
+
   const previewFormula = useMemo(() => {
-    if (monthlyTotal === null || fixedLoadAllocated === null) return null;
-
-    if (form.capacityMode === "batches_per_month") {
-      const batches = parsePositive(form.batchesPerMonth);
-      if (batches === null) return null;
-      return `${formatFromMad(monthlyTotal, entryCurrency)} ÷ ${batches} = ${formatFromMad(fixedLoadAllocated, entryCurrency)} ${m.fixed.previewPerBatch}`;
-    }
-
-    const shopHours = parsePositive(form.hoursPerMonth);
-    const phases = parseLaborPhases(form.laborPhases);
-    const recipeHours = phases ? recipeLaborHours(phases) : null;
-    if (shopHours === null || recipeHours === null || recipeHours === 0) return null;
-    return `${formatFromMad(monthlyTotal, entryCurrency)} ÷ ${shopHours} h × ${recipeHours} h = ${formatFromMad(fixedLoadAllocated, entryCurrency)} ${m.fixed.previewPerRecipe}`;
-  }, [
-    form,
-    monthlyTotal,
-    fixedLoadAllocated,
-    entryCurrency,
-    m.fixed.previewPerBatch,
-    m.fixed.previewPerRecipe,
-  ]);
+    if (!perBatchPreview || monthlyTotal === null) return null;
+    const batches = form.batchesPerMonth.trim();
+    if (!batches) return null;
+    return `${formatFromMad(monthlyTotal, entryCurrency)} ÷ ${batches} = ${formatFromMad(perBatchPreview.fixedLoadAllocated, entryCurrency)} ${m.fixed.previewPerBatch}`;
+  }, [form.batchesPerMonth, monthlyTotal, perBatchPreview, entryCurrency, m.fixed.previewPerBatch]);
 
   function setCapacityMode(mode: CapacityMode) {
     onUpdate("capacityMode", mode);
   }
 
   return (
-    <div className="recipe-composer-section">
-      <p className="recipe-section-label">{m.fixed.capacityLegend}</p>
+    <fieldset className="field-group">
+      <legend className="field-group-legend">{m.fixed.capacityLegend}</legend>
       <p className="explain-short capacity-explain">{m.fixed.capacityExplainShort}</p>
       <p className="field-hint field-hint-block">{m.fixed.capacityChooseMode}</p>
 
@@ -68,7 +52,7 @@ export function RecipeCapacitySection({
         <label className="mode-option">
           <input
             type="radio"
-            name="capacityMode"
+            name="shopCapacityMode"
             checked={form.capacityMode === "batches_per_month"}
             onChange={() => setCapacityMode("batches_per_month")}
           />
@@ -80,7 +64,7 @@ export function RecipeCapacitySection({
         <label className="mode-option">
           <input
             type="radio"
-            name="capacityMode"
+            name="shopCapacityMode"
             checked={form.capacityMode === "hours_per_month"}
             onChange={() => setCapacityMode("hours_per_month")}
           />
@@ -106,6 +90,13 @@ export function RecipeCapacitySection({
             />
             <span className="field-hint">{m.fixed.batchesHint}</span>
           </label>
+          {previewFormula ? (
+            <div className="capacity-example" aria-live="polite">
+              <span className="capacity-example-label">{m.fixed.capacityExampleLabel}</span>
+              <p className="capacity-example-formula">{previewFormula}</p>
+              <p className="field-hint field-hint-block">{m.fixed.shopBatchNote}</p>
+            </div>
+          ) : null}
         </>
       ) : (
         <>
@@ -120,17 +111,10 @@ export function RecipeCapacitySection({
               value={form.hoursPerMonth}
               onChange={(e) => onUpdate("hoursPerMonth", e.target.value)}
             />
-            <span className="field-hint">{m.fixed.recipeHoursHint}</span>
+            <span className="field-hint">{m.fixed.shopHoursHint}</span>
           </label>
         </>
       )}
-
-      {previewFormula ? (
-        <div className="capacity-example" aria-live="polite">
-          <span className="capacity-example-label">{m.fixed.capacityExampleLabel}</span>
-          <p className="capacity-example-formula">{previewFormula}</p>
-        </div>
-      ) : null}
-    </div>
+    </fieldset>
   );
 }

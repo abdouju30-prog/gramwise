@@ -22,7 +22,7 @@ import {
   type RecipeForm,
 } from "@/lib/recipe";
 import { IngredientImportPanel } from "./ingredient-import-panel";
-import { RecipeCapacitySection } from "./recipe-capacity-section";
+import { RecipeFixedLoadPreview } from "./recipe-fixed-load-preview";
 import {
   RecipeTitleHeader,
   RECIPE_PICKER_CUPCAKES,
@@ -35,7 +35,13 @@ import {
   saveRecipeToLibrary,
   updateSavedRecipe,
 } from "@/lib/recipe-library";
-import { extractLegacyCapacity, monthlyFixedTotal } from "@/lib/fixed-charges";
+import {
+  DEFAULT_FIXED_CHARGES,
+  mergeCapacityFromRecipe,
+  monthlyFixedTotal,
+  normalizeFixedChargesForm,
+  type LegacyCapacityFields,
+} from "@/lib/fixed-charges";
 import {
   applyCatalogToRow,
   applyCatalogToRows,
@@ -45,6 +51,7 @@ import { useLocale, useMessages } from "@/lib/i18n/locale-provider";
 import {
   loadWizardSession,
   RECIPE_DEFAULTS_GENERATION,
+  saveFixedCharges,
   saveRecipe,
 } from "@/lib/session";
 import { useWizardGuard } from "@/lib/use-wizard-guard";
@@ -67,11 +74,16 @@ export function RecipeForm() {
     const data = loadWizardSession();
     const names = m.recipe.defaultIngredientNames;
     const laborLabels = m.recipe.defaultLaborPhaseLabels;
-    const legacyCapacity = extractLegacyCapacity(data?.fixedCharges);
-    let base = normalizeRecipeForm(data?.recipe ?? {});
-    if (!data?.recipe?.capacityMode && legacyCapacity) {
-      base = { ...base, ...legacyCapacity };
+
+    if (data?.recipe && "capacityMode" in data.recipe && data.fixedCharges) {
+      const migrated = mergeCapacityFromRecipe(
+        normalizeFixedChargesForm(data.fixedCharges),
+        data.recipe as LegacyCapacityFields,
+      );
+      saveFixedCharges(migrated);
     }
+
+    const base = normalizeRecipeForm(data?.recipe ?? {});
     const staleGeneration =
       (data?.recipeDefaultsGeneration ?? 0) < RECIPE_DEFAULTS_GENERATION;
     const next = mergeRecipeDefaults(
@@ -466,11 +478,15 @@ export function RecipeForm() {
           </button>
               </div>
 
-              <RecipeCapacitySection
-                form={form}
+              <RecipeFixedLoadPreview
+                fixed={
+                  session?.fixedCharges
+                    ? normalizeFixedChargesForm(session.fixedCharges)
+                    : DEFAULT_FIXED_CHARGES
+                }
+                recipe={form}
                 monthlyTotal={monthlyTotal}
                 fixedLoadAllocated={preview?.result.fixedLoadAllocated ?? null}
-                onUpdate={updateRecipeField}
               />
 
               <div className="recipe-composer-section">

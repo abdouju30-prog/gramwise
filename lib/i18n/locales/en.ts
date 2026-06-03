@@ -145,18 +145,21 @@ export const en: Messages = {
     capacityChooseMode: "You measure production in:",
     capacityMode: "Production measure",
     batchesPerMonth: "Batches per month",
-    batchesPerMonthDesc: "Full recipe runs, on average",
+    batchesPerMonthDesc: "All products combined",
     hoursPerMonth: "Work hours",
     hoursPerMonthDesc: "Time in the shop",
     capacityBatchesExplain:
       "Example: $1,100/month and 40 batches → each batch carries $27.50 of rent and bills.",
     capacityHoursExplain:
       "We divide monthly costs by shop hours, then multiply by this recipe’s labor time.",
-    batchesLabel: "How many batches per month?",
+    batchesLabel: "How many batches per month at the shop?",
     batchesHint:
-      "One batch = one full production of this recipe (e.g. 40 means you make it about 40 times a month).",
+      "One batch = one full production run, any recipe. Count the whole shop (e.g. 120 batches/month).",
+    shopBatchNote:
+      "Same fixed share on every recipe — cupcakes or caramel, one batch counts the same.",
     capacityExampleLabel: "With your numbers",
     shopHours: "Shop hours / month (all recipes)",
+    shopHoursHint: "Total production hours in the shop per month, all recipes.",
     recipeHours: "Hours for this recipe",
     recipeHoursHint: "Total time to make this recipe once (prep, baking, finishing).",
     hintBatches: "Monthly fixed ÷ batches per month",
@@ -197,6 +200,13 @@ export const en: Messages = {
       deleteRecipe: "Delete",
       unnamedRecipe: "Untitled",
       loadedHint: "Saved recipe loaded — see results below, or pick New recipe to edit.",
+    },
+    fixedLoadPreview: {
+      title: "Fixed cost on this recipe",
+      hint: "Based on total shop production (step 1), not this product alone.",
+      batchesDenom: "shop batches",
+      editShop: "Edit shop production",
+      incomplete: "Complete shop production on step 1.",
     },
     ingredientsLegend: "Ingredients",
     ingredientsHint: "Use kg, L or each — same unit for quantity and cost.",
