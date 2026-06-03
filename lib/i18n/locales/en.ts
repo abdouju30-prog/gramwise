@@ -141,13 +141,15 @@ export const en: Messages = {
     monthlyPreviewCaption:
       "Spread per recipe in the next step (batches or prep runs).",
     monthlyPreviewError: "Enter at least one valid amount to continue.",
-    smigLegend: "Minimum wage (SMIG) — labor cost",
+    smigLegend: "Minimum wage — labor cost",
     smigHint:
-      "Guaranteed minimum wage: converts hands-on time into an hourly labor cost, applied automatically on the recipe step.",
-    smigMonthlyLabel: "Gross SMIG / month",
+      "Required: enter your country’s legal minimum (SMIG, SMIC, etc.). Examples are not used in calculations.",
+    smigMonthlyLabel: "Gross minimum / month",
+    smigMonthlyPlaceholder: "e.g. 3119 (Morocco)",
     smigHoursLabel: "Reference hours / month",
+    smigHoursPlaceholder: "e.g. 191",
     smigHourlyPreview: "Estimated hourly cost: {rate}",
-    smigHourlyInvalid: "Enter a valid SMIG and hours (> 0).",
+    smigHourlyInvalid: "Enter the minimum and hours (> 0) to continue.",
     catalog: {
       legend: "Ingredient list (purchase prices)",
       hint: "Set prices once — they auto-fill in every recipe.",
@@ -252,7 +254,9 @@ export const en: Messages = {
       "Active hours: mixing, watching the oven, decorating… Not passive duration (e.g. oven 2 h but only 30 min of real work).",
     laborPassiveExample:
       "e.g. bake 2 h in the oven but 0.5 h of actual work → enter 0.5 h, not 2 h.",
-    laborSmigRateNote: "Hourly rate from SMIG (step 1): {rate}. Leave blank to use it.",
+    laborSmigRateNote: "Hourly rate from minimum wage (step 1): {rate}. Leave blank to use it.",
+    laborSmigMissing:
+      "Enter your country’s minimum wage on Fixed charges first — required for labor costing.",
     laborByOwner: "Work done by the owner",
     laborByOwnerHint:
       "Hourly cost cannot be below SMIG (even if no salary is paid).",

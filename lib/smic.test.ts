@@ -40,8 +40,10 @@ describe("parseLaborPhases with SMIG", () => {
     expect(phases).toEqual([{ hours: 0.5, hourlyRate: 16.33 }]);
   });
 
-  it("works when session lacks smig fields", () => {
-    const hourly = parseSmigHourlyMad({});
-    expect(hourly).not.toBeNull();
+  it("returns null when fields are empty", () => {
+    expect(parseSmigHourlyMad({})).toBeNull();
+    expect(
+      parseSmigHourlyMad({ smigMonthlyMad: "3119", smigHoursPerMonth: "" }),
+    ).toBeNull();
   });
 });

@@ -1,9 +1,5 @@
 import type { DisplayCurrency } from "@/lib/currency";
 import { parsePositiveInMad } from "@/lib/parse";
-import {
-  DEFAULT_SMIG_HOURS_PER_MONTH,
-  DEFAULT_SMIG_MONTHLY_MAD,
-} from "@/lib/smic";
 
 export type CapacityMode = "batches_per_month" | "hours_per_month";
 
@@ -46,8 +42,8 @@ export const DEFAULT_CHARGE_LINES: FixedChargeLine[] = [
 
 export const DEFAULT_FIXED_CHARGES: FixedChargesForm = {
   chargeLines: DEFAULT_CHARGE_LINES,
-  smigMonthlyMad: DEFAULT_SMIG_MONTHLY_MAD,
-  smigHoursPerMonth: DEFAULT_SMIG_HOURS_PER_MONTH,
+  smigMonthlyMad: "",
+  smigHoursPerMonth: "",
 };
 
 function newChargeLineId(): string {
@@ -77,10 +73,8 @@ export function monthlyFixedTotal(
 export function normalizeFixedChargesForm(
   raw: LegacyFixedChargesForm,
 ): FixedChargesForm {
-  const smigMonthlyMad =
-    raw.smigMonthlyMad?.trim() || DEFAULT_FIXED_CHARGES.smigMonthlyMad;
-  const smigHoursPerMonth =
-    raw.smigHoursPerMonth?.trim() || DEFAULT_FIXED_CHARGES.smigHoursPerMonth;
+  const smigMonthlyMad = raw.smigMonthlyMad?.trim() ?? "";
+  const smigHoursPerMonth = raw.smigHoursPerMonth?.trim() ?? "";
 
   if (raw.chargeLines?.length) {
     return { chargeLines: raw.chargeLines, smigMonthlyMad, smigHoursPerMonth };

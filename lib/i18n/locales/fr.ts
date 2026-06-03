@@ -142,13 +142,15 @@ export const fr: Messages = {
     monthlyPreviewCaption:
       "Réparti sur chaque recette à l’étape suivante (fournées ou préparations).",
     monthlyPreviewError: "Renseignez au moins un montant valide pour continuer.",
-    smigLegend: "SMIG — coût de la main-d’œuvre",
+    smigLegend: "Salaire minimum — coût de la main-d’œuvre",
     smigHint:
-      "Salaire minimum garanti : base pour convertir le temps « main sur la tâche » en coût horaire. Utilisé automatiquement à l’étape recette.",
-    smigMonthlyLabel: "SMIG brut / mois",
+      "Obligatoire : indiquez le minimum de votre pays (SMIG, SMIC, etc.). Les exemples ne sont pas appliqués au calcul.",
+    smigMonthlyLabel: "Minimum brut / mois",
+    smigMonthlyPlaceholder: "ex. 3119 (Maroc)",
     smigHoursLabel: "Heures de référence / mois",
+    smigHoursPlaceholder: "ex. 191",
     smigHourlyPreview: "Coût horaire estimé : {rate}",
-    smigHourlyInvalid: "Renseignez un SMIG et des heures valides (> 0).",
+    smigHourlyInvalid: "Renseignez le minimum et les heures (> 0) pour continuer.",
     catalog: {
       legend: "Liste d’ingrédients (prix d’achat)",
       hint: "Renseignez une fois vos prix — ils se rempliront automatiquement dans chaque recette.",
@@ -258,7 +260,9 @@ export const fr: Messages = {
       "Heures actives : mélange, surveillance au four, décoration… Pas la durée passive (ex. four 2 h si la personne n’y consacre que 30 min).",
     laborPassiveExample:
       "Ex. cuisson 2 h au four, mais 0,5 h de travail réel → saisissez 0,5 h, pas 2 h.",
-    laborSmigRateNote: "Taux horaire issu du SMIG (étape 1) : {rate}. Laissez vide pour l’appliquer.",
+    laborSmigRateNote: "Taux horaire issu du minimum (étape 1) : {rate}. Laissez vide pour l’appliquer.",
+    laborSmigMissing:
+      "Renseignez d’abord le salaire minimum à l’étape Charges fixes — obligatoire selon votre pays.",
     laborByOwner: "Travail réalisé par le propriétaire",
     laborByOwnerHint:
       "Le coût horaire ne peut pas être inférieur au SMIG (même sans salaire versé).",

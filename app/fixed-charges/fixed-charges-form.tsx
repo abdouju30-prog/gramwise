@@ -202,6 +202,8 @@ export function FixedChargesForm() {
                   min="0"
                   step="0.01"
                   value={form.smigMonthlyMad}
+                  placeholder={m.fixed.smigMonthlyPlaceholder}
+                  required
                   onChange={(e) =>
                     setForm((prev) => ({
                       ...prev,
@@ -219,6 +221,8 @@ export function FixedChargesForm() {
                 min="0"
                 step="1"
                 value={form.smigHoursPerMonth}
+                placeholder={m.fixed.smigHoursPlaceholder}
+                required
                 onChange={(e) =>
                   setForm((prev) => ({
                     ...prev,

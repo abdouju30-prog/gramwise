@@ -116,7 +116,9 @@ export type Messages = {
     smigLegend: string;
     smigHint: string;
     smigMonthlyLabel: string;
+    smigMonthlyPlaceholder: string;
     smigHoursLabel: string;
+    smigHoursPlaceholder: string;
     smigHourlyPreview: string;
     smigHourlyInvalid: string;
     catalog: {
@@ -210,6 +212,7 @@ export type Messages = {
     laborHintActive: string;
     laborPassiveExample: string;
     laborSmigRateNote: string;
+    laborSmigMissing: string;
     laborByOwner: string;
     laborByOwnerHint: string;
     phase: string;

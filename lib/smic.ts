@@ -2,10 +2,9 @@ import type { DisplayCurrency } from "@/lib/currency";
 import type { FixedChargesForm } from "@/lib/fixed-charges";
 import { parsePositive, parsePositiveInMad } from "@/lib/parse";
 
-/** Morocco SMIG (non-agricultural), indicative default — user adjusts on step 1. */
-export const DEFAULT_SMIG_MONTHLY_MAD = "3119";
-/** Statutory monthly hours basis for SMIG → hourly (191 h/mois). */
-export const DEFAULT_SMIG_HOURS_PER_MONTH = "191";
+/** UI placeholders only — user must enter their country’s minimum wage. */
+export const EXAMPLE_SMIG_MONTHLY = "3119";
+export const EXAMPLE_SMIG_HOURS_PER_MONTH = "191";
 
 export type SmigLaborOptions = {
   smigHourlyMad: number | null;
@@ -16,13 +15,12 @@ export function parseSmigHourlyMad(
   form: Partial<Pick<FixedChargesForm, "smigMonthlyMad" | "smigHoursPerMonth">>,
   entryCurrency: DisplayCurrency = "MAD",
 ): number | null {
-  const monthly = parsePositiveInMad(
-    form.smigMonthlyMad?.trim() || DEFAULT_SMIG_MONTHLY_MAD,
-    entryCurrency,
-  );
-  const hours = parsePositive(
-    form.smigHoursPerMonth?.trim() || DEFAULT_SMIG_HOURS_PER_MONTH,
-  );
+  const monthlyRaw = form.smigMonthlyMad?.trim() ?? "";
+  const hoursRaw = form.smigHoursPerMonth?.trim() ?? "";
+  if (!monthlyRaw || !hoursRaw) return null;
+
+  const monthly = parsePositiveInMad(monthlyRaw, entryCurrency);
+  const hours = parsePositive(hoursRaw);
   if (monthly === null || hours === null || hours <= 0) return null;
   return monthly / hours;
 }
