@@ -175,6 +175,7 @@ export type Messages = {
     qtyUnitHint: string;
     costPerUnit: string;
     costPerUnitHint: string;
+    lineCost: string;
     import: {
       lead: string;
       photo: string;

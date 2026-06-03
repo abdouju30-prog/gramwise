@@ -17,10 +17,12 @@ import {
   normalizeRecipeForm,
   parsedLinesToRows,
   emptyLaborRow,
+  ingredientLineCostMad,
   type IngredientRow,
   type LaborRow,
   type RecipeForm,
 } from "@/lib/recipe";
+import { defaultPriceUnit, resolvePriceUnit } from "@/lib/ingredient-units";
 import { IngredientImportPanel } from "./ingredient-import-panel";
 import { RecipeCapacitySection } from "./recipe-capacity-section";
 import {
@@ -311,9 +313,14 @@ export function RecipeForm() {
               <span role="columnheader">
                 {m.recipe.costPerUnit} ({CURRENCY_LABELS[entryCurrency]})
               </span>
+              <span role="columnheader">{m.recipe.lineCost}</span>
               <span className="ingredient-grid-actions-head" aria-hidden />
             </div>
-            {form.ingredients.map((row) => (
+            {form.ingredients.map((row) => {
+              const priceUnit = resolvePriceUnit(row.quantityUnit, row.priceUnit);
+              const priceUnitLabel = m.recipe.import.units[priceUnit];
+              const lineCost = ingredientLineCostMad(row, entryCurrency);
+              return (
               <div key={row.id} className="ingredient-grid-row" role="row">
                 <input
                   type="text"
@@ -342,11 +349,14 @@ export function RecipeForm() {
                   role="cell"
                   aria-label={m.recipe.qtyUnit}
                   value={row.quantityUnit}
-                  onChange={(e) =>
+                  onChange={(e) => {
+                    const quantityUnit = e.target
+                      .value as IngredientRow["quantityUnit"];
                     updateIngredient(row.id, {
-                      quantityUnit: e.target.value as IngredientRow["quantityUnit"],
-                    })
-                  }
+                      quantityUnit,
+                      priceUnit: defaultPriceUnit(quantityUnit),
+                    });
+                  }}
                 >
                   {INGREDIENT_QUANTITY_UNITS.map((u) => (
                     <option key={u} value={u}>
@@ -354,21 +364,31 @@ export function RecipeForm() {
                     </option>
                   ))}
                 </select>
-                <input
-                  type="number"
-                  inputMode="decimal"
-                  min="0"
-                  step="0.01"
+                <div className="ingredient-price-cell" role="cell">
+                  <input
+                    type="text"
+                    inputMode="decimal"
+                    role="cell"
+                    aria-label={`${m.recipe.costPerUnit} / ${priceUnitLabel}`}
+                    value={row.costPerUnit}
+                    onChange={(e) =>
+                      updateIngredient(row.id, {
+                        costPerUnit: e.target.value,
+                      })
+                    }
+                    placeholder="0"
+                  />
+                  <span className="ingredient-price-basis" aria-hidden>
+                    / {priceUnitLabel}
+                  </span>
+                </div>
+                <span
+                  className="ingredient-line-cost"
                   role="cell"
-                  aria-label={m.recipe.costPerUnit}
-                  value={row.costPerUnit}
-                  onChange={(e) =>
-                    updateIngredient(row.id, {
-                      costPerUnit: e.target.value,
-                    })
-                  }
-                  placeholder="0"
-                />
+                  aria-label={m.recipe.lineCost}
+                >
+                  {lineCost !== null ? formatMoney(lineCost) : "—"}
+                </span>
                 <button
                   type="button"
                   className="btn-icon"
@@ -378,7 +398,8 @@ export function RecipeForm() {
                   ×
                 </button>
               </div>
-            ))}
+            );
+            })}
           </div>
           <button
             type="button"

@@ -210,8 +210,9 @@ export const ar: Messages = {
     qty: "كمية",
     qtyUnit: "وحدة",
     qtyUnitHint: "الكمية والتكلفة بنفس الوحدة.",
-    costPerUnit: "سعر الشراء / وحدة (MAD)",
-    costPerUnitHint: "السعر للكغ أو ل أو قطعة — حتى لو الكمية بالغ أو مل.",
+    costPerUnit: "سعر الشراء",
+    costPerUnitHint: "السعر للكغ أو ل أو قطعة — تُحوَّل الغ/مل (مثال: 800 غ × 11/كغ = 8,80).",
+    lineCost: "تكلفة السطر",
     import: {
       lead: "صورة، ملف أو نص ملصوق — نرتّب المكونات.",
       photo: "صورة",

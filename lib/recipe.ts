@@ -222,8 +222,26 @@ export function emptyIngredientRow(): IngredientRow {
     name: "",
     quantity: "",
     quantityUnit: "kg",
+    priceUnit: "kg",
     costPerUnit: "",
   };
+}
+
+/** Line cost in MAD with g→kg / ml→L conversion (null if incomplete). */
+export function ingredientLineCostMad(
+  row: IngredientRow,
+  entryCurrency: DisplayCurrency = "MAD",
+): number | null {
+  const q = parseNonNegative(row.quantity);
+  const c = parseNonNegativeInMad(row.costPerUnit, entryCurrency);
+  if (q === null || c === null || (q === 0 && c === 0)) return null;
+
+  const qtyUnit = row.quantityUnit;
+  const priceUnit = resolvePriceUnit(qtyUnit, row.priceUnit);
+  const qForCost = convertQuantity(q, qtyUnit, priceUnit);
+  if (qForCost === null) return null;
+
+  return qForCost * c;
 }
 
 export function normalizeIngredientRow(row: IngredientRow): IngredientRow {

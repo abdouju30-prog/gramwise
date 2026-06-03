@@ -217,8 +217,9 @@ export const fr: Messages = {
     qty: "Qté",
     qtyUnit: "Unité",
     qtyUnitHint: "La quantité et le coût utilisent la même unité.",
-    costPerUnit: "Prix d'achat / unité (MAD)",
-    costPerUnitHint: "Prix au kg, L ou pièce — même si la quantité est en g ou ml.",
+    costPerUnit: "Prix d'achat",
+    costPerUnitHint: "Prix au kg, L ou pièce — la quantité en g ou ml est convertie (ex. 800 g × 11 MAD/kg = 8,80 MAD).",
+    lineCost: "Coût ligne",
     import: {
       lead: "Photo, fichier ou texte collé — on organise vos ingrédients.",
       photo: "Photo",

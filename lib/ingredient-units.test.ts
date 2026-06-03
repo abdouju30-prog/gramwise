@@ -36,11 +36,34 @@ describe("ingredient unit conversion", () => {
 });
 
 describe("resolvePriceUnit", () => {
-  it("keeps explicit price unit in same family", () => {
+  it("keeps explicit bulk price unit", () => {
     expect(resolvePriceUnit("g", "kg")).toBe("kg");
+  });
+
+  it("ignores g/ml as price basis", () => {
+    expect(resolvePriceUnit("g", "g")).toBe("kg");
+    expect(resolvePriceUnit("ml", "ml")).toBe("L");
   });
 
   it("falls back when explicit unit is another family", () => {
     expect(resolvePriceUnit("g", "L")).toBe("kg");
+  });
+});
+
+describe("parseIngredients with comma decimals", () => {
+  it("parses European decimal prices", () => {
+    const rows: IngredientRow[] = [
+      {
+        id: "1",
+        name: "Glucose",
+        quantity: "200",
+        quantityUnit: "g",
+        costPerUnit: "24,99",
+        priceUnit: "kg",
+      },
+    ];
+    const parsed = parseIngredients(rows);
+    expect(parsed?.[0]?.quantity).toBe(0.2);
+    expect(parsed?.[0]?.costPerUnit).toBeCloseTo(24.99, 2);
   });
 });

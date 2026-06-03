@@ -68,17 +68,17 @@ export function unitFamily(unit: IngredientQuantityUnit): UnitFamily {
   return "count";
 }
 
-/** Catalog prices are usually per kg, L, or piece while recipes use g or ml. */
+/** Purchase prices are stored per kg, L, or piece (not per g/ml). */
 export function defaultPriceUnit(
   quantityUnit: IngredientQuantityUnit,
 ): IngredientQuantityUnit {
-  switch (quantityUnit) {
-    case "g":
+  switch (unitFamily(quantityUnit)) {
+    case "mass":
       return "kg";
-    case "ml":
+    case "volume":
       return "L";
     default:
-      return quantityUnit;
+      return "unit";
   }
 }
 
@@ -86,14 +86,16 @@ export function resolvePriceUnit(
   quantityUnit: IngredientQuantityUnit,
   explicit?: IngredientQuantityUnit,
 ): IngredientQuantityUnit {
+  const bulk = defaultPriceUnit(quantityUnit);
   if (
     explicit &&
     isIngredientQuantityUnit(explicit) &&
-    unitFamily(explicit) === unitFamily(quantityUnit)
+    unitFamily(explicit) === unitFamily(quantityUnit) &&
+    (explicit === "kg" || explicit === "L" || explicit === "unit")
   ) {
     return explicit;
   }
-  return defaultPriceUnit(quantityUnit);
+  return bulk;
 }
 
 /** Express `quantity` in `toUnit` (same family only). */
