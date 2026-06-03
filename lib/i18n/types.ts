@@ -144,6 +144,9 @@ export type Messages = {
       newRecipe: string;
       presetCupcakes: string;
       iconLabel: string;
+      deleteRecipe: string;
+      unnamedRecipe: string;
+      loadedHint: string;
     };
     ingredientsLegend: string;
     ingredientsHint: string;

@@ -1392,11 +1392,79 @@ h1 {
   grid-template-columns: auto 1fr;
   gap: 0.65rem 0.85rem;
   align-items: start;
-  margin-bottom: 1rem;
+  margin-bottom: 0;
+  padding: 0;
+  background: transparent;
+  border: none;
+  border-radius: 0;
+}
+
+.recipe-composer {
   padding: 0.85rem;
   background: rgba(255, 252, 247, 0.9);
   border: 1px solid var(--border);
   border-radius: var(--radius);
+}
+
+.recipe-composer-section {
+  margin-top: 1.25rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid var(--border);
+}
+
+.recipe-composer-section:first-of-type {
+  margin-top: 1rem;
+}
+
+.recipe-section-label {
+  font-family: var(--font-display), "Playfair Display", Georgia, serif;
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--brown-mid);
+  margin: 0 0 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  width: 100%;
+}
+
+.recipe-section-label::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: var(--border);
+}
+
+.recipe-picker-row {
+  display: flex;
+  gap: 0.5rem;
+  align-items: stretch;
+}
+
+.recipe-picker-row .recipe-picker {
+  flex: 1;
+  min-width: 0;
+}
+
+.recipe-delete-btn {
+  flex-shrink: 0;
+  white-space: nowrap;
+}
+
+.recipe-loaded-name {
+  margin: 0;
+  padding: 0.55rem 0.65rem;
+  font: inherit;
+  color: var(--text);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+}
+
+.recipe-loaded-hint {
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--border);
 }
 
 .recipe-title-icon-btn {

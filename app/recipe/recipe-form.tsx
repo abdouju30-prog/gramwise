@@ -8,6 +8,7 @@ import { formatMoney } from "@/lib/format";
 import { INGREDIENT_QUANTITY_UNITS } from "@/lib/ingredient-units";
 import type { ParsedIngredientLine } from "@/lib/ingredient-import";
 import {
+  CUPCAKES_PRESET,
   DEFAULT_RECIPE,
   emptyIngredientRow,
   ingredientRowsFromNames,
@@ -20,8 +21,15 @@ import {
   type RecipeForm,
 } from "@/lib/recipe";
 import { IngredientImportPanel } from "./ingredient-import-panel";
-import { RecipeTitleHeader } from "./recipe-title-header";
 import {
+  RecipeTitleHeader,
+  RECIPE_PICKER_CUPCAKES,
+  isRecipeEditorMode,
+  isSavedRecipePicker,
+} from "./recipe-title-header";
+import {
+  deleteSavedRecipe,
+  loadRecipeLibrary,
   recipeHasSaveableContent,
   saveRecipeToLibrary,
 } from "@/lib/recipe-library";
@@ -41,6 +49,8 @@ export function RecipeForm() {
   const [hydrated, setHydrated] = useState(false);
   const [saveNotice, setSaveNotice] = useState<string | null>(null);
   const [libraryRefresh, setLibraryRefresh] = useState(0);
+  const [picker, setPicker] = useState("");
+  const showEditor = isRecipeEditorMode(picker);
   const canSave = recipeHasSaveableContent(form);
 
   useEffect(() => {
@@ -150,6 +160,28 @@ export function RecipeForm() {
     saveRecipe(loaded);
   }
 
+  function handlePickerChange(value: string) {
+    setPicker(value);
+    if (value === "") {
+      handleNewRecipe();
+      return;
+    }
+    if (value === RECIPE_PICKER_CUPCAKES) {
+      handlePickRecipe(CUPCAKES_PRESET);
+      return;
+    }
+    const entry = loadRecipeLibrary().find((e) => e.id === value);
+    if (entry) handlePickRecipe(entry.recipe);
+  }
+
+  function handleDeleteSaved() {
+    if (!isSavedRecipePicker(picker)) return;
+    deleteSavedRecipe(picker);
+    setLibraryRefresh((k) => k + 1);
+    setPicker("");
+    handleNewRecipe();
+  }
+
   function handleSaveAndNew() {
     if (!canSave) return;
     saveRecipeToLibrary(form);
@@ -162,6 +194,7 @@ export function RecipeForm() {
     );
     setForm(next);
     saveRecipe(next);
+    setPicker("");
     setLibraryRefresh((k) => k + 1);
     setSaveNotice(m.recipe.savedToast);
     window.setTimeout(() => setSaveNotice(null), 4000);
@@ -194,19 +227,23 @@ export function RecipeForm() {
       ) : null}
 
       <form className="form" onSubmit={(e) => e.preventDefault()}>
-        <RecipeTitleHeader
-          name={form.name}
-          onNameChange={(name) => updateForm({ ...form, name })}
-          onPickRecipe={handlePickRecipe}
-          onNewRecipe={handleNewRecipe}
-          refreshKey={libraryRefresh}
-        />
+        <fieldset className="field-group recipe-composer">
+          <RecipeTitleHeader
+            picker={picker}
+            onPickerChange={handlePickerChange}
+            name={form.name}
+            onNameChange={(name) => updateForm({ ...form, name })}
+            onDeleteSaved={handleDeleteSaved}
+            refreshKey={libraryRefresh}
+          />
 
-        <fieldset className="field-group">
-          <legend className="field-group-legend">{m.recipe.ingredientsLegend}</legend>
-          <IngredientImportPanel onApply={applyImportedIngredients} />
-          <p className="field-hint field-hint-block">{m.recipe.ingredientsHint}</p>
-          <div className="ingredient-grid" role="table">
+          {showEditor ? (
+            <>
+              <div className="recipe-composer-section">
+                <p className="recipe-section-label">{m.recipe.ingredientsLegend}</p>
+                <IngredientImportPanel onApply={applyImportedIngredients} />
+                <p className="field-hint field-hint-block">{m.recipe.ingredientsHint}</p>
+                <div className="ingredient-grid" role="table">
             <div className="ingredient-grid-head" role="row">
               <span role="columnheader">{m.recipe.ingredientName}</span>
               <span role="columnheader">{m.recipe.qty}</span>
@@ -293,12 +330,12 @@ export function RecipeForm() {
           >
             {m.recipe.addIngredient}
           </button>
-        </fieldset>
+              </div>
 
-        <fieldset className="field-group">
-          <legend className="field-group-legend">{m.recipe.laborLegend}</legend>
-          <p className="field-hint field-hint-block">{m.recipe.laborHint}</p>
-          <div className="table-scroll">
+              <div className="recipe-composer-section">
+                <p className="recipe-section-label">{m.recipe.laborLegend}</p>
+                <p className="field-hint field-hint-block">{m.recipe.laborHint}</p>
+                <div className="table-scroll">
           <table className="data-table data-table--recipe">
             <thead>
               <tr>
@@ -374,11 +411,11 @@ export function RecipeForm() {
           >
             {m.recipe.addLabor}
           </button>
-        </fieldset>
+              </div>
 
-        <fieldset className="field-group">
-          <legend className="field-group-legend">{m.recipe.pricingLegend}</legend>
-          <div className="field-row">
+              <div className="recipe-composer-section">
+                <p className="recipe-section-label">{m.recipe.pricingLegend}</p>
+                <div className="field-row">
           <label className="field">
             <span className="field-label">{m.recipe.wasteLabel}</span>
             <span className="field-hint">{m.recipe.wasteHint}</span>
@@ -410,6 +447,13 @@ export function RecipeForm() {
             />
           </label>
           </div>
+              </div>
+            </>
+          ) : (
+            <p className="field-hint field-hint-block recipe-loaded-hint">
+              {m.recipe.titleHeader.loadedHint}
+            </p>
+          )}
         </fieldset>
       </form>
 

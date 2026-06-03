@@ -6,16 +6,16 @@ import {
   saveLibraryToUserFile,
   type SavedRecipe,
 } from "@/lib/recipe-library";
-import { CUPCAKES_PRESET, type RecipeForm } from "@/lib/recipe";
 import { useMessages } from "@/lib/i18n/locale-provider";
 
 export const RECIPE_PICKER_CUPCAKES = "preset:cupcakes";
 
 type Props = {
+  picker: string;
+  onPickerChange: (value: string) => void;
   name: string;
   onNameChange: (name: string) => void;
-  onPickRecipe: (recipe: RecipeForm) => void;
-  onNewRecipe: () => void;
+  onDeleteSaved: () => void;
   refreshKey?: number;
 };
 
@@ -45,11 +45,20 @@ function RecipeTitleIcon() {
   );
 }
 
+export function isRecipeEditorMode(picker: string): boolean {
+  return picker === "" || picker === RECIPE_PICKER_CUPCAKES;
+}
+
+export function isSavedRecipePicker(picker: string): boolean {
+  return picker !== "" && picker !== RECIPE_PICKER_CUPCAKES;
+}
+
 export function RecipeTitleHeader({
+  picker,
+  onPickerChange,
   name,
   onNameChange,
-  onPickRecipe,
-  onNewRecipe,
+  onDeleteSaved,
   refreshKey = 0,
 }: Props) {
   const m = useMessages();
@@ -57,26 +66,12 @@ export function RecipeTitleHeader({
   const nameInputId = useId();
   const nameRef = useRef<HTMLInputElement>(null);
   const [saved, setSaved] = useState<SavedRecipe[]>([]);
-  const [picker, setPicker] = useState("");
+  const showEditor = isRecipeEditorMode(picker);
+  const canDelete = isSavedRecipePicker(picker);
 
   useEffect(() => {
     setSaved(loadRecipeLibrary());
-    setPicker("");
   }, [refreshKey]);
-
-  function handlePick(value: string) {
-    setPicker(value);
-    if (value === "") {
-      onNewRecipe();
-      return;
-    }
-    if (value === RECIPE_PICKER_CUPCAKES) {
-      onPickRecipe(CUPCAKES_PRESET);
-      return;
-    }
-    const entry = saved.find((e) => e.id === value);
-    if (entry) onPickRecipe(entry.recipe);
-  }
 
   return (
     <div className="recipe-title-header">
@@ -96,32 +91,50 @@ export function RecipeTitleHeader({
       <div className="recipe-title-fields">
         <label className="field">
           <span className="field-label">{t.chooseRecipe}</span>
-          <select
-            className="recipe-picker"
-            value={picker}
-            onChange={(e) => handlePick(e.target.value)}
-          >
-            <option value="">{t.newRecipe}</option>
-            <option value={RECIPE_PICKER_CUPCAKES}>{t.presetCupcakes}</option>
-            {saved.map((entry) => (
-              <option key={entry.id} value={entry.id}>
-                {entry.name}
-              </option>
-            ))}
-          </select>
+          <div className="recipe-picker-row">
+            <select
+              className="recipe-picker"
+              value={picker}
+              onChange={(e) => onPickerChange(e.target.value)}
+            >
+              <option value="">{t.newRecipe}</option>
+              <option value={RECIPE_PICKER_CUPCAKES}>{t.presetCupcakes}</option>
+              {saved.map((entry) => (
+                <option key={entry.id} value={entry.id}>
+                  {entry.name}
+                </option>
+              ))}
+            </select>
+            {canDelete ? (
+              <button
+                type="button"
+                className="btn btn-ghost btn-sm recipe-delete-btn"
+                onClick={onDeleteSaved}
+              >
+                {t.deleteRecipe}
+              </button>
+            ) : null}
+          </div>
         </label>
 
-        <label className="field" htmlFor={nameInputId}>
-          <span className="field-label">{m.recipe.nameLabel}</span>
-          <input
-            id={nameInputId}
-            ref={nameRef}
-            type="text"
-            value={name}
-            onChange={(e) => onNameChange(e.target.value)}
-            placeholder={m.recipe.namePlaceholder}
-          />
-        </label>
+        {showEditor ? (
+          <label className="field" htmlFor={nameInputId}>
+            <span className="field-label">{m.recipe.nameLabel}</span>
+            <input
+              id={nameInputId}
+              ref={nameRef}
+              type="text"
+              value={name}
+              onChange={(e) => onNameChange(e.target.value)}
+              placeholder={m.recipe.namePlaceholder}
+            />
+          </label>
+        ) : (
+          <div className="field">
+            <span className="field-label">{m.recipe.nameLabel}</span>
+            <p className="recipe-loaded-name">{name || t.unnamedRecipe}</p>
+          </div>
+        )}
       </div>
 
       {saved.length > 0 ? (
@@ -136,3 +149,13 @@ export function RecipeTitleHeader({
     </div>
   );
 }
+
+export function useSavedRecipes(refreshKey: number): SavedRecipe[] {
+  const [saved, setSaved] = useState<SavedRecipe[]>([]);
+  useEffect(() => {
+    setSaved(loadRecipeLibrary());
+  }, [refreshKey]);
+  return saved;
+}
+
+export { loadRecipeLibrary };
