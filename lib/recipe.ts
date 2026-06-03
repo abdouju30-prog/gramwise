@@ -1,6 +1,8 @@
 import type { Capacity, IngredientLine, LaborPhase } from "@/engine/types";
 import type { CapacityMode } from "@/lib/fixed-charges";
 import {
+  convertQuantity,
+  resolvePriceUnit,
   type IngredientQuantityUnit,
   isIngredientQuantityUnit,
 } from "@/lib/ingredient-units";
@@ -12,6 +14,8 @@ export type IngredientRow = {
   name: string;
   quantity: string;
   quantityUnit: IngredientQuantityUnit;
+  /** Basis for costPerUnit (e.g. price per kg while quantity is in g). */
+  priceUnit?: IngredientQuantityUnit;
   costPerUnit: string;
 };
 
@@ -227,7 +231,13 @@ export function normalizeIngredientRow(row: IngredientRow): IngredientRow {
     row.quantityUnit && isIngredientQuantityUnit(row.quantityUnit)
       ? row.quantityUnit
       : "kg";
-  return { ...row, name: row.name ?? "", quantityUnit: unit };
+  const priceUnit = resolvePriceUnit(
+    unit,
+    row.priceUnit && isIngredientQuantityUnit(row.priceUnit)
+      ? row.priceUnit
+      : undefined,
+  );
+  return { ...row, name: row.name ?? "", quantityUnit: unit, priceUnit };
 }
 
 export function parsedLinesToRows(
@@ -261,7 +271,13 @@ export function parseIngredients(
     const c = parseNonNegativeInMad(row.costPerUnit, entryCurrency);
     if (q === null && c === null) continue;
     if (q === null || c === null || (q === 0 && c === 0)) return null;
-    lines.push({ quantity: q, costPerUnit: c });
+
+    const qtyUnit = row.quantityUnit;
+    const priceUnit = resolvePriceUnit(qtyUnit, row.priceUnit);
+    const qForCost = convertQuantity(q, qtyUnit, priceUnit);
+    if (qForCost === null) return null;
+
+    lines.push({ quantity: qForCost, costPerUnit: c });
   }
   return lines.length > 0 ? lines : null;
 }

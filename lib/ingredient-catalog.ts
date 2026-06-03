@@ -1,4 +1,7 @@
-import type { IngredientQuantityUnit } from "@/lib/ingredient-units";
+import {
+  resolvePriceUnit,
+  type IngredientQuantityUnit,
+} from "@/lib/ingredient-units";
 import type { IngredientRow } from "@/lib/recipe";
 
 const CATALOG_KEY = "gramwise-ingredient-catalog-v2";
@@ -186,9 +189,15 @@ export function applyCatalogToRow(
   const match = findCatalogMatch(row.name ?? "", catalog);
   if (!match) return row;
   const force = options?.force ?? false;
+  const quantityUnit =
+    force || !row.quantityUnit ? match.quantityUnit : row.quantityUnit;
   return {
     ...row,
-    quantityUnit: force || !row.quantityUnit ? match.quantityUnit : row.quantityUnit,
+    quantityUnit,
+    priceUnit:
+      force || !row.priceUnit
+        ? match.quantityUnit
+        : resolvePriceUnit(quantityUnit, row.priceUnit),
     costPerUnit:
       force || costIsEmpty(row.costPerUnit) ? match.costPerUnit : row.costPerUnit,
   };

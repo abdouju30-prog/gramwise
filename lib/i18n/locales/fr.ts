@@ -192,7 +192,8 @@ export const fr: Messages = {
       perPreparation: "par préparation",
     },
     ingredientsLegend: "Ingrédients",
-    ingredientsHint: "Indiquez kg, L ou pièce — même unité pour la quantité et le coût.",
+    ingredientsHint:
+      "Quantité en g, ml ou pièce — le prix d'achat reste au kg, L ou pièce (conversion automatique).",
     ingredientName: "Nom",
     ingredientNamePlaceholder: "ex. Farine",
     defaultIngredientNames: [
@@ -217,7 +218,7 @@ export const fr: Messages = {
     qtyUnit: "Unité",
     qtyUnitHint: "La quantité et le coût utilisent la même unité.",
     costPerUnit: "Prix d'achat / unité (MAD)",
-    costPerUnitHint: "Ex. prix au kg si unité = kg.",
+    costPerUnitHint: "Prix au kg, L ou pièce — même si la quantité est en g ou ml.",
     import: {
       lead: "Photo, fichier ou texte collé — on organise vos ingrédients.",
       photo: "Photo",

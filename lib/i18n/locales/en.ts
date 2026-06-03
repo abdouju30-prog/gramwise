@@ -191,7 +191,8 @@ export const en: Messages = {
       perPreparation: "per prep run",
     },
     ingredientsLegend: "Ingredients",
-    ingredientsHint: "Use kg, L or each — same unit for quantity and cost.",
+    ingredientsHint:
+      "Quantity in g, ml, or each — purchase price stays per kg, L, or each (auto-converted).",
     ingredientName: "Name",
     ingredientNamePlaceholder: "e.g. Flour",
     defaultIngredientNames: [
@@ -211,7 +212,7 @@ export const en: Messages = {
     qtyUnit: "Unit",
     qtyUnitHint: "Quantity and cost use the same unit.",
     costPerUnit: "Purchase price / unit (MAD)",
-    costPerUnitHint: "e.g. price per kg when unit is kg.",
+    costPerUnitHint: "Price per kg, L, or each — even when quantity is in g or ml.",
     import: {
       lead: "Photo, file or pasted text — we organize your ingredients.",
       photo: "Photo",

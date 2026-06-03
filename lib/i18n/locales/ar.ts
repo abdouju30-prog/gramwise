@@ -190,7 +190,8 @@ export const ar: Messages = {
       perPreparation: "لكل تحضير",
     },
     ingredientsLegend: "المكونات",
-    ingredientsHint: "كغ، ل أو قطعة — نفس الوحدة للكمية والتكلفة.",
+    ingredientsHint:
+      "الكمية بالغ أو مل أو قطعة — سعر الشراء بالكغ أو ل أو قطعة (تحويل تلقائي).",
     ingredientName: "الاسم",
     ingredientNamePlaceholder: "مثال: دقيق",
     defaultIngredientNames: [
@@ -210,7 +211,7 @@ export const ar: Messages = {
     qtyUnit: "وحدة",
     qtyUnitHint: "الكمية والتكلفة بنفس الوحدة.",
     costPerUnit: "سعر الشراء / وحدة (MAD)",
-    costPerUnitHint: "مثال: السعر للكغ إذا الوحدة كغ.",
+    costPerUnitHint: "السعر للكغ أو ل أو قطعة — حتى لو الكمية بالغ أو مل.",
     import: {
       lead: "صورة، ملف أو نص ملصوق — نرتّب المكونات.",
       photo: "صورة",
