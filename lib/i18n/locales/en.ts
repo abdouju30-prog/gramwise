@@ -172,7 +172,8 @@ export const en: Messages = {
     nameLabel: "Recipe name",
     namePlaceholder: "e.g. Cupcakes",
     ingredientsLegend: "Ingredients",
-    ingredientsHint: "One row per ingredient: name, quantity, cost per unit.",
+    ingredientsHint:
+      "Name, quantity with unit (kg, L, each…), cost for that same unit. Import from photo, file, or paste.",
     ingredientName: "Name",
     ingredientNamePlaceholder: "e.g. Flour",
     defaultIngredientNames: [
@@ -188,7 +189,49 @@ export const en: Messages = {
       "Vanilla",
     ],
     qty: "Qty",
+    qtyUnit: "Unit",
+    qtyUnitHint: "Quantity and cost use the same unit.",
     costPerUnit: "Cost / unit",
+    costPerUnitHint: "e.g. price per kg when unit is kg.",
+    import: {
+      expand: "Import a list (photo, file, text)",
+      collapse: "Hide import",
+      title: "Import ingredients",
+      hint: "Recipe photo, .txt/.csv file, or pasted text — one line per ingredient. Review preview, then apply.",
+      tabs: { paste: "Paste", file: "File", photo: "Photo" },
+      pasteLabel: "Recipe text",
+      pastePlaceholder: "e.g.\nFlour;0.5;kg;4.5\n500 g sugar\n2 L milk;9",
+      analyze: "Parse text",
+      chooseFile: "Choose file",
+      fileTypes: ".txt, .csv, or image (OCR)",
+      takePhoto: "Take photo or pick image",
+      photoHint: "Handwritten or printed recipe — good light, readable text.",
+      scanning: "Reading…",
+      parseEmpty:
+        "No ingredients found. Use name + quantity + unit (kg, g, L, ml, each) per line.",
+      fileError: "Could not read file. Try .txt, .csv, or a sharper photo.",
+      photoError: "Could not read photo. Retry or paste the text manually.",
+      previewTitle: (count) =>
+        `${count} ingredient${count === 1 ? "" : "s"} detected`,
+      apply: "Replace list with import",
+      units: {
+        kg: "kg",
+        g: "g",
+        L: "L",
+        ml: "ml",
+        unit: "each",
+      },
+      costSuffix: (unit) => {
+        const map = {
+          kg: "/ kg",
+          g: "/ g",
+          L: "/ L",
+          ml: "/ ml",
+          unit: "/ each",
+        } as const;
+        return map[unit];
+      },
+    },
     removeIngredient: "Remove ingredient",
     addIngredient: "+ Ingredient",
     laborLegend: "Labor phases",

@@ -1,9 +1,14 @@
 import type { IngredientLine, LaborPhase } from "@/engine/types";
+import {
+  type IngredientQuantityUnit,
+  isIngredientQuantityUnit,
+} from "@/lib/ingredient-units";
 
 export type IngredientRow = {
   id: string;
   name: string;
   quantity: string;
+  quantityUnit: IngredientQuantityUnit;
   costPerUnit: string;
 };
 
@@ -29,12 +34,12 @@ function rowId(): string {
 export const CUPCAKES_PRESET: RecipeForm = {
   name: "Cupcakes",
   ingredients: [
-    { id: "1", name: "Flour", quantity: "0.8", costPerUnit: "0.45" },
-    { id: "2", name: "Sugar", quantity: "0.6", costPerUnit: "0.65" },
-    { id: "3", name: "Butter", quantity: "0.5", costPerUnit: "6.2" },
-    { id: "4", name: "Eggs", quantity: "6", costPerUnit: "0.28" },
-    { id: "5", name: "Milk", quantity: "0.4", costPerUnit: "0.9" },
-    { id: "6", name: "Vanilla", quantity: "0.05", costPerUnit: "3.0" },
+    { id: "1", name: "Flour", quantity: "0.8", quantityUnit: "kg", costPerUnit: "0.45" },
+    { id: "2", name: "Sugar", quantity: "0.6", quantityUnit: "kg", costPerUnit: "0.65" },
+    { id: "3", name: "Butter", quantity: "0.5", quantityUnit: "kg", costPerUnit: "6.2" },
+    { id: "4", name: "Eggs", quantity: "6", quantityUnit: "unit", costPerUnit: "0.28" },
+    { id: "5", name: "Milk", quantity: "0.4", quantityUnit: "L", costPerUnit: "0.9" },
+    { id: "6", name: "Vanilla", quantity: "0.05", quantityUnit: "L", costPerUnit: "3.0" },
   ],
   laborPhases: [
     { id: "l1", label: "Mix & bake", hours: "1", hourlyRate: "18" },
@@ -50,6 +55,7 @@ export function ingredientRowsFromNames(names: readonly string[]): IngredientRow
     id: rowId(),
     name,
     quantity: "",
+    quantityUnit: "kg",
     costPerUnit: "",
   }));
 }
@@ -96,7 +102,38 @@ export const DEFAULT_RECIPE: RecipeForm = {
 };
 
 export function emptyIngredientRow(): IngredientRow {
-  return { id: rowId(), name: "", quantity: "", costPerUnit: "" };
+  return {
+    id: rowId(),
+    name: "",
+    quantity: "",
+    quantityUnit: "kg",
+    costPerUnit: "",
+  };
+}
+
+export function normalizeIngredientRow(row: IngredientRow): IngredientRow {
+  const unit =
+    row.quantityUnit && isIngredientQuantityUnit(row.quantityUnit)
+      ? row.quantityUnit
+      : "kg";
+  return { ...row, name: row.name ?? "", quantityUnit: unit };
+}
+
+export function parsedLinesToRows(
+  lines: {
+    name: string;
+    quantity: string;
+    quantityUnit: IngredientQuantityUnit;
+    costPerUnit: string;
+  }[],
+): IngredientRow[] {
+  return lines.map((line) => ({
+    id: rowId(),
+    name: line.name,
+    quantity: line.quantity,
+    quantityUnit: line.quantityUnit,
+    costPerUnit: line.costPerUnit,
+  }));
 }
 
 export function emptyLaborRow(): LaborRow {

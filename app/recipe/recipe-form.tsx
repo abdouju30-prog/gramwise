@@ -5,17 +5,22 @@ import { useRouter } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
 import { runCosting } from "@/lib/costing";
 import { formatMoney } from "@/lib/format";
+import { INGREDIENT_QUANTITY_UNITS } from "@/lib/ingredient-units";
+import type { ParsedIngredientLine } from "@/lib/ingredient-import";
 import {
   CUPCAKES_PRESET,
   DEFAULT_RECIPE,
   emptyIngredientRow,
   ingredientRowsFromNames,
   mergeRecipeIngredientDefaults,
+  normalizeIngredientRow,
+  parsedLinesToRows,
   emptyLaborRow,
   type IngredientRow,
   type LaborRow,
   type RecipeForm,
 } from "@/lib/recipe";
+import { IngredientImportPanel } from "./ingredient-import-panel";
 import { useMessages } from "@/lib/i18n/locale-provider";
 import {
   loadWizardSession,
@@ -40,10 +45,12 @@ export function RecipeForm() {
     const next = mergeRecipeIngredientDefaults(
       {
         ...base,
-        ingredients: base.ingredients.map((row) => ({
-          ...row,
-          name: row.name ?? "",
-        })),
+        ingredients: base.ingredients.map((row) =>
+          normalizeIngredientRow({
+            ...row,
+            name: row.name ?? "",
+          }),
+        ),
       },
       names,
     );
@@ -103,6 +110,13 @@ export function RecipeForm() {
     });
   }
 
+  function applyImportedIngredients(lines: ParsedIngredientLine[]) {
+    updateForm({
+      ...form,
+      ingredients: parsedLinesToRows(lines),
+    });
+  }
+
   function handleContinue() {
     if (!preview || !session?.fixedCharges) return;
     saveRecipe(form);
@@ -137,10 +151,12 @@ export function RecipeForm() {
         <fieldset className="field-group">
           <legend className="field-group-legend">{m.recipe.ingredientsLegend}</legend>
           <p className="field-hint field-hint-block">{m.recipe.ingredientsHint}</p>
+          <IngredientImportPanel onApply={applyImportedIngredients} />
           <div className="ingredient-grid" role="table">
             <div className="ingredient-grid-head" role="row">
               <span role="columnheader">{m.recipe.ingredientName}</span>
               <span role="columnheader">{m.recipe.qty}</span>
+              <span role="columnheader">{m.recipe.qtyUnit}</span>
               <span role="columnheader">{m.recipe.costPerUnit}</span>
               <span className="ingredient-grid-actions-head" aria-hidden />
             </div>
@@ -169,6 +185,22 @@ export function RecipeForm() {
                   }
                   placeholder="0"
                 />
+                <select
+                  role="cell"
+                  aria-label={m.recipe.qtyUnit}
+                  value={row.quantityUnit}
+                  onChange={(e) =>
+                    updateIngredient(row.id, {
+                      quantityUnit: e.target.value as IngredientRow["quantityUnit"],
+                    })
+                  }
+                >
+                  {INGREDIENT_QUANTITY_UNITS.map((u) => (
+                    <option key={u} value={u}>
+                      {m.recipe.import.units[u]}
+                    </option>
+                  ))}
+                </select>
                 <input
                   type="number"
                   inputMode="decimal"

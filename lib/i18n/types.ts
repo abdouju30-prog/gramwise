@@ -1,3 +1,5 @@
+import type { IngredientQuantityUnit } from "@/lib/ingredient-units";
+
 export const LOCALES = ["fr", "ar", "en"] as const;
 export type Locale = (typeof LOCALES)[number];
 
@@ -144,7 +146,38 @@ export type Messages = {
     /** Pre-filled ingredient names (qty/cost left empty for user). */
     defaultIngredientNames: string[];
     qty: string;
+    qtyUnit: string;
+    qtyUnitHint: string;
     costPerUnit: string;
+    costPerUnitHint: string;
+    import: {
+      expand: string;
+      collapse: string;
+      title: string;
+      hint: string;
+      tabs: { paste: string; file: string; photo: string };
+      pasteLabel: string;
+      pastePlaceholder: string;
+      analyze: string;
+      chooseFile: string;
+      fileTypes: string;
+      takePhoto: string;
+      photoHint: string;
+      scanning: string;
+      parseEmpty: string;
+      fileError: string;
+      photoError: string;
+      previewTitle: (count: number) => string;
+      apply: string;
+      units: {
+        kg: string;
+        g: string;
+        L: string;
+        ml: string;
+        unit: string;
+      };
+      costSuffix: (unit: IngredientQuantityUnit) => string;
+    };
     removeIngredient: string;
     addIngredient: string;
     laborLegend: string;

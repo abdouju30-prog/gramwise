@@ -173,7 +173,8 @@ export const fr: Messages = {
     nameLabel: "Nom de la recette",
     namePlaceholder: "ex. Cupcakes",
     ingredientsLegend: "Ingrédients",
-    ingredientsHint: "Une ligne par ingrédient : nom, quantité, coût par unité.",
+    ingredientsHint:
+      "Nom, quantité avec unité (kg, L, pièce…), coût pour cette même unité. Import : photo, fichier ou collage.",
     ingredientName: "Nom",
     ingredientNamePlaceholder: "ex. Farine",
     defaultIngredientNames: [
@@ -189,7 +190,50 @@ export const fr: Messages = {
       "Vanille",
     ],
     qty: "Qté",
+    qtyUnit: "Unité",
+    qtyUnitHint: "La quantité et le coût utilisent la même unité.",
     costPerUnit: "Coût / unité",
+    costPerUnitHint: "Ex. prix au kg si unité = kg.",
+    import: {
+      expand: "Importer une liste (photo, fichier, texte)",
+      collapse: "Masquer l’import",
+      title: "Importer les ingrédients",
+      hint: "Photo de recette, fichier .txt/.csv ou texte collé — une ligne par ingrédient. Vérifiez l’aperçu puis appliquez.",
+      tabs: { paste: "Coller", file: "Fichier", photo: "Photo" },
+      pasteLabel: "Texte de la recette",
+      pastePlaceholder:
+        "Ex.\nFarine;0.5;kg;4.5\n500 g sucre\n2 L lait;9",
+      analyze: "Analyser le texte",
+      chooseFile: "Choisir un fichier",
+      fileTypes: ".txt, .csv ou image (OCR)",
+      takePhoto: "Photographier ou choisir une image",
+      photoHint: "Recette manuscrite ou imprimée — bonne lumière, texte lisible.",
+      scanning: "Lecture en cours…",
+      parseEmpty:
+        "Aucun ingrédient reconnu. Ajoutez nom + quantité + unité (kg, g, L, ml, pièce) par ligne.",
+      fileError: "Fichier non lisible. Essayez .txt, .csv ou une photo plus nette.",
+      photoError: "Photo illisible. Réessayez ou collez le texte à la main.",
+      previewTitle: (count) =>
+        `${count} ingrédient${count > 1 ? "s" : ""} détecté${count > 1 ? "s" : ""}`,
+      apply: "Remplacer la liste par cet import",
+      units: {
+        kg: "kg",
+        g: "g",
+        L: "L",
+        ml: "ml",
+        unit: "pièce",
+      },
+      costSuffix: (unit) => {
+        const map = {
+          kg: "/ kg",
+          g: "/ g",
+          L: "/ L",
+          ml: "/ ml",
+          unit: "/ pièce",
+        } as const;
+        return map[unit];
+      },
+    },
     removeIngredient: "Retirer l’ingrédient",
     addIngredient: "+ Ingrédient",
     laborLegend: "Phases de travail",

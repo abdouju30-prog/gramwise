@@ -172,7 +172,8 @@ export const ar: Messages = {
     nameLabel: "اسم الوصفة",
     namePlaceholder: "مثال: كب كيك",
     ingredientsLegend: "المكونات",
-    ingredientsHint: "سطر لكل مكوّن: الاسم، الكمية، تكلفة الوحدة.",
+    ingredientsHint:
+      "الاسم، الكمية مع الوحدة (كغ، ل، قطعة…)، التكلفة لنفس الوحدة. استيراد: صورة، ملف أو لصق.",
     ingredientName: "الاسم",
     ingredientNamePlaceholder: "مثال: دقيق",
     defaultIngredientNames: [
@@ -188,7 +189,48 @@ export const ar: Messages = {
       "فانيليا",
     ],
     qty: "كمية",
+    qtyUnit: "وحدة",
+    qtyUnitHint: "الكمية والتكلفة بنفس الوحدة.",
     costPerUnit: "تكلفة / وحدة",
+    costPerUnitHint: "مثال: السعر للكغ إذا الوحدة كغ.",
+    import: {
+      expand: "استيراد قائمة (صورة، ملف، نص)",
+      collapse: "إخفاء الاستيراد",
+      title: "استيراد المكونات",
+      hint: "صورة وصفة، ملف .txt/.csv أو نص ملصوق — سطر لكل مكوّن. راجع المعاينة ثم طبّق.",
+      tabs: { paste: "لصق", file: "ملف", photo: "صورة" },
+      pasteLabel: "نص الوصفة",
+      pastePlaceholder: "مثال:\nدقيق;0.5;kg;4.5\n500 g سكر",
+      analyze: "تحليل النص",
+      chooseFile: "اختيار ملف",
+      fileTypes: ".txt أو .csv أو صورة (OCR)",
+      takePhoto: "تصوير أو اختيار صورة",
+      photoHint: "وصفة بخط اليد أو مطبوعة — إضاءة جيدة ونص واضح.",
+      scanning: "جاري القراءة…",
+      parseEmpty:
+        "لم يُعثر على مكونات. أضف الاسم + الكمية + الوحدة (kg, g, L, ml, قطعة) لكل سطر.",
+      fileError: "تعذّر قراءة الملف. جرّب .txt أو .csv أو صورة أوضح.",
+      photoError: "تعذّر قراءة الصورة. أعد المحاولة أو الصق النص يدوياً.",
+      previewTitle: (count) => `تم التعرف على ${count} مكوّن`,
+      apply: "استبدال القائمة بالاستيراد",
+      units: {
+        kg: "كغ",
+        g: "غ",
+        L: "ل",
+        ml: "مل",
+        unit: "قطعة",
+      },
+      costSuffix: (unit) => {
+        const map = {
+          kg: "/ كغ",
+          g: "/ غ",
+          L: "/ ل",
+          ml: "/ مل",
+          unit: "/ قطعة",
+        } as const;
+        return map[unit];
+      },
+    },
     removeIngredient: "حذف المكوّن",
     addIngredient: "+ مكوّن",
     laborLegend: "مراحل العمل",
