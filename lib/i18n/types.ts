@@ -318,4 +318,25 @@ export type Messages = {
     home: string;
     viewPricing: string;
   };
+  legal: {
+    footerNavLabel: string;
+    footerPrivacy: string;
+    footerTerms: string;
+    footerContact: string;
+    footerCopy: string;
+    backHome: string;
+    disclaimer: string;
+    privacy: LegalDoc;
+    terms: LegalDoc;
+  };
 };
+
+export type LegalDoc = {
+  eyebrow: string;
+  title: string;
+  updated: string;
+  intro: string;
+  sections: { title: string; paragraphs: string[] }[];
+};
+
+export type LocaleBundle = Omit<Messages, "legal">;

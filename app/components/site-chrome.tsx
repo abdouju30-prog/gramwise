@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { LanguageSwitcher } from "./language-switcher";
 import { CurrencySwitcher } from "./currency-switcher";
+import { SiteFooter } from "./site-footer";
 import { useMessages } from "@/lib/i18n/locale-provider";
 
 const STEP_PATHS = [
@@ -72,7 +73,10 @@ export function SiteChrome({ children }: { children: React.ReactNode }) {
           </Link>
         )}
       </header>
-      <div className="page-wrap">{children}</div>
+      <div className="page-wrap">
+        {children}
+        <SiteFooter />
+      </div>
     </>
   );
 }

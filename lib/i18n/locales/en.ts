@@ -1,6 +1,6 @@
-import type { Messages } from "../types";
+import type { LocaleBundle } from "../types";
 
-export const en: Messages = {
+export const en: LocaleBundle = {
   meta: {
     title: "GramWise — Pastry costing calculator",
     description:

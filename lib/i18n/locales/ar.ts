@@ -1,6 +1,6 @@
-import type { Messages } from "../types";
+import type { LocaleBundle } from "../types";
 
-export const ar: Messages = {
+export const ar: LocaleBundle = {
   meta: {
     title: "GramWise — حاسبة تكلفة الحلويات",
     description:

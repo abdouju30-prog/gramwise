@@ -1,12 +1,19 @@
 import { ar } from "./locales/ar";
 import { en } from "./locales/en";
 import { fr } from "./locales/fr";
+import { legalAr } from "./legal/ar";
+import { legalEn } from "./legal/en";
+import { legalFr } from "./legal/fr";
 import type { Locale, Messages } from "./types";
 
-export type { Locale, Messages } from "./types";
+export type { Locale, Messages, LegalDoc } from "./types";
 export { LOCALES, LOCALE_LABELS } from "./types";
 
-const CATALOG: Record<Locale, Messages> = { fr, ar, en };
+const CATALOG: Record<Locale, Messages> = {
+  fr: { ...fr, legal: legalFr },
+  ar: { ...ar, legal: legalAr },
+  en: { ...en, legal: legalEn },
+};
 
 export const DEFAULT_LOCALE: Locale = "fr";
 

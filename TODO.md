@@ -25,6 +25,8 @@
 ## P2 — Launch
 
 - [x] Landing page
+- [x] Legal pages (privacy, terms, footer) — [docs/GLOBAL_LAUNCH.md](docs/GLOBAL_LAUNCH.md) step 1
+- [x] Gumroad checkout (€29 lifetime)
 - [x] Stripe or lifetime payment (Checkout API + webhook stub)
 - [ ] Link from Instagram pastry page
 - [ ] Meta ads creatives (founder)
