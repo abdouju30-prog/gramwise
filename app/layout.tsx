@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { DM_Mono, Playfair_Display } from "next/font/google";
+import { DM_Mono, DM_Sans, Playfair_Display } from "next/font/google";
 import { BetaBanner } from "./components/beta-banner";
 import { Providers } from "./components/providers";
 import { SiteChrome } from "./components/site-chrome";
@@ -14,6 +14,12 @@ const dmMono = DM_Mono({
   weight: ["400", "500"],
   subsets: ["latin"],
   variable: "--font-mono",
+});
+
+const dmSans = DM_Sans({
+  subsets: ["latin"],
+  weight: ["400", "500", "600"],
+  variable: "--font-sans",
 });
 
 export const metadata: Metadata = {
@@ -43,7 +49,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${playfair.variable} ${dmMono.variable}`}>
+    <html lang="en" className={`${playfair.variable} ${dmMono.variable} ${dmSans.variable}`}>
       <body>
         <Providers>
           <BetaBanner />
