@@ -11,28 +11,45 @@ export function LandingPage() {
   return (
     <main className="landing">
       <section className="landing-hero">
-        <p className="hero-eyebrow">{m.landing.eyebrow}</p>
-        <h1>
-          {m.landing.heroBefore}{" "}
-          <span className="brand-accent">{m.landing.heroAccent}</span>
-        </h1>
-        <p className="lead landing-lead">{m.landing.lead}</p>
-        <ol className="hero-steps" aria-label={m.landing.howTitle}>
-          {heroSteps.map((step, i) => (
-            <li key={step} className="hero-step">
-              <span className="hero-step-num">{i + 1}</span>
-              <span>{step}</span>
-            </li>
-          ))}
-        </ol>
-        <div className="landing-actions">
-          <Link href="/start" className="btn btn-primary btn-lg">
-            {m.landing.openCalculator}
-          </Link>
-          <Link href="/beta" className="btn btn-ghost btn-lg">
-            {m.landing.betaTesters}
-          </Link>
+        <div className="landing-hero-body">
+          <p className="hero-eyebrow">{m.landing.eyebrow}</p>
+          <h1>
+            {m.landing.heroBefore}{" "}
+            <span className="brand-accent">{m.landing.heroAccent}</span>
+          </h1>
+          <p className="lead landing-lead">{m.landing.lead}</p>
+          {/* Mobile-only pills */}
+          <ol className="hero-steps" aria-label={m.landing.howTitle}>
+            {heroSteps.map((step, i) => (
+              <li key={step} className="hero-step">
+                <span className="hero-step-num">{i + 1}</span>
+                <span>{step}</span>
+              </li>
+            ))}
+          </ol>
+          <div className="landing-actions">
+            <Link href="/start" className="btn btn-primary btn-lg">
+              {m.landing.openCalculator}
+            </Link>
+            <Link href="/beta" className="btn btn-ghost btn-lg">
+              {m.landing.betaTesters}
+            </Link>
+          </div>
         </div>
+
+        {/* Desktop-only: step showcase */}
+        <aside className="landing-hero-aside" aria-hidden="true">
+          <ol className="hero-steps-aside">
+            {heroSteps.map((step, i) => (
+              <li key={`aside-${step}`} className="hero-step-aside">
+                <span className="hero-step-aside-num">
+                  {String(i + 1).padStart(2, "0")}
+                </span>
+                <span className="hero-step-aside-text">{step}</span>
+              </li>
+            ))}
+          </ol>
+        </aside>
       </section>
 
       <section className="landing-section">

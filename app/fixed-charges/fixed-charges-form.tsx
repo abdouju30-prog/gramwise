@@ -250,7 +250,7 @@ export function FixedChargesForm() {
         <IngredientCatalogSection />
       </form>
 
-      <section className="card preview-card" aria-live="polite">
+      <section className="card card-dark preview-card" aria-live="polite">
         <h2>{m.fixed.monthlyTotalLabel}</h2>
         {canContinue ? (
           <>

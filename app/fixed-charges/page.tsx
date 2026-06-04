@@ -8,9 +8,11 @@ export default function FixedChargesPage() {
 
   return (
     <main>
-      <p className="eyebrow">{m.fixed.eyebrow}</p>
-      <h1>{m.fixed.title}</h1>
-      <p className="lead">{m.fixed.lead}</p>
+      <div className="wizard-page-header" data-step="1">
+        <p className="wizard-step-label">{m.fixed.eyebrow}</p>
+        <h1>{m.fixed.title}</h1>
+        <p className="lead">{m.fixed.lead}</p>
+      </div>
       <FixedChargesForm />
     </main>
   );

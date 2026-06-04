@@ -8,9 +8,11 @@ export default function ResultsPage() {
 
   return (
     <main className="main-wide">
-      <p className="eyebrow">{m.results.eyebrow}</p>
-      <h1>{m.results.title}</h1>
-      <p className="lead">{m.results.lead}</p>
+      <div className="wizard-page-header" data-step="3">
+        <p className="wizard-step-label">{m.results.eyebrow}</p>
+        <h1>{m.results.title}</h1>
+        <p className="lead">{m.results.lead}</p>
+      </div>
       <ResultsView />
     </main>
   );
