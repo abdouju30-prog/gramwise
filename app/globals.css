@@ -101,31 +101,14 @@ body {
   align-items: center;
 }
 
-.wizard-settings-bar {
-  margin-bottom: 1.25rem;
-  padding: 0.85rem 1rem;
-  background: rgba(255, 252, 247, 0.9);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
+.license-unlock-form {
+  margin: 1.25rem 0;
+  max-width: 28rem;
 }
 
-.wizard-settings-group {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 0.65rem;
-}
-
-.wizard-settings-label {
-  font-size: 0.65rem;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-  color: var(--brown-mid);
-}
-
-.wizard-settings-hint {
-  margin: 0.5rem 0 0;
+.license-unlock-title {
+  font-size: 1.1rem;
+  margin: 0 0 0.35rem;
 }
 
 .brand {

@@ -2,8 +2,6 @@
 
 import Link from "next/link";
 import { useMessages } from "@/lib/i18n/locale-provider";
-import { WizardSettingsBar } from "../fixed-charges/wizard-settings-bar";
-
 export default function StartPage() {
   const m = useMessages();
 
@@ -12,7 +10,6 @@ export default function StartPage() {
       <p className="eyebrow">{m.start.eyebrow}</p>
       <h1>{m.start.title}</h1>
       <p className="lead">{m.start.lead}</p>
-      <WizardSettingsBar />
 
       <nav className="home-steps">
         <Link href="/fixed-charges" className="card card-link">

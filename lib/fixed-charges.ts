@@ -8,6 +8,7 @@ export type ChargeLinePreset =
   | "energy"
   | "insurance"
   | "subscriptions"
+  | "marketing"
   | "custom";
 
 export type FixedChargeLine = {
@@ -38,7 +39,23 @@ export const DEFAULT_CHARGE_LINES: FixedChargeLine[] = [
   { id: "energy", preset: "energy", amount: "200" },
   { id: "insurance", preset: "insurance", amount: "150" },
   { id: "subscriptions", preset: "subscriptions", amount: "150" },
+  { id: "marketing", preset: "marketing", amount: "" },
 ];
+
+const MARKETING_CUSTOM_LABELS = new Set([
+  "marketing",
+  "publicité",
+  "publicite",
+  "pub",
+]);
+
+function normalizeChargeLine(line: FixedChargeLine): FixedChargeLine {
+  if (line.preset !== "custom") return line;
+  const label = line.customLabel?.trim().toLowerCase() ?? "";
+  if (!MARKETING_CUSTOM_LABELS.has(label)) return line;
+  const { customLabel: _removed, ...rest } = line;
+  return { ...rest, preset: "marketing" };
+}
 
 export const DEFAULT_FIXED_CHARGES: FixedChargesForm = {
   chargeLines: DEFAULT_CHARGE_LINES,
@@ -77,7 +94,11 @@ export function normalizeFixedChargesForm(
   const smigHoursPerMonth = raw.smigHoursPerMonth?.trim() ?? "";
 
   if (raw.chargeLines?.length) {
-    return { chargeLines: raw.chargeLines, smigMonthlyMad, smigHoursPerMonth };
+    return {
+      chargeLines: raw.chargeLines.map(normalizeChargeLine),
+      smigMonthlyMad,
+      smigHoursPerMonth,
+    };
   }
 
   const legacy = raw.monthlyFixedCharges?.trim();

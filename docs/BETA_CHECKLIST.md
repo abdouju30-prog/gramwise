@@ -30,6 +30,26 @@
 
 ---
 
+## Pipeline beta (5 testeurs · retours chiffrés)
+
+**Build de référence :** `0c6a4bf` · prod https://fixload.vercel.app · montants en **MAD** (ou devise saisie par le testeur).
+
+**À copier depuis l’écran Résultats** (+ leur Excel / carnet pour la colonne « ref ») : charges fixes mensuelles, coût complet du lot testé, prix conseillé. **Δ prix** = `(Prix GW − Prix ref) / Prix ref × 100` (vide si pas de ref).
+
+| # | Profil | Contact | Statut | CF mens. GW | CF mens. ref | Coût complet GW | Coût ref | Prix conseillé GW | Prix ref | Δ prix | Verdict |
+|---|--------|---------|--------|-------------|--------------|-----------------|----------|-------------------|----------|--------|---------|
+| 1 | Maison, petits volumes | _nom · WA/IG_ | À contacter | — | — | — | — | — | — | — | — |
+| 2 | Labo mariage / perso. | _nom · WA/IG_ | À contacter | — | — | — | — | — | — | — | — |
+| 3 | Viennoiserie / prod. régulière | _nom · WA/IG_ | À contacter | — | — | — | — | — | — | — | — |
+| 4 | Salon + commandes | _nom · WA/IG_ | À contacter | — | — | — | — | — | — | — | — |
+| 5 | Micro-entreprise multi-produits | _nom · WA/IG_ | À contacter | — | — | — | — | — | — | — | — |
+
+**Synthèse pipeline :** 0/5 retours reçus · 0/5 verdict « collent » · 0/5 critères grille OK (voir ci-dessous) · sortie beta : **≥ 4/5** « collent ».
+
+**Verdict (colonne droite) :** `Collent` · `Écart` (+ note 1 ligne dans issue ou WA) · `—` tant que pas de test.
+
+---
+
 ## Parcours testeur (15–25 min)
 
 1. Ouvrir l’URL prod → **Commencer** (`/start`).

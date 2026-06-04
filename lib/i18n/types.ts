@@ -142,6 +142,7 @@ export type Messages = {
     chargeEnergy: string;
     chargeInsurance: string;
     chargeSubscriptions: string;
+    chargeMarketing: string;
     chargeCustomPlaceholder: string;
     addChargeLine: string;
     removeChargeLine: string;
@@ -316,8 +317,23 @@ export type Messages = {
     cancelTitle: string;
     cancelBody: string;
     openCalculator: string;
+    unlockLater: string;
     home: string;
     viewPricing: string;
+  };
+  unlock: {
+    eyebrow: string;
+    title: string;
+    lead: string;
+    formTitle: string;
+    formHint: string;
+    licenseLabel: string;
+    licensePlaceholder: string;
+    submit: string;
+    submitting: string;
+    errorInvalid: string;
+    buyLink: string;
+    home: string;
   };
   legal: {
     footerNavLabel: string;

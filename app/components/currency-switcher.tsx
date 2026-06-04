@@ -19,6 +19,7 @@ export function CurrencySwitcher({ className }: Props) {
       className={`lang-switcher currency-switcher${className ? ` ${className}` : ""}`}
       role="group"
       aria-label={messages.currency.choose}
+      title={messages.currency.hint}
     >
       {DISPLAY_CURRENCIES.map((code) => (
         <button

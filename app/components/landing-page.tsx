@@ -51,13 +51,6 @@ export function LandingPage() {
       </section>
 
       <PricingSection />
-
-      <footer className="landing-footer">
-        <p>
-          {m.landing.footer}{" "}
-          <Link href="/start">{m.landing.footerApp}</Link>
-        </p>
-      </footer>
     </main>
   );
 }

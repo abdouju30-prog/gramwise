@@ -32,6 +32,8 @@ function presetLabel(
       return fixed.chargeInsurance;
     case "subscriptions":
       return fixed.chargeSubscriptions;
+    case "marketing":
+      return fixed.chargeMarketing;
     default:
       return "";
   }
