@@ -1256,9 +1256,11 @@ input[type="number"].field {
 }
 
 .landing-pricing-note {
-  font-size: 0.78rem;
-  color: var(--brown-light);
-  margin: 0 0 1.25rem;
+  font-size: 0.82rem;
+  font-style: italic;
+  color: var(--ink-muted);
+  margin: 0 0 1.75rem;
+  max-width: 38ch;
 }
 
 .pricing-grid {
@@ -1270,60 +1272,122 @@ input[type="number"].field {
   .pricing-grid {
     grid-template-columns: 1fr 1fr;
   }
-
-  .pricing-grid--single {
-    grid-template-columns: minmax(0, 22rem);
-    justify-content: center;
-  }
 }
 
-.pricing-card h3 {
-  font-family: var(--font-display), "Playfair Display", Georgia, serif;
-  font-size: 1.25rem;
-  margin: 0 0 0.35rem;
+.pricing-grid--single {
+  max-width: 28rem;
+  margin: 0 auto;
+}
+
+/* ── Pricing card (dark) ── */
+
+.pricing-card {
+  padding: 2rem;
 }
 
 .pricing-label {
-  font-size: 0.62rem;
+  font-size: 0.6rem;
   text-transform: uppercase;
-  letter-spacing: 0.1em;
-  color: var(--brown-light);
-  margin: 0 0 0.35rem;
+  letter-spacing: 0.12em;
+  color: rgba(245, 240, 232, 0.5);
+  margin: 0 0 0.65rem;
+}
+
+.pricing-title {
+  font-family: var(--font-display), "Playfair Display", Georgia, serif;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--cream);
+  margin: 0 0 1.5rem;
+  line-height: 1.15;
 }
 
 .pricing-price {
   font-family: var(--font-display), "Playfair Display", Georgia, serif;
-  font-size: 2rem;
+  font-size: 3.25rem;
   font-weight: 700;
-  margin: 0 0 1rem;
-  color: var(--brown-dark);
+  line-height: 1;
+  margin: 0 0 1.75rem;
+  color: var(--gold);
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid rgba(245, 240, 232, 0.1);
 }
 
 .pricing-period {
+  font-family: var(--font-sans), "DM Sans", sans-serif;
   font-size: 0.85rem;
   font-weight: 400;
-  color: var(--brown-light);
+  color: rgba(245, 240, 232, 0.5);
 }
 
 .pricing-features {
-  margin: 0 0 1.25rem;
-  padding-left: 1.1rem;
-  font-size: 0.78rem;
-  color: var(--brown-mid);
+  list-style: none;
+  padding: 0;
+  margin: 0 0 2rem;
 }
 
 .pricing-features li {
-  margin-bottom: 0.35rem;
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  padding: 0.6rem 0;
+  border-bottom: 1px solid rgba(245, 240, 232, 0.08);
+  font-size: 0.85rem;
+  color: rgba(245, 240, 232, 0.8);
 }
 
-.pricing-card--featured {
-  border-color: var(--caramel);
-  box-shadow: var(--shadow-md);
+.pricing-features li::before {
+  content: '—';
+  color: var(--gold);
+  font-family: var(--font-mono), "DM Mono", monospace;
+  font-size: 0.7rem;
+  flex-shrink: 0;
+}
+
+/* Button inverted inside dark card */
+.card-dark .btn-primary {
+  background: var(--cream);
+  color: var(--brown-dark);
+  width: 100%;
+  justify-content: center;
+}
+
+.card-dark .btn-primary:hover:not(:disabled) {
+  background: var(--warm-white);
+  color: var(--brown-dark);
+}
+
+.card-dark .btn-primary:focus-visible {
+  outline-color: var(--gold);
+}
+
+.card-dark .btn-disabled {
+  background: rgba(245, 240, 232, 0.15);
+  color: rgba(245, 240, 232, 0.4);
+}
+
+/* Free calculator link */
+.pricing-free-link {
+  font-size: 0.8rem;
+  color: var(--ink-muted);
+  text-decoration: underline;
+  text-decoration-color: var(--border);
+  text-underline-offset: 3px;
+  transition: color 0.15s, text-decoration-color 0.15s;
+}
+
+.pricing-free-link:hover {
+  color: var(--brown-dark);
+  text-decoration-color: var(--caramel);
 }
 
 .landing-pricing-cta {
   margin-top: 1.5rem;
   text-align: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.65rem;
+  justify-content: center;
 }
 
 .landing-footer {

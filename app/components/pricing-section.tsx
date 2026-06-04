@@ -20,14 +20,14 @@ export function PricingSection() {
       <section className="landing-section" id="pricing">
         <h2 className="landing-heading">{m.landing.pricingBetaTitle}</h2>
         <p className="landing-pricing-note">{m.landing.pricingBetaNote}</p>
-        <p className="landing-pricing-cta">
+        <div className="landing-pricing-cta">
           <Link href="/beta" className="btn btn-primary">
             {m.landing.guideTester}
           </Link>
           <Link href="/start" className="btn btn-ghost">
             {m.landing.openCalculator}
           </Link>
-        </p>
+        </div>
       </section>
     );
   }
@@ -43,12 +43,12 @@ export function PricingSection() {
       <h2 className="landing-heading">{m.landing.pricingTitle}</h2>
       <p className="landing-pricing-note">{pricingNote}</p>
       <div className="pricing-grid pricing-grid--single">
-        <article className="card pricing-card pricing-card--featured">
+        <article className="card card-dark pricing-card">
           <p className="pricing-label">{m.landing.lifetimeLabel}</p>
-          <h3>{m.landing.lifetimeTitle}</h3>
+          <h3 className="pricing-title">{m.landing.lifetimeTitle}</h3>
           <p className="pricing-price">
-            €{m.landing.lifetimePrice}{" "}
-            <span className="pricing-period">{m.landing.lifetimeOnce}</span>
+            €{m.landing.lifetimePrice}
+            <span className="pricing-period"> {m.landing.lifetimeOnce}</span>
           </p>
           <ul className="pricing-features">
             {m.landing.lifetimeFeatures.map((f) => (
@@ -73,7 +73,7 @@ export function PricingSection() {
         </article>
       </div>
       <p className="landing-pricing-cta">
-        <Link href="/start" className="btn btn-primary">
+        <Link href="/start" className="pricing-free-link">
           {m.landing.freeCalculator}
         </Link>
       </p>
