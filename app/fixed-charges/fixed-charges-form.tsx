@@ -19,23 +19,26 @@ import { loadWizardSession, saveFixedCharges } from "@/lib/session";
 import { parseSmigHourlyMad } from "@/lib/smic";
 import { IngredientCatalogSection } from "./ingredient-catalog-section";
 
+const PRESET_ICONS: Record<string, string> = {
+  rent:          "🏠",
+  energy:        "⚡",
+  insurance:     "🛡️",
+  subscriptions: "📱",
+  marketing:     "📣",
+  custom:        "✏️",
+};
+
 function presetLabel(
   preset: ChargeLinePreset,
   fixed: Messages["fixed"],
 ): string {
   switch (preset) {
-    case "rent":
-      return fixed.chargeRent;
-    case "energy":
-      return fixed.chargeEnergy;
-    case "insurance":
-      return fixed.chargeInsurance;
-    case "subscriptions":
-      return fixed.chargeSubscriptions;
-    case "marketing":
-      return fixed.chargeMarketing;
-    default:
-      return "";
+    case "rent":          return fixed.chargeRent;
+    case "energy":        return fixed.chargeEnergy;
+    case "insurance":     return fixed.chargeInsurance;
+    case "subscriptions": return fixed.chargeSubscriptions;
+    case "marketing":     return fixed.chargeMarketing;
+    default:              return "";
   }
 }
 
@@ -48,9 +51,7 @@ export function FixedChargesForm() {
   useEffect(() => {
     const session = loadWizardSession();
     const saved = session?.fixedCharges;
-    setForm(
-      saved ? normalizeFixedChargesForm(saved) : DEFAULT_FIXED_CHARGES,
-    );
+    setForm(saved ? normalizeFixedChargesForm(saved) : DEFAULT_FIXED_CHARGES);
   }, []);
 
   const monthlyTotal = useMemo(
@@ -85,10 +86,7 @@ export function FixedChargesForm() {
   function removeChargeLine(id: string) {
     setForm((prev) => {
       if (prev.chargeLines.length <= 1) return prev;
-      return {
-        ...prev,
-        chargeLines: prev.chargeLines.filter((line) => line.id !== id),
-      };
+      return { ...prev, chargeLines: prev.chargeLines.filter((l) => l.id !== id) };
     });
   }
 
@@ -98,77 +96,97 @@ export function FixedChargesForm() {
       : presetLabel(line.preset, m.fixed);
   }
 
-  const totalDisplay =
-    monthlyTotal === null ? "—" : formatMoney(monthlyTotal);
-
-  const canContinue =
-    monthlyTotal !== null && monthlyTotal > 0 && smigHourly !== null;
+  const totalDisplay = monthlyTotal === null ? "—" : formatMoney(monthlyTotal);
+  const canContinue  = monthlyTotal !== null && monthlyTotal > 0 && smigHourly !== null;
 
   return (
     <>
       <form className="form" onSubmit={(e) => e.preventDefault()}>
+
+        {/* ── Budget cards ───────────────────────────────── */}
         <fieldset className="field-group">
           <legend className="field-group-legend">{m.fixed.monthlyLegend}</legend>
           <p className="field-hint field-hint-block">{m.fixed.monthlyHint}</p>
 
-          <div className="charge-lines" role="table">
-            <div className="charge-lines-head" role="row">
-              <span role="columnheader">{m.fixed.chargeCategory}</span>
-              <span role="columnheader">{m.fixed.chargeAmount}</span>
-              <span className="charge-lines-actions-head" aria-hidden />
-            </div>
-            {form.chargeLines.map((line) => (
-              <div key={line.id} className="charge-lines-row" role="row">
-                {line.preset === "custom" ? (
-                  <input
-                    type="text"
-                    role="cell"
-                    className="charge-line-name-input"
-                    value={line.customLabel ?? ""}
-                    onChange={(e) =>
-                      updateChargeLine(line.id, {
-                        customLabel: e.target.value,
-                      })
-                    }
-                    placeholder={m.fixed.chargeCustomPlaceholder}
-                    aria-label={m.fixed.chargeCustomPlaceholder}
-                  />
-                ) : (
-                  <span className="charge-line-label" role="cell">
-                    {presetLabel(line.preset, m.fixed)}
-                  </span>
-                )}
-                <div className="field-input-wrap charge-line-amount" role="cell">
-                  <span className="field-prefix" aria-hidden>
-                    {CURRENCY_LABELS[entryCurrency]}
-                  </span>
-                  <input
-                    type="number"
-                    inputMode="decimal"
-                    min="0"
-                    step="0.01"
-                    value={line.amount}
-                    onChange={(e) =>
-                      updateChargeLine(line.id, { amount: e.target.value })
-                    }
-                    aria-label={`${chargeLineLabel(line)} — ${m.fixed.chargeAmount}`}
-                  />
+          <div className="budget-cards" role="list">
+            {form.chargeLines.map((line) => {
+              const amount = parseFloat(line.amount) || 0;
+              const pct = monthlyTotal && monthlyTotal > 0
+                ? Math.min(100, Math.round((amount / monthlyTotal) * 100))
+                : 0;
+              const icon = PRESET_ICONS[line.preset] ?? "✏️";
+
+              return (
+                <div key={line.id} className="budget-card" role="listitem">
+                  <div className="budget-card-head">
+                    <span className="budget-card-icon" aria-hidden="true">{icon}</span>
+                    {line.preset === "custom" ? (
+                      <input
+                        type="text"
+                        className="budget-card-name budget-card-name--editable"
+                        value={line.customLabel ?? ""}
+                        onChange={(e) =>
+                          updateChargeLine(line.id, { customLabel: e.target.value })
+                        }
+                        placeholder={m.fixed.chargeCustomPlaceholder}
+                        aria-label={m.fixed.chargeCustomPlaceholder}
+                      />
+                    ) : (
+                      <span className="budget-card-name">
+                        {presetLabel(line.preset, m.fixed)}
+                      </span>
+                    )}
+                    {form.chargeLines.length > 1 && (
+                      <button
+                        type="button"
+                        className="budget-card-remove"
+                        onClick={() => removeChargeLine(line.id)}
+                        aria-label={`${m.fixed.removeChargeLine} — ${chargeLineLabel(line)}`}
+                      >
+                        ×
+                      </button>
+                    )}
+                  </div>
+
+                  <div className="budget-card-amount-row">
+                    <span className="budget-card-currency" aria-hidden="true">
+                      {CURRENCY_LABELS[entryCurrency]}
+                    </span>
+                    <input
+                      type="number"
+                      inputMode="decimal"
+                      min="0"
+                      step="0.01"
+                      className="budget-card-input"
+                      value={line.amount}
+                      onChange={(e) =>
+                        updateChargeLine(line.id, { amount: e.target.value })
+                      }
+                      aria-label={`${chargeLineLabel(line)} — ${m.fixed.chargeAmount}`}
+                    />
+                  </div>
+
+                  <div className="budget-card-bar-track" aria-hidden="true">
+                    <div
+                      className="budget-card-bar-fill"
+                      style={{ width: `${pct}%` }}
+                    />
+                  </div>
+                  <p className="budget-card-pct" aria-hidden="true">
+                    {pct > 0 ? `${pct}%` : "—"}
+                  </p>
                 </div>
-                {form.chargeLines.length > 1 ? (
-                  <button
-                    type="button"
-                    className="btn-icon"
-                    onClick={() => removeChargeLine(line.id)}
-                    aria-label={`${m.fixed.removeChargeLine} — ${chargeLineLabel(line)}`}
-                  >
-                    ×
-                  </button>
-                ) : (
-                  <span className="charge-lines-actions-head" aria-hidden />
-                )}
-              </div>
-            ))}
+              );
+            })}
           </div>
+
+          <button
+            type="button"
+            className="btn btn-ghost btn-sm budget-add-btn"
+            onClick={addChargeLine}
+          >
+            {m.fixed.addChargeLine}
+          </button>
 
           <div className="charge-total" aria-live="polite">
             <div className="charge-total-main">
@@ -179,24 +197,13 @@ export function FixedChargesForm() {
                 {totalDisplay}
               </span>
             </div>
-            <p
-              className={`charge-total-caption${canContinue ? "" : " preview-error"}`}
-            >
-              {canContinue
-                ? m.fixed.monthlyPreviewCaption
-                : m.fixed.monthlyPreviewError}
+            <p className={`charge-total-caption${canContinue ? "" : " preview-error"}`}>
+              {canContinue ? m.fixed.monthlyPreviewCaption : m.fixed.monthlyPreviewError}
             </p>
           </div>
-
-          <button
-            type="button"
-            className="btn btn-ghost btn-sm"
-            onClick={addChargeLine}
-          >
-            {m.fixed.addChargeLine}
-          </button>
         </fieldset>
 
+        {/* ── SMIG ───────────────────────────────────────── */}
         <fieldset className="field-group">
           <legend className="field-group-legend">{m.fixed.smigLegend}</legend>
           <p className="field-hint field-hint-block">{m.fixed.smigHint}</p>
@@ -216,10 +223,7 @@ export function FixedChargesForm() {
                   placeholder={m.fixed.smigMonthlyPlaceholder}
                   required
                   onChange={(e) =>
-                    setForm((prev) => ({
-                      ...prev,
-                      smigMonthlyMad: e.target.value,
-                    }))
+                    setForm((prev) => ({ ...prev, smigMonthlyMad: e.target.value }))
                   }
                 />
               </div>
@@ -235,10 +239,7 @@ export function FixedChargesForm() {
                 placeholder={m.fixed.smigHoursPlaceholder}
                 required
                 onChange={(e) =>
-                  setForm((prev) => ({
-                    ...prev,
-                    smigHoursPerMonth: e.target.value,
-                  }))
+                  setForm((prev) => ({ ...prev, smigHoursPerMonth: e.target.value }))
                 }
               />
             </label>
@@ -249,10 +250,7 @@ export function FixedChargesForm() {
           >
             {smigHourly === null
               ? m.fixed.smigHourlyInvalid
-              : m.fixed.smigHourlyPreview.replace(
-                  "{rate}",
-                  formatMoney(smigHourly),
-                )}
+              : m.fixed.smigHourlyPreview.replace("{rate}", formatMoney(smigHourly))}
           </p>
         </fieldset>
 
