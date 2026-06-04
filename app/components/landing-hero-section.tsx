@@ -10,9 +10,8 @@ import {
 } from "react";
 import { isPublicBeta } from "@/lib/beta";
 import { useMessages } from "@/lib/i18n/locale-provider";
-import { HeroCanvas } from "./hero-canvas";
+import { BaguetteHero } from "./baguette-hero";
 import { LandingProductDemo } from "./landing-product-demo";
-import { SplineHero } from "./spline-hero";
 
 export function LandingHeroSection() {
   const m = useMessages();
@@ -22,7 +21,6 @@ export function LandingHeroSection() {
   const [scroll, setScroll] = useState(0);
   const [mx, setMx] = useState(0);
   const [my, setMy] = useState(0);
-  const [splineFailed, setSplineFailed] = useState(false);
 
   useEffect(() => {
     const el = sectionRef.current;
@@ -81,14 +79,7 @@ export function LandingHeroSection() {
       <div className="landing-hero-stage" aria-hidden="true">
         <div className="landing-hero-stage-glow" />
         <div className="landing-hero-stage-inner">
-          {splineFailed ? (
-            <HeroCanvas className="hero-canvas--stage" />
-          ) : (
-            <SplineHero
-              className="spline-wrap--stage"
-              onError={() => setSplineFailed(true)}
-            />
-          )}
+          <BaguetteHero className="baguette-wrap--stage" />
         </div>
         <div className="landing-hero-stage-vignette" />
       </div>
