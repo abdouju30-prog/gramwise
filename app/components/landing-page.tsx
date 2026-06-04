@@ -1,11 +1,15 @@
 "use client";
 
 import Link from "next/link";
-import { PricingSection } from "./pricing-section";
+import { isPublicBeta } from "@/lib/beta";
 import { useMessages } from "@/lib/i18n/locale-provider";
+import { LandingProductDemo } from "./landing-product-demo";
+import { SplineHero } from "./spline-hero";
+import { PricingSection } from "./pricing-section";
 
 export function LandingPage() {
   const m = useMessages();
+  const publicBeta = isPublicBeta();
   const heroSteps = [m.nav.stepFixed, m.nav.stepRecipe, m.nav.stepResults];
 
   return (
@@ -18,7 +22,6 @@ export function LandingPage() {
             <span className="brand-accent">{m.landing.heroAccent}</span>
           </h1>
           <p className="lead landing-lead">{m.landing.lead}</p>
-          {/* Mobile-only pills */}
           <ol className="hero-steps" aria-label={m.landing.howTitle}>
             {heroSteps.map((step, i) => (
               <li key={step} className="hero-step">
@@ -31,25 +34,31 @@ export function LandingPage() {
             <Link href="/start" className="btn btn-primary btn-lg">
               {m.landing.openCalculator}
             </Link>
-            <Link href="/beta" className="btn btn-ghost btn-lg">
-              {m.landing.betaTesters}
-            </Link>
+            {publicBeta ? (
+              <Link href="/beta" className="btn btn-ghost btn-lg">
+                {m.landing.betaTesters}
+              </Link>
+            ) : (
+              <Link href="/#pricing" className="btn btn-ghost btn-lg">
+                {m.landing.viewPricing}
+              </Link>
+            )}
           </div>
         </div>
 
-        {/* Desktop-only: step showcase */}
-        <aside className="landing-hero-aside" aria-hidden="true">
-          <ol className="hero-steps-aside">
-            {heroSteps.map((step, i) => (
-              <li key={`aside-${step}`} className="hero-step-aside">
-                <span className="hero-step-aside-num">
-                  {String(i + 1).padStart(2, "0")}
-                </span>
-                <span className="hero-step-aside-text">{step}</span>
-              </li>
-            ))}
-          </ol>
+        <aside className="landing-hero-aside">
+          <SplineHero />
+          <LandingProductDemo />
         </aside>
+      </section>
+
+      <section className="landing-trust" aria-label={m.landing.trustTitle}>
+        <p className="landing-trust-title">{m.landing.trustTitle}</p>
+        <ul className="landing-trust-list">
+          {m.landing.trustItems.map((item) => (
+            <li key={item}>{item}</li>
+          ))}
+        </ul>
       </section>
 
       <section className="landing-section">
@@ -69,9 +78,9 @@ export function LandingPage() {
 
       <section className="landing-section">
         <h2 className="landing-heading">{m.landing.howTitle}</h2>
-        <ol className="steps-list">
+        <ol className="steps-list steps-list--cards">
           {m.landing.steps.map((text, i) => (
-            <li key={text}>
+            <li key={text} className="steps-list-card">
               <span className="steps-list-num" aria-hidden="true">
                 {String(i + 1).padStart(2, "0")}
               </span>
