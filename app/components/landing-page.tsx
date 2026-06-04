@@ -4,7 +4,7 @@ import Link from "next/link";
 import { isPublicBeta } from "@/lib/beta";
 import { useMessages } from "@/lib/i18n/locale-provider";
 import { LandingProductDemo } from "./landing-product-demo";
-import { SplineHero } from "./spline-hero";
+import { HeroCanvas } from "./hero-canvas";
 import { PricingSection } from "./pricing-section";
 
 export function LandingPage() {
@@ -47,7 +47,7 @@ export function LandingPage() {
         </div>
 
         <aside className="landing-hero-aside">
-          <SplineHero />
+          <HeroCanvas />
           <LandingProductDemo />
         </aside>
       </section>

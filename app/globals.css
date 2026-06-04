@@ -159,20 +159,6 @@ body {
   border-radius: var(--radius-lg);
 }
 
-.wizard-progress::before {
-  content: '';
-  flex: 0 0 100%;
-  height: 3px;
-  margin: -0.15rem 0 0.35rem;
-  border-radius: 999px;
-  background: linear-gradient(
-    90deg,
-    var(--sage) 0%,
-    var(--sage) var(--wizard-progress, 0%),
-    var(--border) var(--wizard-progress, 0%),
-    var(--border) 100%
-  );
-}
 
 .wizard-step {
   display: inline-flex;
@@ -274,13 +260,13 @@ h1 {
 .wizard-page-header::after {
   content: attr(data-step);
   position: absolute;
-  right: -0.25rem;
-  top: -1.25rem;
+  right: 0;
+  top: -0.5rem;
   font-family: var(--font-display), "Playfair Display", Georgia, serif;
-  font-size: 10rem;
+  font-size: clamp(3.5rem, 12vw, 5.5rem);
   font-weight: 700;
   line-height: 1;
-  color: rgba(44, 26, 14, 0.055);
+  color: rgba(44, 26, 14, 0.04);
   pointer-events: none;
   user-select: none;
   z-index: 0;
@@ -1266,6 +1252,27 @@ input[type="number"].field {
   }
 }
 
+/* ── Three.js hero canvas ── */
+
+.hero-canvas {
+  width: 100%;
+  height: 360px;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  background: var(--brown-dark);
+  cursor: crosshair;
+}
+
+.hero-canvas canvas {
+  display: block;
+  width: 100% !important;
+  height: 100% !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-canvas { display: none; }
+}
+
 /* ── Spline 3D ── */
 
 .spline-wrap {
@@ -2099,8 +2106,8 @@ input[type="number"].field {
 .charge-lines-head,
 .charge-lines-row {
   display: grid;
-  grid-template-columns: minmax(7rem, 1.4fr) minmax(5.5rem, 1fr) 2rem;
-  gap: 0.35rem 0.5rem;
+  grid-template-columns: minmax(7rem, 1.4fr) minmax(9rem, 1.15fr) 2rem;
+  gap: 0.35rem 0.65rem;
   align-items: center;
 }
 
@@ -2131,11 +2138,10 @@ input[type="number"].field {
   color: var(--text);
 }
 
-.charge-line-name-input,
-.charge-line-amount input {
+.charge-line-name-input {
   width: 100%;
   min-width: 0;
-  padding: 0.45rem 0.5rem;
+  padding: 0.45rem 0.65rem;
   font: inherit;
   font-variant-numeric: tabular-nums;
   color: var(--text);
@@ -2144,8 +2150,7 @@ input[type="number"].field {
   border-radius: var(--radius);
 }
 
-.charge-line-name-input:focus,
-.charge-line-amount input:focus {
+.charge-line-name-input:focus {
   outline: none;
   border-color: var(--caramel);
   box-shadow: 0 0 0 2px rgba(212, 148, 58, 0.2);
@@ -2153,18 +2158,63 @@ input[type="number"].field {
 
 .charge-line-amount {
   margin: 0;
+  min-width: 0;
+}
+
+.charge-line-amount .field-input-wrap {
+  width: 100%;
+}
+
+.charge-line-amount .field-prefix {
+  padding: 0 0.55rem;
+  font-size: 0.72rem;
+  min-width: 2.85rem;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.charge-line-amount .field-input-wrap input:focus {
+  outline: none;
+  box-shadow: none;
+}
+
+.charge-line-amount .field-input-wrap:focus-within .field-prefix,
+.charge-line-amount .field-input-wrap:focus-within input {
+  border-color: var(--caramel);
+}
+
+.charge-line-amount .field-input-wrap:focus-within {
+  box-shadow: 0 0 0 2px rgba(212, 148, 58, 0.2);
+  border-radius: var(--radius);
 }
 
 .charge-total {
   display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: 1rem;
+  flex-direction: column;
+  gap: 0.65rem;
   margin: 0.75rem 0 1rem;
   padding: 1rem 1.25rem;
   background: var(--brown-dark);
   border: none;
   border-radius: var(--radius-lg);
+}
+
+.charge-total-main {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.charge-total-caption {
+  margin: 0;
+  font-size: 0.72rem;
+  line-height: 1.45;
+  color: rgba(245, 240, 232, 0.55);
+}
+
+.charge-total-caption.preview-error {
+  color: rgba(245, 200, 180, 0.85);
 }
 
 .charge-total-label {
@@ -2177,7 +2227,7 @@ input[type="number"].field {
 
 .charge-total-value {
   font-family: var(--font-display), "Playfair Display", Georgia, serif;
-  font-size: 1.65rem;
+  font-size: clamp(1.35rem, 4vw, 1.65rem);
   font-weight: 700;
   font-variant-numeric: tabular-nums;
   color: var(--gold);
