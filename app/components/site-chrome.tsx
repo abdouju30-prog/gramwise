@@ -46,15 +46,7 @@ export function SiteChrome({ children }: { children: React.ReactNode }) {
           <CurrencySwitcher />
         </div>
         {onWizard && (
-          <nav
-            className="wizard-progress"
-            aria-label={m.nav.progress}
-            style={
-              {
-                "--wizard-progress": `${(current / STEP_PATHS.length) * 100}%`,
-              } as React.CSSProperties
-            }
-          >
+          <nav className="wizard-progress" aria-label={m.nav.progress}>
             {STEP_PATHS.map((step, i) => {
               const n = i + 1;
               const state =

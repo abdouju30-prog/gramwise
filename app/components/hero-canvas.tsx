@@ -2,7 +2,11 @@
 
 import { useEffect, useRef } from "react";
 
-export function HeroCanvas() {
+type HeroCanvasProps = {
+  className?: string;
+};
+
+export function HeroCanvas({ className = "" }: HeroCanvasProps) {
   const mountRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -45,12 +49,17 @@ export function HeroCanvas() {
 
       // ── Central sphere — dark metallic ────────────────────────────
       const gSphere = new THREE.IcosahedronGeometry(1.15, 5);
-      const mSolid = new THREE.MeshStandardMaterial({
-        color: 0x2c1a0e,
-        roughness: 0.3,
-        metalness: 0.65,
+      const mSolid = new THREE.MeshPhysicalMaterial({
+        color: 0xc9792a,
+        roughness: 0.12,
+        metalness: 0.85,
+        clearcoat: 1,
+        clearcoatRoughness: 0.08,
+        iridescence: 1,
+        iridescenceIOR: 1.3,
+        iridescenceThicknessRange: [100, 400],
         transparent: true,
-        opacity: 0.9,
+        opacity: 0.95,
       });
       const sphere = new THREE.Mesh(gSphere, mSolid);
       scene.add(sphere);
@@ -198,7 +207,7 @@ export function HeroCanvas() {
   return (
     <div
       ref={mountRef}
-      className="hero-canvas"
+      className={`hero-canvas ${className}`.trim()}
       aria-hidden="true"
     />
   );

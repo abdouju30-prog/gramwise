@@ -1235,24 +1235,175 @@ input[type="number"].field {
   max-width: 68rem;
 }
 
-/* ── Landing hero aside (Spline + demo) ── */
+/* ── Landing hero — immersive Spline-style ── */
+
+.landing-hero--immersive {
+  --hero-scroll: 0;
+  --hero-mx: 0;
+  --hero-my: 0;
+  position: relative;
+  display: block;
+  min-height: min(92vh, 920px);
+  margin-bottom: 5rem;
+  padding: 2.5rem 0 4rem;
+  overflow: hidden;
+  border-bottom: 1px solid var(--border-faint);
+  background: linear-gradient(
+    155deg,
+    color-mix(in srgb, var(--cream) calc(100% - var(--hero-scroll) * 45%), var(--parchment)) 0%,
+    color-mix(in srgb, var(--warm-white) calc(100% - var(--hero-scroll) * 35%), rgba(201, 121, 42, 0.1)) 100%
+  );
+}
+
+.landing-hero-stage {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.landing-hero-stage-glow {
+  position: absolute;
+  inset: 10% 0 0 30%;
+  background: radial-gradient(
+    ellipse 70% 60% at 65% 45%,
+    rgba(201, 121, 42, calc(0.22 - var(--hero-scroll) * 0.12)) 0%,
+    rgba(212, 168, 43, 0.08) 45%,
+    transparent 72%
+  );
+  filter: blur(2px);
+}
+
+.landing-hero-stage-inner {
+  position: absolute;
+  inset: 0;
+  top: 8%;
+  transform: perspective(900px)
+    rotateX(calc(var(--hero-my) * -5deg))
+    rotateY(calc(var(--hero-mx) * 7deg))
+    scale(calc(1.08 - var(--hero-scroll) * 0.14));
+  transform-origin: 62% 42%;
+  will-change: transform;
+}
+
+@media (min-width: 800px) {
+  .landing-hero-stage-inner {
+    inset: 0 0 0 32%;
+  }
+}
+
+.landing-hero-stage-vignette {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    90deg,
+    var(--cream) 0%,
+    color-mix(in srgb, var(--cream) 88%, transparent) 28%,
+    transparent 58%
+  );
+  opacity: calc(0.92 - var(--hero-scroll) * 0.25);
+}
+
+@media (max-width: 799px) {
+  .landing-hero-stage-vignette {
+    background: linear-gradient(
+      180deg,
+      transparent 42%,
+      color-mix(in srgb, var(--cream) 90%, transparent) 100%
+    );
+  }
+
+  .landing-hero-stage-inner {
+    inset: 0 0 42%;
+    transform-origin: 50% 60%;
+    transform: perspective(700px)
+      rotateX(calc(var(--hero-my) * -3deg))
+      rotateY(calc(var(--hero-mx) * 5deg))
+      scale(calc(1.02 - var(--hero-scroll) * 0.1));
+  }
+}
+
+.landing-hero-content {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0;
+  max-width: 68rem;
+  margin: 0 auto;
+  padding: 0 1.35rem;
+  min-height: min(78vh, 780px);
+  align-content: center;
+}
+
+@media (min-width: 800px) {
+  .landing-hero-content {
+    grid-template-columns: 1.05fr 0.95fr;
+    gap: 2.5rem;
+    align-items: center;
+  }
+}
 
 .landing-hero-aside {
   display: block;
-  margin-top: 2.5rem;
+  margin-top: 2rem;
+  transform: translateY(calc(var(--hero-scroll) * -28px));
+  transition: transform 0.12s linear;
 }
 
 @media (min-width: 800px) {
   .landing-hero-aside {
-    display: flex;
-    flex-direction: column;
-    gap: 1.25rem;
     margin-top: 0;
-    padding-top: 2rem;
+    justify-self: end;
+    align-self: end;
+    max-width: 21rem;
+    width: 100%;
   }
 }
 
-/* ── Three.js hero canvas ── */
+.hero-canvas--stage,
+.spline-wrap--stage {
+  width: 100%;
+  height: 100%;
+  min-height: 320px;
+  border-radius: 0;
+  overflow: hidden;
+  background: transparent;
+}
+
+.spline-wrap--stage canvas,
+.hero-canvas--stage canvas {
+  width: 100% !important;
+  height: 100% !important;
+}
+
+.hero-canvas--stage {
+  cursor: crosshair;
+  background: radial-gradient(
+    ellipse 80% 70% at 50% 45%,
+    rgba(44, 26, 14, 0.55) 0%,
+    rgba(44, 26, 14, 0.92) 100%
+  );
+}
+
+@media (min-width: 800px) {
+  .hero-canvas--stage,
+  .spline-wrap--stage {
+    min-height: 480px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .landing-hero-stage-inner {
+    transform: none;
+  }
+
+  .landing-hero-aside {
+    transform: none;
+  }
+}
+
+/* ── Legacy hero canvas (compact) ── */
 
 .hero-canvas {
   width: 100%;
@@ -1341,17 +1492,22 @@ input[type="number"].field {
 }
 
 .landing-demo-frame {
-  border: 1px solid var(--border);
+  border: 1px solid rgba(255, 255, 255, 0.12);
   border-radius: var(--radius-lg);
   overflow: hidden;
-  box-shadow: var(--shadow-md), 0 24px 48px rgba(44, 26, 14, 0.12);
+  box-shadow:
+    0 24px 64px rgba(44, 26, 14, 0.28),
+    0 0 0 1px rgba(201, 121, 42, 0.12);
   background: var(--warm-white);
-  transform: rotate(-1.25deg);
+  transform: rotate(-1.25deg)
+    translate(calc(var(--hero-mx, 0) * 4px), calc(var(--hero-my, 0) * -3px));
+  backdrop-filter: blur(8px);
 }
 
 @media (min-width: 800px) {
   .landing-demo-frame {
-    transform: rotate(-2deg) translateY(0.5rem);
+    transform: rotate(-2.5deg)
+      translate(calc(var(--hero-mx, 0) * 6px), calc(var(--hero-my, 0) * -4px));
   }
 }
 
@@ -1540,7 +1696,7 @@ input[type="number"].field {
   flex-shrink: 0;
 }
 
-.landing-hero {
+.landing-hero:not(.landing-hero--immersive) {
   display: grid;
   grid-template-columns: 1fr;
   gap: 0;
@@ -1550,7 +1706,7 @@ input[type="number"].field {
 }
 
 @media (min-width: 800px) {
-  .landing-hero {
+  .landing-hero:not(.landing-hero--immersive) {
     grid-template-columns: 1.15fr 0.85fr;
     gap: 5rem;
     align-items: start;

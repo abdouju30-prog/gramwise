@@ -105,8 +105,7 @@ export function FixedChargesForm() {
     monthlyTotal !== null && monthlyTotal > 0 && smigHourly !== null;
 
   return (
-    <div className="wizard-split">
-      <div className="wizard-split-main">
+    <>
       <form className="form" onSubmit={(e) => e.preventDefault()}>
         <fieldset className="field-group">
           <legend className="field-group-legend">{m.fixed.monthlyLegend}</legend>
@@ -172,12 +171,21 @@ export function FixedChargesForm() {
           </div>
 
           <div className="charge-total" aria-live="polite">
-            <span className="charge-total-label">{m.fixed.monthlyTotalLabel}</span>
-            <span
-              className={`charge-total-value${monthlyTotal === null ? " charge-total-invalid" : ""}`}
+            <div className="charge-total-main">
+              <span className="charge-total-label">{m.fixed.monthlyTotalLabel}</span>
+              <span
+                className={`charge-total-value${monthlyTotal === null ? " charge-total-invalid" : ""}`}
+              >
+                {totalDisplay}
+              </span>
+            </div>
+            <p
+              className={`charge-total-caption${canContinue ? "" : " preview-error"}`}
             >
-              {totalDisplay}
-            </span>
+              {canContinue
+                ? m.fixed.monthlyPreviewCaption
+                : m.fixed.monthlyPreviewError}
+            </p>
           </div>
 
           <button
@@ -250,23 +258,8 @@ export function FixedChargesForm() {
 
         <IngredientCatalogSection />
       </form>
-      </div>
 
-      <aside className="wizard-split-aside">
-      <section className="card card-dark preview-card" aria-live="polite">
-        <h2>{m.fixed.monthlyTotalLabel}</h2>
-        {canContinue ? (
-          <>
-            <p className="preview-value">{totalDisplay}</p>
-            <p className="preview-caption">{m.fixed.monthlyPreviewCaption}</p>
-          </>
-        ) : (
-          <p className="preview-caption preview-error">{m.fixed.monthlyPreviewError}</p>
-        )}
-      </section>
-      </aside>
-
-      <nav className="step-nav step-nav--wizard wizard-split-nav">
+      <nav className="step-nav step-nav--wizard">
         <Link href="/start" className="btn btn-ghost">
           {m.fixed.back}
         </Link>
@@ -282,6 +275,6 @@ export function FixedChargesForm() {
           {m.fixed.continue}
         </button>
       </nav>
-    </div>
+    </>
   );
 }

@@ -8,23 +8,37 @@ const Spline = dynamic(
   {
     ssr: false,
     loading: () => <div className="spline-skeleton" aria-hidden="true" />,
-  }
+  },
 );
 
 const SCENE =
   process.env.NEXT_PUBLIC_SPLINE_SCENE ||
   "https://prod.spline.design/9951u9cumiw2Ehj8/scene.splinecode";
 
-export function SplineHero() {
+type SplineHeroProps = {
+  className?: string;
+  onError?: () => void;
+};
+
+export function SplineHero({
+  className = "",
+  onError,
+}: SplineHeroProps) {
   const [error, setError] = useState(false);
 
   if (error) {
-    return <div className="spline-orb-fallback" aria-hidden="true" />;
+    return null;
   }
 
   return (
-    <div className="spline-wrap" aria-hidden="true">
-      <Spline scene={SCENE} onError={() => setError(true)} />
+    <div className={`spline-wrap ${className}`.trim()} aria-hidden="true">
+      <Spline
+        scene={SCENE}
+        onError={() => {
+          setError(true);
+          onError?.();
+        }}
+      />
     </div>
   );
 }
