@@ -244,7 +244,7 @@ export function ResultsView() {
       <div className="results-layout">
         {costing ? (
           <>
-            <section className="card card-dark hero-price">
+            <section className="card card-dark hero-price results-hero-card">
               <p className="hero-label">{m.results.recommendedPrice}</p>
               <MultiCurrencyPrice
                 amountMad={costing.result.recommendedPrice}

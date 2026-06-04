@@ -68,6 +68,25 @@ export const fr: LocaleBundle = {
     lead: "GramWise répartit les charges fixes, détaille le coût recette ligne par ligne et propose un prix de vente — sans tableur approximatif.",
     openCalculator: "Ouvrir le calculateur",
     betaTesters: "Beta testeurs",
+    viewPricing: "Voir les tarifs",
+    demoBadge: "Résultats — exemple",
+    demoRecipe: "Entremets chocolat · 8 parts",
+    demoPriceLabel: "Prix conseillé",
+    demoPrice: "14,80 €",
+    demoCaption: "Exemple illustratif — vos chiffres dans l’app.",
+    demoRows: [
+      { label: "Matières", value: "4,20 €" },
+      { label: "Main-d’œuvre", value: "3,10 €" },
+      { label: "Charges fixes", value: "2,40 €" },
+      { label: "Coût complet", value: "9,70 €" },
+    ],
+    trustTitle: "Conçu pour l’atelier pâtissier",
+    trustItems: [
+      "10 recettes testées vs Excel",
+      "Marge % sur prix de vente",
+      "FR · EN · AR",
+      "Sans abonnement (à vie)",
+    ],
     whyTitle: "Pourquoi les pâtissiers l’utilisent",
     benefits: [
       {
@@ -373,6 +392,8 @@ export const fr: LocaleBundle = {
     successTitle: "Merci",
     successBody:
       "Gumroad vous envoie un reçu avec votre clé de licence. Collez-la ci-dessous pour débloquer le calculateur sur cet appareil.",
+    successBodyOpen:
+      "Merci pour votre achat. Le calculateur est accessible tout de suite — aucune clé à saisir pour l’instant.",
     cancelTitle: "Paiement annulé",
     cancelBody: "Aucun débit. Vous pouvez acheter plus tard depuis la page d’accueil.",
     openCalculator: "Ouvrir le calculateur",

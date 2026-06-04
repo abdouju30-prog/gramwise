@@ -6,12 +6,14 @@ export default function StartPage() {
   const m = useMessages();
 
   return (
-    <main>
-      <p className="eyebrow">{m.start.eyebrow}</p>
-      <h1>{m.start.title}</h1>
-      <p className="lead">{m.start.lead}</p>
+    <main className="main--wizard-hub">
+      <div className="wizard-page-header wizard-page-header--hub" data-step="→">
+        <p className="wizard-step-label">{m.start.eyebrow}</p>
+        <h1>{m.start.title}</h1>
+        <p className="lead">{m.start.lead}</p>
+      </div>
 
-      <nav className="home-steps">
+      <nav className="home-steps home-steps--grid" aria-label={m.start.title}>
         <Link href="/fixed-charges" className="card card-link">
           <span className="card-step">1</span>
           <span className="card-title">{m.start.step1Title}</span>

@@ -11,9 +11,18 @@ const UNLOCK_PATH = "/unlock";
 export function licenseGateResponse(
   request: NextRequest,
 ): NextResponse | null {
-  if (!isGumroadLicenseGateEnabled()) return null;
-
   const { pathname } = request.nextUrl;
+
+  if (!isGumroadLicenseGateEnabled()) {
+    if (pathname === UNLOCK_PATH || pathname.startsWith(`${UNLOCK_PATH}/`)) {
+      const url = request.nextUrl.clone();
+      url.pathname = "/start";
+      url.search = "";
+      return NextResponse.redirect(url);
+    }
+    return null;
+  }
+
   if (pathname === UNLOCK_PATH || pathname.startsWith(`${UNLOCK_PATH}/`)) {
     return null;
   }

@@ -105,7 +105,8 @@ export function FixedChargesForm() {
     monthlyTotal !== null && monthlyTotal > 0 && smigHourly !== null;
 
   return (
-    <>
+    <div className="wizard-split">
+      <div className="wizard-split-main">
       <form className="form" onSubmit={(e) => e.preventDefault()}>
         <fieldset className="field-group">
           <legend className="field-group-legend">{m.fixed.monthlyLegend}</legend>
@@ -249,7 +250,9 @@ export function FixedChargesForm() {
 
         <IngredientCatalogSection />
       </form>
+      </div>
 
+      <aside className="wizard-split-aside">
       <section className="card card-dark preview-card" aria-live="polite">
         <h2>{m.fixed.monthlyTotalLabel}</h2>
         {canContinue ? (
@@ -261,8 +264,9 @@ export function FixedChargesForm() {
           <p className="preview-caption preview-error">{m.fixed.monthlyPreviewError}</p>
         )}
       </section>
+      </aside>
 
-      <nav className="step-nav">
+      <nav className="step-nav step-nav--wizard wizard-split-nav">
         <Link href="/start" className="btn btn-ghost">
           {m.fixed.back}
         </Link>
@@ -278,6 +282,6 @@ export function FixedChargesForm() {
           {m.fixed.continue}
         </button>
       </nav>
-    </>
+    </div>
   );
 }

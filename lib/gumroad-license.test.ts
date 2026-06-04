@@ -24,11 +24,13 @@ describe("gumroad license gate", () => {
     expect(isGumroadLicenseGateEnabled()).toBe(false);
   });
 
-  it("gate on when gumroad URL and verify env set", () => {
+  it("gate stays off until GUMROAD_LICENSE_GATE=1", () => {
     process.env.NEXT_PUBLIC_GUMROAD_LIFETIME_URL =
       "https://seller.gumroad.com/l/test";
     process.env.GUMROAD_ACCESS_TOKEN = "tok";
     process.env.GUMROAD_LIFETIME_PRODUCT_ID = "id";
+    expect(isGumroadLicenseGateEnabled()).toBe(false);
+    process.env.GUMROAD_LICENSE_GATE = "1";
     expect(isGumroadLicenseGateEnabled()).toBe(true);
   });
 });

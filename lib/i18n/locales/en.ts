@@ -67,6 +67,25 @@ export const en: LocaleBundle = {
     lead: "GramWise spreads overhead across production, builds recipe cost line by line, and recommends a selling price — no spreadsheet guesswork.",
     openCalculator: "Open the calculator",
     betaTesters: "Beta testers",
+    viewPricing: "View pricing",
+    demoBadge: "Results — sample",
+    demoRecipe: "Chocolate entremets · 8 portions",
+    demoPriceLabel: "Recommended price",
+    demoPrice: "€14.80",
+    demoCaption: "Illustrative example — your numbers in the app.",
+    demoRows: [
+      { label: "Materials", value: "€4.20" },
+      { label: "Labor", value: "€3.10" },
+      { label: "Fixed overhead", value: "€2.40" },
+      { label: "Full cost", value: "€9.70" },
+    ],
+    trustTitle: "Built for the pastry workshop",
+    trustItems: [
+      "10 recipes validated vs Excel",
+      "Margin % on selling price",
+      "FR · EN · AR",
+      "No subscription (lifetime)",
+    ],
     whyTitle: "Why bakers use it",
     benefits: [
       {
@@ -367,6 +386,8 @@ export const en: LocaleBundle = {
     successTitle: "Thank you",
     successBody:
       "Gumroad emails your receipt with a license key. Paste it below to unlock the calculator on this device.",
+    successBodyOpen:
+      "Thanks for your purchase. The calculator is available right away — no license key needed for now.",
     cancelTitle: "Checkout cancelled",
     cancelBody: "No charge was made. You can buy later from the home page.",
     openCalculator: "Open calculator",

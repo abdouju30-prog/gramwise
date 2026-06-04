@@ -2,18 +2,32 @@
 
 Gumroad acts as **seller of record** and holds payouts until you form a company (e.g. UK LTD) and optionally move to Stripe later.
 
-## 1. Create products on Gumroad
+## 1. GramWise Lifetime product page (dailytask.gumroad.com)
 
-1. [Gumroad](https://gumroad.com) → **Products** → **New product**.
-2. **Lifetime** — one-time **€29**. Type: digital / license.
-3. **Monthly** (optional, not shown on site) — skip unless you add a tier later.
-4. Copy each product **URL** (Share link).
+Product editor: `https://gumroad.com/products/zklavm/edit` · public URL: `https://dailytask.gumroad.com/l/gramwise-lifetime`
 
-## 2. Redirect after purchase
+| Area | What to set |
+|------|-------------|
+| **Product** | Name `GramWise Lifetime` · Description (EN, features + €29 + activation) · Summary one line · CTA **Buy this** · Price **29 €** fixed (disable pay-what-you-want) |
+| **Cover + Thumbnail** | Upload `docs/assets/gramwise-gumroad-cover.svg` (or export PNG 1280×720) on **Cover** and **Thumbnail** → **Save changes** |
+| **Content** | Buyer instructions + **Insert → License key** (product ID `Skdqgmauk3Tiq5kwx0Sq9Q==` for API verify) |
+| **Receipt** | Button `Activer GramWise` · message with `https://fixload.vercel.app/checkout/success` |
+| **Share** | Optional Discover category/tags |
 
-In each product → **Settings** → after purchase:
+### Toggles (Product tab — Integrations / Pricing / Settings)
 
-- **Custom redirect URL**: `https://fixload.vercel.app/checkout/success`
+| Keep **OFF** (your screenshot is correct) | Keep **ON** |
+|-------------------------------------------|-------------|
+| Gumroad community chat, Circle, Discord | **Refund policy** (30 days) |
+| Pay what you want, installments, auto discount | **E-publication for VAT** (digital) |
+| Limit sales, quantity, shipping | |
+| | **Content → Insert → License key** (required for GramWise gate) |
+
+**Post-purchase URL:** Gumroad no longer exposes a per-product “redirect after purchase” field in the editor. Buyers land on the Gumroad library page; activation is via **Receipt** button + **Content** instructions linking to `https://fixload.vercel.app/checkout/success`.
+
+## 2. Post-purchase activation (not a Gumroad redirect)
+
+Set on **Receipt** (button `Activate GramWise`) and **Content** (buyer instructions + license key). Optional: first link in Content uses `?__sale_info__` if you need sale params on your site.
 
 ## 3. Environment variables (Vercel Production)
 
@@ -34,7 +48,7 @@ GUMROAD_LIFETIME_PRODUCT_ID=...   # Product page → ID in URL or API (not the /
 # GUMROAD_LICENSE_GATE=0          # optional: disable gate while testing
 ```
 
-Redeploy. When the lifetime URL **and** the two vars above are set:
+Redeploy. License gate is **off by default**. To lock the wizard after launch, set `GUMROAD_LICENSE_GATE=1` on Vercel (with token + product ID). Then:
 
 - `/fixed-charges`, `/recipe`, `/results`, `/monthly-report`, `/start` require a verified license cookie.
 - Buyers activate on `/checkout/success` or `/unlock` with the **license key** from the Gumroad email.

@@ -627,7 +627,7 @@ export function RecipeForm() {
         )}
       </section>
 
-      <nav className="step-nav">
+      <nav className="step-nav step-nav--wizard">
         <Link href="/fixed-charges" className="btn btn-ghost">
           {m.recipe.back}
         </Link>

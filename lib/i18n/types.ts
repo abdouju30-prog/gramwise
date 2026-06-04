@@ -58,6 +58,20 @@ export type Messages = {
     lead: string;
     openCalculator: string;
     betaTesters: string;
+    viewPricing: string;
+    demoBadge: string;
+    demoRecipe: string;
+    demoPriceLabel: string;
+    demoPrice: string;
+    demoCaption: string;
+    demoRows: [
+      { label: string; value: string },
+      { label: string; value: string },
+      { label: string; value: string },
+      { label: string; value: string },
+    ];
+    trustTitle: string;
+    trustItems: [string, string, string, string];
     whyTitle: string;
     benefits: [{ title: string; body: string }, { title: string; body: string }, { title: string; body: string }];
     howTitle: string;
@@ -314,6 +328,7 @@ export type Messages = {
     eyebrow: string;
     successTitle: string;
     successBody: string;
+    successBodyOpen: string;
     cancelTitle: string;
     cancelBody: string;
     openCalculator: string;

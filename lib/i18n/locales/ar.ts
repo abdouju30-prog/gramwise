@@ -67,6 +67,25 @@ export const ar: LocaleBundle = {
     lead: "GramWise يوزّع المصاريف العامة، يفصّل تكلفة الوصفة سطراً بسطر، ويقترح سعر البيع — بلا تخمين في الجداول.",
     openCalculator: "فتح الحاسبة",
     betaTesters: "مختبرو التجربة",
+    viewPricing: "عرض الأسعار",
+    demoBadge: "النتائج — مثال",
+    demoRecipe: "انتريميت شوكولات · 8 حصص",
+    demoPriceLabel: "السعر الموصى به",
+    demoPrice: "14,80 €",
+    demoCaption: "مثال توضيحي — أرقامك في التطبيق.",
+    demoRows: [
+      { label: "المواد", value: "4,20 €" },
+      { label: "اليد العاملة", value: "3,10 €" },
+      { label: "المصاريف الثابتة", value: "2,40 €" },
+      { label: "التكلفة الكاملة", value: "9,70 €" },
+    ],
+    trustTitle: "مصمم لورشة الحلويات",
+    trustItems: [
+      "10 وصفات مُختبرة مقابل Excel",
+      "هامش % على سعر البيع",
+      "FR · EN · AR",
+      "بدون اشتراك (مدى الحياة)",
+    ],
     whyTitle: "لماذا يستخدمه الحلوانيون",
     benefits: [
       {
@@ -378,6 +397,8 @@ export const ar: LocaleBundle = {
     successTitle: "شكراً لك",
     successBody:
       "يرسل Gumroad إيصالاً يتضمن مفتاح الترخيص. الصقه أدناه لفتح الحاسبة على هذا الجهاز.",
+    successBodyOpen:
+      "شكراً لشرائك. الحاسبة متاحة مباشرة — لا حاجة لمفتاح الترخيص في الوقت الحالي.",
     cancelTitle: "تم إلغاء الدفع",
     cancelBody: "لم يتم أي خصم. يمكنك الشراء لاحقاً من الصفحة الرئيسية.",
     openCalculator: "فتح الحاسبة",

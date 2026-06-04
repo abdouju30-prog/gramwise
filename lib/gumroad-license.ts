@@ -16,9 +16,9 @@ export function gumroadLifetimeProductId(): string | null {
   return id || null;
 }
 
-/** Gate calculator when Gumroad is live and server verify credentials exist. */
+/** Gate calculator only when explicitly enabled (off by default). */
 export function isGumroadLicenseGateEnabled(): boolean {
-  if (process.env.GUMROAD_LICENSE_GATE?.trim() === "0") return false;
+  if (process.env.GUMROAD_LICENSE_GATE?.trim() !== "1") return false;
   if (!isGumroadConfigured()) return false;
   const token = process.env.GUMROAD_ACCESS_TOKEN?.trim();
   const productId = gumroadLifetimeProductId();
