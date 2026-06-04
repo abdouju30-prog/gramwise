@@ -1,12 +1,15 @@
 "use client";
 
-import dynamic from "next/dynamic";
 import { useState } from "react";
+import dynamic from "next/dynamic";
 
-const Spline = dynamic(() => import("@splinetool/react-spline"), {
-  ssr: false,
-  loading: () => <div className="spline-skeleton" aria-hidden="true" />,
-});
+const Spline = dynamic(
+  () => import("@splinetool/react-spline/next"),
+  {
+    ssr: false,
+    loading: () => <div className="spline-skeleton" aria-hidden="true" />,
+  }
+);
 
 const SCENE =
   process.env.NEXT_PUBLIC_SPLINE_SCENE ||
@@ -21,10 +24,7 @@ export function SplineHero() {
 
   return (
     <div className="spline-wrap" aria-hidden="true">
-      <Spline
-        scene={SCENE}
-        onError={() => setError(true)}
-      />
+      <Spline scene={SCENE} onError={() => setError(true)} />
     </div>
   );
 }
