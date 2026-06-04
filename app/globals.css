@@ -1139,47 +1139,76 @@ input[type="number"].field {
 }
 
 .landing-section {
-  margin-bottom: 3rem;
+  margin-bottom: 4.5rem;
 }
 
 .landing-heading {
   font-family: var(--font-display), "Playfair Display", Georgia, serif;
-  font-size: 1.35rem;
-  color: var(--brown-mid);
-  margin: 0 0 1.25rem;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--brown-dark);
+  margin: 0 0 2rem;
+  line-height: 1.2;
 }
+
+/* ── Benefit cards ── */
 
 .benefit-grid {
   list-style: none;
   margin: 0;
   padding: 0;
   display: grid;
-  gap: 0.85rem;
+  gap: 0;
 }
 
 @media (min-width: 640px) {
   .benefit-grid {
     grid-template-columns: repeat(3, 1fr);
+    gap: 0 3rem;
   }
 }
 
 .benefit-card {
-  border-color: var(--border-faint);
+  padding: 1.5rem 0;
+  border-top: 1px solid var(--border);
+  background: none;
+  border-radius: 0;
+  box-shadow: none;
+}
+
+@media (max-width: 639px) {
+  .benefit-card:last-child {
+    border-bottom: 1px solid var(--border);
+  }
+}
+
+.benefit-num {
+  display: block;
+  font-family: var(--font-mono), "DM Mono", monospace;
+  font-size: 0.62rem;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  color: var(--caramel);
+  margin: 0 0 1rem;
 }
 
 .benefit-card h3 {
   font-family: var(--font-display), "Playfair Display", Georgia, serif;
-  font-size: 1rem;
-  margin: 0 0 0.45rem;
+  font-size: 1.1rem;
+  font-weight: 700;
+  line-height: 1.25;
+  margin: 0 0 0.65rem;
   color: var(--brown-dark);
 }
 
 .benefit-card p {
   margin: 0;
-  font-size: 0.82rem;
+  font-size: 0.85rem;
   color: var(--ink-muted);
-  line-height: 1.55;
+  line-height: 1.65;
 }
+
+/* ── How it works steps ── */
 
 .steps-list {
   list-style: none;
@@ -1187,31 +1216,43 @@ input[type="number"].field {
   padding: 0;
   display: flex;
   flex-direction: column;
-  gap: 0.65rem;
+  gap: 0;
 }
 
 .steps-list li {
-  display: flex;
-  align-items: flex-start;
-  gap: 0.85rem;
-  padding: 0.85rem 1rem;
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
+  display: grid;
+  grid-template-columns: 2.75rem 1fr;
+  gap: 0 1.5rem;
+  padding: 1.5rem 0;
+  background: none;
+  border: none;
+  border-top: 1px solid var(--border-faint);
+  border-radius: 0;
+  align-items: start;
+}
+
+.steps-list li:last-child {
+  border-bottom: 1px solid var(--border-faint);
 }
 
 .steps-list-num {
-  flex-shrink: 0;
-  width: 1.75rem;
-  height: 1.75rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 50%;
-  background: var(--brown-dark);
-  color: var(--cream);
-  font-size: 0.75rem;
+  display: block;
+  font-family: var(--font-mono), "DM Mono", monospace;
+  font-size: 0.82rem;
   font-weight: 500;
+  color: var(--caramel);
+  letter-spacing: 0.05em;
+  padding-top: 0.1rem;
+  width: auto;
+  height: auto;
+  background: none;
+  border-radius: 0;
+}
+
+.steps-list-text {
+  font-size: 0.9rem;
+  color: var(--ink-muted);
+  line-height: 1.65;
 }
 
 .landing-pricing-note {
@@ -2186,7 +2227,10 @@ input[type="number"].field {
   direction: rtl;
 }
 
-[dir="rtl"] .steps-list li,
+[dir="rtl"] .steps-list li {
+  direction: rtl;
+}
+
 [dir="rtl"] .beta-banner {
   flex-direction: row-reverse;
 }

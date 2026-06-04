@@ -38,8 +38,11 @@ export function LandingPage() {
       <section className="landing-section">
         <h2 className="landing-heading">{m.landing.whyTitle}</h2>
         <ul className="benefit-grid">
-          {m.landing.benefits.map((b) => (
-            <li key={b.title} className="card benefit-card">
+          {m.landing.benefits.map((b, i) => (
+            <li key={b.title} className="benefit-card">
+              <span className="benefit-num" aria-hidden="true">
+                {String(i + 1).padStart(2, "0")}
+              </span>
               <h3>{b.title}</h3>
               <p>{b.body}</p>
             </li>
@@ -52,8 +55,10 @@ export function LandingPage() {
         <ol className="steps-list">
           {m.landing.steps.map((text, i) => (
             <li key={text}>
-              <span className="steps-list-num">{i + 1}</span>
-              <span>{text}</span>
+              <span className="steps-list-num" aria-hidden="true">
+                {String(i + 1).padStart(2, "0")}
+              </span>
+              <span className="steps-list-text">{text}</span>
             </li>
           ))}
         </ol>
