@@ -10,7 +10,7 @@ import {
 } from "react";
 import { isPublicBeta } from "@/lib/beta";
 import { useMessages } from "@/lib/i18n/locale-provider";
-import { BaguetteHero } from "./baguette-hero";
+import { HeroFoodScene } from "./hero-food-scene";
 import { LandingProductDemo } from "./landing-product-demo";
 
 export function LandingHeroSection() {
@@ -79,7 +79,7 @@ export function LandingHeroSection() {
       <div className="landing-hero-stage" aria-hidden="true">
         <div className="landing-hero-stage-glow" />
         <div className="landing-hero-stage-inner">
-          <BaguetteHero className="baguette-wrap--stage" />
+          <HeroFoodScene className="hero-food-scene--stage" />
         </div>
         <div className="landing-hero-stage-vignette" />
       </div>

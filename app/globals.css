@@ -1249,7 +1249,8 @@ input[type="number"].field {
   min-height: min(92vh, 920px);
   margin-bottom: 5rem;
   padding: 2.5rem 0 4rem;
-  overflow: hidden;
+  overflow: clip;
+  overflow-clip-margin: 0px;
   border-bottom: 1px solid var(--border-faint);
   background: linear-gradient(
     155deg,
@@ -1374,63 +1375,102 @@ input[type="number"].field {
   background: transparent;
 }
 
-/* ── Baguette hero ── */
+/* ── Hero food scene — baguette + gateau ── */
 
-@keyframes baguette-float {
-  0%, 100% { transform: translateY(0px) rotate(-2deg); }
-  33%       { transform: translateY(-18px) rotate(0deg); }
-  66%       { transform: translateY(-8px) rotate(-3.5deg); }
+@keyframes food-float-a {
+  0%, 100% { transform: translateY(0px)   rotate(-28deg) scale(1); }
+  40%       { transform: translateY(-22px) rotate(-26deg) scale(1.02); }
+  70%       { transform: translateY(-10px) rotate(-30deg) scale(0.99); }
 }
 
-@keyframes baguette-glow {
-  0%, 100% {
-    filter:
-      drop-shadow(0 18px 36px rgba(201, 121, 42, 0.45))
-      drop-shadow(0 4px 12px rgba(44, 26, 14, 0.25))
-      brightness(1);
-  }
-  50% {
-    filter:
-      drop-shadow(0 32px 64px rgba(201, 121, 42, 0.7))
-      drop-shadow(0 8px 24px rgba(44, 26, 14, 0.3))
-      brightness(1.07);
-  }
+@keyframes food-glow-a {
+  0%, 100% { filter: drop-shadow(0 20px 40px rgba(201, 121, 42, 0.4)) brightness(1); }
+  50%       { filter: drop-shadow(0 36px 72px rgba(201, 121, 42, 0.65)) brightness(1.06); }
 }
 
-.baguette-wrap {
+@keyframes food-float-b {
+  0%, 100% { transform: translateY(0px)    rotate(6deg)  scale(1); }
+  35%       { transform: translateY(-16px)  rotate(4deg)  scale(1.03); }
+  65%       { transform: translateY(-6px)   rotate(8deg)  scale(0.98); }
+}
+
+@keyframes food-glow-b {
+  0%, 100% { filter: drop-shadow(0 16px 32px rgba(80, 40, 10, 0.5))  brightness(1); }
+  50%       { filter: drop-shadow(0 28px 56px rgba(120, 60, 15, 0.7)) brightness(1.08); }
+}
+
+.hero-food-scene {
+  position: relative;
   width: 100%;
   height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  overflow: visible;
 }
 
-.baguette-wrap--stage {
-  min-height: 320px;
-}
-
-.baguette-img {
-  width: 115%;
-  max-width: none;
-  height: auto;
-  object-fit: contain;
-  animation:
-    baguette-float 8s ease-in-out infinite,
-    baguette-glow  5s ease-in-out infinite;
-  transform-origin: 50% 50%;
-  user-select: none;
-  pointer-events: none;
-  will-change: transform, filter;
+.hero-food-scene--stage {
+  min-height: 340px;
 }
 
 @media (min-width: 800px) {
-  .baguette-wrap--stage {
-    min-height: 480px;
+  .hero-food-scene--stage {
+    min-height: 520px;
   }
-  .baguette-img {
-    width: 130%;
+}
+
+/* Baguette — large diagonal, fills bottom 70% */
+.hero-food-baguette {
+  position: absolute;
+  inset: 25% -10% -15% -15%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+}
+
+.hero-food-baguette-img {
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+  animation:
+    food-float-a 9s ease-in-out infinite,
+    food-glow-a  6s ease-in-out infinite;
+  will-change: transform, filter;
+  user-select: none;
+}
+
+/* Gateau — smaller, upper-right, different timing */
+.hero-food-gateau {
+  position: absolute;
+  top: -5%;
+  right: -8%;
+  width: 46%;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.hero-food-gateau-img {
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+  animation:
+    food-float-b 7s ease-in-out infinite 1.5s,
+    food-glow-b  5s ease-in-out infinite 0.8s;
+  will-change: transform, filter;
+  user-select: none;
+}
+
+@media (max-width: 799px) {
+  .hero-food-baguette {
+    inset: 30% -5% -5% -5%;
   }
+  .hero-food-gateau {
+    width: 38%;
+    top: 0;
+    right: -4%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-food-baguette-img,
+  .hero-food-gateau-img { animation: none; }
 }
 
 @media (prefers-reduced-motion: reduce) {
