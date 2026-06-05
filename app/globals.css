@@ -2589,6 +2589,181 @@ input[type="number"].field {
   margin-bottom: 1rem;
 }
 
+/* ── Ingredient cards ── */
+
+.ingredient-cards {
+  grid-template-columns: repeat(2, 1fr);
+}
+
+@media (max-width: 560px) {
+  .ingredient-cards {
+    grid-template-columns: 1fr;
+  }
+}
+
+.ingredient-card-fields {
+  display: grid;
+  grid-template-columns: 3rem 3.25rem auto 3.5rem auto;
+  gap: 0.2rem 0.35rem;
+  align-items: center;
+  margin-bottom: 0.6rem;
+}
+
+.ingredient-card-qty,
+.ingredient-card-price {
+  font-family: var(--font-mono), "DM Mono", monospace;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--brown-dark);
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid var(--border);
+  padding: 0.1rem 0.2rem;
+  text-align: right;
+  width: 100%;
+  -moz-appearance: textfield;
+}
+
+.ingredient-card-qty::-webkit-outer-spin-button,
+.ingredient-card-qty::-webkit-inner-spin-button,
+.ingredient-card-price::-webkit-outer-spin-button,
+.ingredient-card-price::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+}
+
+.ingredient-card-qty:focus,
+.ingredient-card-price:focus {
+  outline: none;
+  border-bottom-color: var(--caramel);
+}
+
+.ingredient-card-unit {
+  font-size: 0.68rem;
+  color: var(--brown-light);
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid var(--border);
+  padding: 0.1rem 0;
+  cursor: pointer;
+  width: 100%;
+}
+
+.ingredient-card-unit:focus {
+  outline: none;
+  border-bottom-color: var(--caramel);
+}
+
+.ingredient-card-sep {
+  font-size: 0.65rem;
+  color: var(--border);
+  text-align: center;
+  user-select: none;
+}
+
+.ingredient-card-price-unit {
+  font-size: 0.58rem;
+  color: var(--brown-light);
+  font-family: var(--font-mono), monospace;
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+}
+
+.ingredient-card-cost {
+  font-family: var(--font-display), "Playfair Display", Georgia, serif;
+  font-size: 1.05rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  color: var(--caramel);
+  margin: 0 0 0.4rem;
+}
+
+/* ── Labor cards ── */
+
+.labor-cards {
+  grid-template-columns: repeat(2, 1fr);
+}
+
+@media (max-width: 560px) {
+  .labor-cards {
+    grid-template-columns: 1fr;
+  }
+}
+
+.labor-card-metrics {
+  display: flex;
+  align-items: baseline;
+  gap: 0.65rem;
+  margin-bottom: 0.6rem;
+}
+
+.labor-card-hours-wrap {
+  display: flex;
+  align-items: baseline;
+  gap: 0.2rem;
+  flex: 1.2;
+  min-width: 0;
+}
+
+.labor-card-hours {
+  flex: 1;
+  min-width: 0;
+}
+
+.labor-card-unit {
+  font-size: 0.75rem;
+  color: var(--brown-light);
+  font-family: var(--font-mono), monospace;
+  flex-shrink: 0;
+}
+
+.labor-card-rate-wrap {
+  display: flex;
+  align-items: baseline;
+  gap: 0.2rem;
+  flex-shrink: 0;
+}
+
+.labor-card-rate {
+  font-family: var(--font-mono), "DM Mono", monospace;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--brown-mid);
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid var(--border);
+  padding: 0.1rem 0.2rem;
+  width: 4rem;
+  text-align: right;
+  -moz-appearance: textfield;
+}
+
+.labor-card-rate::-webkit-outer-spin-button,
+.labor-card-rate::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+}
+
+.labor-card-rate:focus {
+  outline: none;
+  border-bottom-color: var(--caramel);
+}
+
+.labor-card-rate-unit {
+  font-size: 0.58rem;
+  color: var(--brown-light);
+  font-family: var(--font-mono), monospace;
+  white-space: nowrap;
+}
+
+/* ── Pricing metric cards (waste + margin) ── */
+
+.pricing-metric-cards {
+  grid-template-columns: 1fr 1fr;
+}
+
+.budget-card-bar-fill--margin {
+  background: linear-gradient(90deg, var(--sage) 0%, #a8c5a0 100%);
+}
+
 /* ── Charge total ── */
 
 .charge-total {
