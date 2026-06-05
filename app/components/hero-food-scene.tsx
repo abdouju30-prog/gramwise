@@ -21,19 +21,6 @@ export function HeroFoodScene({ className = "" }: Props) {
         />
       </div>
 
-      {/* Gateau — smaller, foreground, different timing */}
-      <div className="hero-food-gateau">
-        <Image
-          src="/hero-gateau.png"
-          alt=""
-          width={1024}
-          height={1024}
-          className="hero-food-gateau-img"
-          priority
-          draggable={false}
-          quality={90}
-        />
-      </div>
     </div>
   );
 }
